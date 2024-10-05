@@ -1,0 +1,42 @@
+{% extends 'base2.html' %}
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flask App</title>
+    <link rel="stylesheet" href="/static/bootstrap.css"/>
+    <script src="/static/jquery-3.6.0.js"></script>
+    <script src="/static/bootstrap.js"></script>
+</head>
+<body>
+<div class="container">
+        {% block h1 %}
+        Simple Student Information System
+        {% endblock %}
+
+    {% block selection %}
+    <div class="selection">
+    <section>
+        <a href="students">
+        <article class="cards">
+            <p class="data">Students</p>
+        </article>
+        </a>
+
+        <a href="courses">
+        <article class="cards">
+            <p class="data">Courses</p>
+        </article>
+        </a>
+
+        <a href="colleges">
+        <article class="cards">
+            <p class="data">Colleges</p>
+        </article>
+        </a>
+    </section>
+    </div>
+</div>
+{% endblock %}
+</body>
+    </html>

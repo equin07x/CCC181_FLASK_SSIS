@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flask App</title>
+    <link rel="stylesheet" href="static/styles.css"/>
+</head>
+<body>
+    <br>
+    <h1 class="main_header">
+        {% block h1  %}   
+        Simple Student Information System
+        {% endblock %}
+    </h1>
+
+    <div class="selection">
+        {% block selection %}
+
+        {% endblock %}
+    </div>
+
+    <div class="options">
+        {% block options %}
+        
+        {% endblock %}
+    </div>
+</body>
+    </html>

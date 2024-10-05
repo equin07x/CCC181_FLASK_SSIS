@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flask App</title>
+    <link rel="stylesheet" href="/static/bootstrap.css"/>
+    <script src="/static/jquery-3.6.0.js"></script>
+    <script src="/static/bootstrap.js"></script>
+
+</head>
+<body>
+    <br/>
+<div class="container-sm">
+    <h1>
+        Students
+    </h1>
+    <br>
+    <div class="container">
+    <a type="button" class="btn btn-light" href="home">
+        Back
+    </a>
+    </div>
+    <br>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+        {% if category == "error" %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Invalid!</strong> {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% elif category == "secondary" %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Note:</strong> {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% else %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success!</strong> {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% endwith%}
+    <!--SEARCH FUNCTION FOR STUDENTS TABLE-->
+    <div class="container">
+        <form action="{{ url_for('student_search') }}" method="POST">
+            <label>Search Filters:</label>
+            <div class="input-group mb-3">
+            <select class="form-select btn-outline-secondary" aria-label="Default select example" id="course_key_Code"  name="course_key_Code">
+                <option selected>By Course Code</option>
+                {% for row in Courses %}
+                <option value="{{ row.2 }}">{{ row.2 }}</option>
+                {% endfor %}
+            </select>
+            <select class="form-select btn-outline-secondary" aria-label="Default select example" id="student_key_Level"  name="student_key_Level">
+                <option selected>By Year Level</option>
+                <option value="1st-Year">1st-Year</option>
+                <option value="2nd-Year">2nd-Year</option>
+                <option value="3rd-Year">3rd-Year</option>
+                <option value="4th-Year">4th-Year</option>
+            </select>
+            <select class="form-select btn-outline-secondary" aria-label="Default select example" id="student_key_Gender"  name="student_key_Gender">
+                <option selected>By Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+            </div>
+            <div class="input-group mb-3">
+                <input type="text" name="student_key" class="form-control" placeholder="Look for a student" 
+                aria-label="Look for a student" aria-describedby="search-button">
+                <button type="submit" class="btn btn-outline-secondary" id="search-button">
+                    Search
+                </button>
+            </div>
+     </form>
+    </div>
+    <!--SEARCH FUNCTION ENDS HERE-->
+    
+    <!-- DISPLAYING THE STUDENTS TABLE-->
+    <div class="container-sm">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">ID Number</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Course</th>
+                    <th scope="col">Year Level</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in Students %}
+                <tr>
+                    <td>{{ row.1 }}</td>
+                    <td>{{ row.2 }}</td>
+                    <td>{{ row.3 }}</td>
+                    <td>{{ row.4 }}</td>
+                    <td>{{ row.6 }}</td>
+                    <td>{{ row.7 }}</td>
+                    
+        <td>  
+                <!-- EDIT FUNCTION TRIGGER BUTTON -->
+            <a href="" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editModal{{ row.0 }}">
+                Edit
+            </a>
+                <div class="modal fade" id="editModal{{ row.0 }}" tabindex="-1" aria-labelledby="editModal" aria-hidden="true">
+                    <div class="modal-dialog  modal-dialog-centered">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="editModal{{ row.0 }}">Edit Student Information</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+                <div class="modal-body">
+                    <form action="{{ url_for('edit_students') }}" method="POST">
+                        <div class="form-group">
+                            <input type="hidden" name="student_id" value="{{ row.0 }}" class="form-control" id="student_id">
+                            </div>
+                            <div class="form-group">
+                            <label for="idNumberEdit">Update ID Number </label>
+                            <input type="text" name="idNumberEdit" value="{{ row.1 }}" class="form-control" id="idNumberEdit" placeholder="Enter New ID Nubmer">
+                            </div>
+                            <div class="form-group">
+                            <label for="firstNameEdit">Update First Name </label>
+                            <input type="text" name="firstNameEdit" value="{{ row.2 }}" class="form-control" id="firstNameEdit" placeholder="Enter New First Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastNameEdit">Update Last Name </label>
+                                <input type="text" name="lastNameEdit" value="{{ row.3 }}" class="form-control" id="lastNameEdit" placeholder="Enter New Last Name">
+                            </div>  
+                            <label for="courseCodeEdit">Update College Code </label> 
+                                <div class="form-group">
+                                    <select class="form-select" aria-label="Default select example" id="courseCodeEdit"  name="courseCodeEdit">
+                                        <option selected>{{ row.4}} </option>
+                                        {% for row in Courses %}
+                                        <option value="{{ row.2 }}">{{ row.2 }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                  
+                            <label for="yearLevelEdit">Update Year Level </label> 
+                            <div class="form-group">
+                                <select class="form-select" aria-label="Default select example" id="yearLevelEdit"  name="yearLevelEdit">
+                                    <option selected>{{ row.6 }}</option>
+                                    <option value="1st-Year">1st-Year</option>
+                                    <option value="2nd-Year">2nd-Year</option>
+                                    <option value="3rd-Year">3rd-Year</option>
+                                    <option value="4th-Year">4th-Year</option>
+                                </select>
+                            </div>
+
+                            
+                            <label for="genderEdit">Update Year Level </label> 
+                            <div class="form-group">
+                                <select class="form-select" aria-label="Default select example" id="genderEdit"  name="genderEdit">
+                                    <option selected>{{ row.7 }}</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Male">Male</option>
+                                </select>
+                            </div>
+                        </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                    </form>
+            </td>
+         
+            <!--DELETE FUNCTION-->
+        <td>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ row.0 }}">
+                Delete
+              </button>
+            
+              <div class="modal fade" id="deleteModal{{ row.0 }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="deleteModal{{ row.0 }}">Deletion</h5>
+                    </div>
+                    <div class="modal-body">
+                      Are you sure you want to delete this student information?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                      <a href="/delete_student/{{ row.0 }}" class="btn btn-danger" data-title="Delete Student?">    
+                        Confirm
+                        </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+        </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+
+
+<!-- ADD STUDENT FUNCTION TRIGGER BUTTON-->
+<div class="container">
+<form method="GET">
+</form>
+<button type="submit" class="btn btn-secondary" 
+data-bs-toggle="modal" 
+data-bs-target="#addModal">
+    +
+  </button>
+  <!-- ADD STUDENT FUNCTION -->
+  <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModal" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="addModal">Add New Student Information</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action="{{ url_for('add_student') }}" method="POST">
+                <div class="form-group">
+                <label for="idNumber">ID Number</label>
+                <input type="text" name="idNumber" class="form-control" id="idNumber" placeholder="YYYY-NNNN">
+                </div>
+                <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" name="firstName" class="form-control" id="firstName" placeholder="e.g. John">
+                </div>
+                <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" name="lastName" class="form-control" id="lastName" placeholder="e.g. Doe">
+                </div>
+                <div class="form-group">
+                <label for="courseCode">Course</label>
+                <select class="form-select" aria-label="Default select example" id="courseCode"  name="courseCode">
+                    <option selected>Select a Course</option>
+                    {% for row in Courses %}
+                    <option value="{{ row.2 }}">{{ row.2 }}</option>
+                    {% endfor %}
+                </select>
+                </div>
+                <label for="yearLevel">Year Level </label> 
+                <div class="form-group">
+                    <select class="form-select" aria-label="Default select example" id="yearLevel"  name="yearLevel">
+                        <option selected>1st-Year</option>
+                        <option value="2nd-Year">2nd-Year</option>
+                        <option value="3rd-Year">3rd-Year</option>
+                        <option value="4th-Year">4th-Year</option>
+                    </select>
+                </div> 
+                <label for="gender">Gender </label> 
+                <div class="form-group">
+                    <select class="form-select" aria-label="Default select example" id="gender"  name="gender">
+                        <option selected>Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                  </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+    </div>
+</div>
+</body>
+    </html>
