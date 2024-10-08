@@ -139,6 +139,15 @@ def create_app():
                                  student_key, course_key_Code, student_key_Level, student_key_Gender))
                 search_data = cursor.fetchall()
                 return render_template('student_results.html', student_key = search_data)
+            
+            elif course_key_Code != "By Course Code" and student_key_Level == "By Year Level" and student_key_Gender != "By Gender":
+                print("This is state 8 of the student search results.")
+                cursor.execute('''SELECT * FROM students WHERE
+                                firstName LIKE %s AND courseCode LIKE %s AND gender LIKE %s
+                                OR lastName LIKE %s AND courseCode LIKE %s AND gender LIKE %s''', 
+                                ( student_key, course_key_Code, student_key_Gender, student_key, course_key_Code, student_key_Gender))
+                search_data = cursor.fetchall()
+                return render_template('student_results.html', student_key = search_data)
 
     #For editing/updating the student information
     @app.route('/edit_student', methods=["POST"])
