@@ -43,16 +43,8 @@
         {% endfor %}
     {% endif %}
     {% endwith%}
-    <div class="container">
-        <form action="{{ url_for('college_search') }}" method="POST">
-            <div class="input-group mb-3">
-        <input type="text" name="college_key" class="form-control" placeholder="Look for a college" aria-label="Look for a college" aria-describedby="search-button">
-        <button type="submit" class="btn btn-outline-secondary" id="search-button">
-            Search
-        </button>
-            </div>
-        </form>
-    </div>
+    
+    
     <div class="container-sm">
         <table class="table table-hover">
             <thead>

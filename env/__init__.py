@@ -52,6 +52,8 @@ def create_app():
     #For searching student information along with its selected fields
     @app.route('/student_search', methods=["POST"])
     def student_search():
+        cursor.execute('SELECT * FROM course_table')
+        courseCodes = cursor.fetchall()
         if (request.method == "POST"):
             #GENERAL SEARCH
             student_key = request.form['student_key']
@@ -85,7 +87,7 @@ def create_app():
                                 OR courseCode LIKE %s AND lastName LIKE %s
                                 OR idNumber LIKE %s''',(course_key_Code, student_key, course_key_Code, student_key, student_key)) 
                 search_data = cursor.fetchall()
-                return render_template('student_results.html', student_key = search_data)
+                return render_template('student_results.html', student_key = search_data, Courses = courseCodes)
             
             elif course_key_Code != "By Course Code" and student_key_Level != "By Year Level" and student_key_Gender == "By Gender":
                 print("This is state 3 of the student search results.")
@@ -97,7 +99,7 @@ def create_app():
                                 (course_key_Code, student_key_Level, student_key, 
                                  course_key_Code, student_key_Level, student_key, student_key)) 
                 search_data = cursor.fetchall()
-                return render_template('student_results.html', student_key = search_data)
+                return render_template('student_results.html', student_key = search_data,  Courses = courseCodes)
             
             elif course_key_Code == "By Course Code" and student_key_Level != "By Year Level" and student_key_Gender == "By Gender":
                     print("This is state 4 of the student search results.")
@@ -106,7 +108,7 @@ def create_app():
                                     firstName LIKE %s OR yearLevel LIKE %s AND lastName LIKE %s''',
                                     ( student_key_Level, student_key, student_key_Level, student_key)) 
                     search_data = cursor.fetchall()
-                    return render_template('student_results.html', student_key = search_data)
+                    return render_template('student_results.html', student_key = search_data,  Courses = courseCodes)
                 
             elif course_key_Code == "By Course Code" and student_key_Level == "By Year Level" and student_key_Gender != "By Gender":
                 print("This is state 5 of the student search results.")
@@ -115,7 +117,7 @@ def create_app():
                                 OR lastName LIKE %s AND gender LIKE %s''', 
                                 ( student_key, student_key_Gender, student_key, student_key_Gender))
                 search_data = cursor.fetchall()
-                return render_template('student_results.html', student_key = search_data)
+                return render_template('student_results.html', student_key = search_data, Courses = courseCodes)
             
             elif course_key_Code == "By Course Code" and student_key_Level != "By Year Level" and student_key_Gender != "By Gender":
                 print("This is state 6 of the student search results.")
@@ -129,7 +131,7 @@ def create_app():
                                 (student_key_Level, student_key_Gender, student_key, student_key_Level, student_key_Gender, 
                                     student_key))
                 search_data = cursor.fetchall()
-                return render_template('student_results.html', student_key = search_data)
+                return render_template('student_results.html', student_key = search_data,  Courses = courseCodes)
             
             elif course_key_Code != "By Course Code" and student_key_Level != "By Year Level" and student_key_Gender != "By Gender":
                 print("This is state 7 of the student search results.")
@@ -138,7 +140,7 @@ def create_app():
                                 (student_key, course_key_Code, student_key_Level, student_key_Gender,  
                                  student_key, course_key_Code, student_key_Level, student_key_Gender))
                 search_data = cursor.fetchall()
-                return render_template('student_results.html', student_key = search_data)
+                return render_template('student_results.html', student_key = search_data, Courses = courseCodes)
             
             elif course_key_Code != "By Course Code" and student_key_Level == "By Year Level" and student_key_Gender != "By Gender":
                 print("This is state 8 of the student search results.")
@@ -147,7 +149,7 @@ def create_app():
                                 OR lastName LIKE %s AND courseCode LIKE %s AND gender LIKE %s''', 
                                 ( student_key, course_key_Code, student_key_Gender, student_key, course_key_Code, student_key_Gender))
                 search_data = cursor.fetchall()
-                return render_template('student_results.html', student_key = search_data)
+                return render_template('student_results.html', student_key = search_data, Courses = courseCodes)
 
     #For editing/updating the student information
     @app.route('/edit_student', methods=["POST"])
