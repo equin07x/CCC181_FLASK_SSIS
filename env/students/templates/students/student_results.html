@@ -84,7 +84,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
                 <div class="modal-body">
-                    <form action="{{ url_for('edit_students') }}" method="POST">
+                    <form action="{{ url_for('sbp.edit_students') }}" method="POST">
                         <div class="form-group">
                             <input type="hidden" name="student_id" value="{{ row.0 }}" class="form-control" id="student_id">
                             </div>
@@ -188,7 +188,7 @@ data-bs-target="#addModal">
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form action="{{ url_for('add_student') }}" method="POST">
+            <form action="{{ url_for('sbp.add_student') }}" method="POST">
                 <div class="form-group">
                 <label for="idNumber">ID Number</label>
                 <input type="text" name="idNumber" class="form-control" id="idNumber" placeholder="YYYY-NNNN">

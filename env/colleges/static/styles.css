@@ -1,0 +1,57 @@
+.main_header{
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+}
+
+.tables, .options{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-align: center;
+}
+
+.tables{
+    border: 3px solid black;
+    padding: 2px;
+    margin: 30px 40px;
+}
+
+th, td{
+    border: 2px solid black;
+    padding: 2px;
+    margin: 80px;
+}
+
+.selection{
+    text-align: center;
+    overflow: hidden;  
+    padding: 30px;
+    margin: 15px;
+}
+
+/* This is for the homescreen card selection*/
+.cards{
+    display: inline-block;
+    background-color: rgb(202, 197, 197);
+    padding: 30px;
+    margin: 30px;
+    min-height: 250px;
+    min-width: 150px;
+    border-bottom: 3px solid rgba(24, 209, 255, 0.747);
+    border-radius: 12px;
+    transition: background-color 1s;
+    overflow: hidden;
+}
+
+.cards:hover{
+    background-color: rgb(25, 102, 218);
+}
+/* card styling ends here */
+
+.data{
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    text-align: center;
+}
+
+a:active, a:hover, a:link, a:visited{
+    text-decoration: none;
+}
