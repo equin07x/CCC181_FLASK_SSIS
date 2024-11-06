@@ -1,6 +1,6 @@
 from flask import render_template, request, url_for, flash, redirect
 from flask import Blueprint
-from env import db
+from src import db
 
 
 colleges_bp = Blueprint('clbp', __name__, template_folder="templates")
@@ -16,7 +16,15 @@ def commit():
 
 #This is for accessing college table and its actions:
 
+@colleges_bp.route('/colleges')
+def colleges():
+        cursor.execute("SELECT * FROM college_table")
+        data = cursor.fetchall()
+        return render_template('/colleges/colleges.html', College=data)
+
+
 #For editing a college information
+ 
 @colleges_bp.route('/edit_college', methods=["GET","POST"])
 def edit_college():
     if request.method == "POST":
@@ -94,7 +102,7 @@ def delete_college(collegeCode):
     cursor.execute("UPDATE course_table SET collegeCode = 'N/A' WHERE collegeCode = %s", (collegeCode))
     flash("You have deleted college information. It will take effect on the courses under the deleted. ", category='secondary')
     commit()
-    return redirect(url_for('colleges'))
+    return redirect(url_for('clbp.colleges'))
 
 #For adding a new college information
 @colleges_bp.route('/add_college', methods=["GET", "POST"])
@@ -111,7 +119,7 @@ def add_college():
             cursor.execute("INSERT INTO college_table(collegeCode, collegeName) VALUES (%s, %s)", (collegeCode, collegeName))
             flash("You have successfuly added college!", category="success")
             commit()
-    return redirect(url_for('colleges'))
+    return redirect(url_for('clbp.colleges'))
 
 #<-------------------------------------------------->#
 #THE CODES RELATED FOR HANDLING COLLEGES ENDS IN HERE.#

@@ -33,9 +33,9 @@ def create_app():
     #importing the colleges module
     from .colleges.clbp import colleges_bp
     app.register_blueprint(colleges_bp, url_prefix="/")
-        
+    
     cursor.execute('CREATE DATABASE IF NOT EXISTS flask_ssis')
-    cursor.execute('SHOW DATABASES')
+    cursor.execute('SHOW DATABASES')    
      
     if cursor.execute('CREATE DATABASE IF NOT EXISTS flask_ssis'):
         print("Database Connected!")
@@ -45,13 +45,6 @@ def create_app():
     @app.route('/home')
     def home():
         return render_template('home.html')
-    
-    @app.route('/colleges')
-    def colleges():
-        cursor.execute("SELECT * FROM college_table")
-        data = cursor.fetchall()
-        return render_template('/colleges/colleges.html', College=data)
-
    
     #Return function after the long def_create_app() function.
     return app

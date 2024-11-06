@@ -1,9 +1,9 @@
 from flask import render_template, request, url_for, flash, redirect
 from flask import Blueprint
-from env import db
+from src import db
 
 
-courses_bp = Blueprint('cbp', __name__, template_folder="templates")
+courses_bp = Blueprint('cbp', __name__, template_folder="templates", static_folder="static")
 
 cursor = db.cursor()
 def commit():

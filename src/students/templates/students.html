@@ -78,12 +78,12 @@
      </form>
     </div>
     <!--SEARCH FUNCTION ENDS HERE-->
-    
     <!-- DISPLAYING THE STUDENTS TABLE-->
     <div class="container-sm">
         <table class="table table-hover">
             <thead>
                 <tr>
+                    <th scope="col"></th>
                     <th scope="col">ID Number</th>
                     <th scope="col">First Name</th>
                     <th scope="col">Last Name</th>
@@ -96,6 +96,7 @@
             <tbody>
                 {% for row in Students %}
                 <tr>
+                    <td><img src="{{ row.8 }}"/></td>
                     <td>{{ row.1 }}</td>
                     <td>{{ row.2 }}</td>
                     <td>{{ row.3 }}</td>
@@ -116,7 +117,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
                 <div class="modal-body">
-                    <form action="{{ url_for('sbp.edit_students') }}" method="POST">
+                    <form action="{{ url_for('sbp.edit_students') }}" method="POST" enctype="multipart/form-data">
                         <div class="form-group">
                             <input type="hidden" name="student_id" value="{{ row.0 }}" class="form-control" id="student_id">
                             </div>
@@ -161,6 +162,11 @@
                                     <option value="Female">Female</option>
                                     <option value="Male">Male</option>
                                 </select>
+                            </div>
+                            
+                            <label id="imageEdit" name="imageEdit" class="form-label">Edit Student Image</label>            
+                            <div class="form-group">
+                                <input class="form-control" type="file" id="imageEdit" name="imageEdit" accept=".jpg, .jpeg, .png">
                             </div>
                         </div>
                             <div class="modal-footer">
@@ -221,7 +227,7 @@ data-bs-target="#addModal">
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form action="{{ url_for('sbp.add_student') }}" method="POST">
+            <form action="{{ url_for('sbp.add_student') }}" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                 <label for="idNumber">ID Number</label>
                 <input type="text" name="idNumber" class="form-control" id="idNumber" placeholder="YYYY-NNNN">
@@ -259,7 +265,9 @@ data-bs-target="#addModal">
                         <option value="Female">Female</option>
                     </select>
                 </div>
-
+                <label id="image" class="form-label">Upload Student Image</label>         
+                <div class="form-group">      
+                        <input class="form-control" type="file" id="image_upd" name="image_upd" accept=".jpg, .jpeg, .png">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

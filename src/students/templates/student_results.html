@@ -64,6 +64,7 @@
             <tbody>
                 {% for row in student_key %}
                 <tr>
+                    <td><img src="{{ row.8 }}"/></td>
                     <td>{{ row.1 }}</td>
                     <td>{{ row.2 }}</td>
                     <td>{{ row.3 }}</td>
@@ -72,7 +73,7 @@
                     <td>{{ row.7 }}</td>
                     
         <td>  
-                <!-- EDIT FUNCTION TRIGGER BUTTON -->
+                 <!-- EDIT FUNCTION TRIGGER BUTTON -->
             <a href="" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editModal{{ row.0 }}">
                 Edit
             </a>
@@ -84,7 +85,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
                 <div class="modal-body">
-                    <form action="{{ url_for('sbp.edit_students') }}" method="POST">
+                    <form action="{{ url_for('sbp.edit_students') }}" method="POST" enctype="multipart/form-data">
                         <div class="form-group">
                             <input type="hidden" name="student_id" value="{{ row.0 }}" class="form-control" id="student_id">
                             </div>
@@ -130,6 +131,11 @@
                                     <option value="Male">Male</option>
                                 </select>
                             </div>
+                            
+                            <label id="imageEdit" name="imageEdit" class="form-label">Edit Student Image</label>            
+                            <div class="form-group">
+                                <input class="form-control" type="file" id="imageEdit" name="imageEdit" accept=".jpg, .jpeg, .png">
+                            </div>
                         </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -170,74 +176,77 @@
 
 
 
+
 <!-- ADD STUDENT FUNCTION TRIGGER BUTTON-->
 <div class="container">
-<form method="GET">
-</form>
-<button type="submit" class="btn btn-secondary" 
-data-bs-toggle="modal" 
-data-bs-target="#addModal">
-    +
-  </button>
-  <!-- ADD STUDENT FUNCTION -->
-  <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModal" aria-hidden="true">
-    <div class="modal-dialog  modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="addModal">Add New Student Information</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form action="{{ url_for('sbp.add_student') }}" method="POST">
-                <div class="form-group">
-                <label for="idNumber">ID Number</label>
-                <input type="text" name="idNumber" class="form-control" id="idNumber" placeholder="YYYY-NNNN">
-                </div>
-                <div class="form-group">
-                <label for="firstName">First Name</label>
-                <input type="text" name="firstName" class="form-control" id="firstName" placeholder="e.g. John">
-                </div>
-                <div class="form-group">
-                <label for="lastName">Last Name</label>
-                <input type="text" name="lastName" class="form-control" id="lastName" placeholder="e.g. Doe">
-                </div>
-                <div class="form-group">
-                <label for="courseCode">Course</label>
-                <select class="form-select" aria-label="Default select example" id="courseCode"  name="courseCode">
-                    <option selected>Select a Course</option>
-                    {% for row in Courses %}
-                    <option value="{{ row.2 }}">{{ row.2 }}</option>
-                    {% endfor %}
-                </select>
-                </div>
-                <label for="yearLevel">Year Level </label> 
-                <div class="form-group">
-                    <select class="form-select" aria-label="Default select example" id="yearLevel"  name="yearLevel">
-                        <option selected>1st-Year</option>
-                        <option value="2nd-Year">2nd-Year</option>
-                        <option value="3rd-Year">3rd-Year</option>
-                        <option value="4th-Year">4th-Year</option>
+    <form method="GET">
+    </form>
+    <button type="submit" class="btn btn-secondary" 
+    data-bs-toggle="modal" 
+    data-bs-target="#addModal">
+        +
+      </button>
+      <!-- ADD STUDENT FUNCTION -->
+      <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModal" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="addModal">Add New Student Information</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url_for('sbp.add_student') }}" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                    <label for="idNumber">ID Number</label>
+                    <input type="text" name="idNumber" class="form-control" id="idNumber" placeholder="YYYY-NNNN">
+                    </div>
+                    <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" name="firstName" class="form-control" id="firstName" placeholder="e.g. John">
+                    </div>
+                    <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" name="lastName" class="form-control" id="lastName" placeholder="e.g. Doe">
+                    </div>
+                    <div class="form-group">
+                    <label for="courseCode">Course</label>
+                    <select class="form-select" aria-label="Default select example" id="courseCode"  name="courseCode">
+                        <option selected>Select a Course</option>
+                        {% for row in Courses %}
+                        <option value="{{ row.2 }}">{{ row.2 }}</option>
+                        {% endfor %}
                     </select>
-                </div> 
-                <label for="gender">Gender </label> 
-                <div class="form-group">
-                    <select class="form-select" aria-label="Default select example" id="gender"  name="gender">
-                        <option selected>Male</option>
-                        <option value="Female">Female</option>
-                    </select>
-                </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add</button>
-                  </div>
-            </form>
+                    </div>
+                    <label for="yearLevel">Year Level </label> 
+                    <div class="form-group">
+                        <select class="form-select" aria-label="Default select example" id="yearLevel"  name="yearLevel">
+                            <option selected>1st-Year</option>
+                            <option value="2nd-Year">2nd-Year</option>
+                            <option value="3rd-Year">3rd-Year</option>
+                            <option value="4th-Year">4th-Year</option>
+                        </select>
+                    </div> 
+                    <label for="gender">Gender </label> 
+                    <div class="form-group">
+                        <select class="form-select" aria-label="Default select example" id="gender"  name="gender">
+                            <option selected>Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <label id="image" class="form-label">Upload Student Image</label>         
+                    <div class="form-group">      
+                            <input class="form-control" type="file" id="image_upd" name="image_upd" accept=".jpg, .jpeg, .png">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                      </div>
+                </form>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-    </div>
+        </div>
 </div>
 </body>
     </html>
