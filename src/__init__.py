@@ -1,25 +1,18 @@
 #To initialize the flask app
 from flask import Flask, render_template, request, url_for, flash, redirect
 import pymysql.cursors
-from config import DB_USERNAME, DB_PASSWORD, DB_NAME, DB_HOST, SECRET_KEY
+from config import SECRET_KEY
+from .database import db_connection
 
 
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = SECRET_KEY
     
-    hostname = DB_HOST
-    user = DB_USERNAME
-    password = DB_PASSWORD
-    database = DB_NAME
+    from .views.students import students_bp
+    app.register_blueprint(students_bp, url_prefix="/")
     
-    db = pymysql.connections.Connection(
-        host=hostname,
-        user=user,
-        password=password,
-        database = database
-    )
-    
+    db = db_connection()
     cursor = db.cursor()
     def commit():
         db.commit()
@@ -35,190 +28,7 @@ def create_app():
     @app.route('/home')
     def home():
         return render_template('home.html')
-    
-    #<-------------------------------------------------->#
-    #THE CODES RELATED FOR HANDLING STUDENTS STARTS IN HERE.#
-    #<-------------------------------------------------->#
-    
-    #This is for accessing students table and its actions:
-    @app.route('/students')
-    def students():
-        cursor.execute('SELECT * FROM course_table')
-        courseCodes = cursor.fetchall()
-        cursor.execute('SELECT * FROM students')
-        data = cursor.fetchall()
-        return render_template('students.html', Students=data, Courses=courseCodes)
-    
-    #For searching student information along with its selected fields
-    @app.route('/student_search', methods=["POST"])
-    def student_search():
-        cursor.execute('SELECT * FROM course_table')
-        courseCodes = cursor.fetchall()
-        if (request.method == "POST"):
-            #GENERAL SEARCH
-            student_key = request.form['student_key']
-            course_key_Code = request.form['course_key_Code']
-            student_key_Level = request.form['student_key_Level']
-            student_key_Gender = request.form['student_key_Gender']
-
-            
-            if len(student_key) < 1:
-                flash("You need to input a valid search", category='error')
-                return (redirect(url_for('students')))
-            
-            elif course_key_Code == "By Course Code" and student_key_Level == "By Year Level" and student_key_Gender == "By Gender":
-                    print("This is state 1 of the student search results.")
-                    cursor.execute('''SELECT * FROM students WHERE idNumber LIKE %s 
-                                    OR firstName LIKE %s
-                                    OR lastName LIKE %s
-                                    OR courseCode LIKE %s
-                                    OR yearLevel LIKE %s
-                                    OR gender LIKE %s''', 
-                                    (student_key, student_key, student_key, 
-                                        student_key, student_key, student_key))
-                    search_data = cursor.fetchall()
-                    return render_template('student_results.html', student_key = search_data)      
-            
-            elif course_key_Code != "By Course Code" and student_key_Level == "By Year Level" and student_key_Gender == "By Gender":
-                print("This is state 2 of the student search results.")
-                cursor.execute('''SELECT * FROM students WHERE
-                                courseCode LIKE %s
-                                AND firstName LIKE %s
-                                OR courseCode LIKE %s AND lastName LIKE %s
-                                OR idNumber LIKE %s''',(course_key_Code, student_key, course_key_Code, student_key, student_key)) 
-                search_data = cursor.fetchall()
-                return render_template('student_results.html', student_key = search_data, Courses = courseCodes)
-            
-            elif course_key_Code != "By Course Code" and student_key_Level != "By Year Level" and student_key_Gender == "By Gender":
-                print("This is state 3 of the student search results.")
-                cursor.execute('''SELECT * FROM students WHERE
-                                courseCode LIKE %s AND yearLevel LIKE %s 
-                                AND firstName LIKE %s
-                                OR courseCode LIKE %s AND yearLevel LIKE %s AND
-                                lastName LIKE %s OR idNumber LIKE %s''',
-                                (course_key_Code, student_key_Level, student_key, 
-                                 course_key_Code, student_key_Level, student_key, student_key)) 
-                search_data = cursor.fetchall()
-                return render_template('student_results.html', student_key = search_data,  Courses = courseCodes)
-            
-            elif course_key_Code == "By Course Code" and student_key_Level != "By Year Level" and student_key_Gender == "By Gender":
-                    print("This is state 4 of the student search results.")
-                    cursor.execute('''SELECT * FROM students WHERE
-                                    yearLevel LIKE %s AND
-                                    firstName LIKE %s OR yearLevel LIKE %s AND lastName LIKE %s''',
-                                    ( student_key_Level, student_key, student_key_Level, student_key)) 
-                    search_data = cursor.fetchall()
-                    return render_template('student_results.html', student_key = search_data,  Courses = courseCodes)
-                
-            elif course_key_Code == "By Course Code" and student_key_Level == "By Year Level" and student_key_Gender != "By Gender":
-                print("This is state 5 of the student search results.")
-                cursor.execute('''SELECT * FROM students WHERE
-                                firstName LIKE %s AND gender LIKE %s
-                                OR lastName LIKE %s AND gender LIKE %s''', 
-                                ( student_key, student_key_Gender, student_key, student_key_Gender))
-                search_data = cursor.fetchall()
-                return render_template('student_results.html', student_key = search_data, Courses = courseCodes)
-            
-            elif course_key_Code == "By Course Code" and student_key_Level != "By Year Level" and student_key_Gender != "By Gender":
-                print("This is state 6 of the student search results.")
-                cursor.execute('''SELECT * FROM students WHERE 
-                                 yearLevel LIKE %s 
-                                    AND gender LIKE %s 
-                                    AND firstName LIKE %s
-                                OR  yearLevel LIKE %s 
-                                    AND gender LIKE %s 
-                                    AND lastName LIKE %s''', 
-                                (student_key_Level, student_key_Gender, student_key, student_key_Level, student_key_Gender, 
-                                    student_key))
-                search_data = cursor.fetchall()
-                return render_template('student_results.html', student_key = search_data,  Courses = courseCodes)
-            
-            elif course_key_Code != "By Course Code" and student_key_Level != "By Year Level" and student_key_Gender != "By Gender":
-                print("This is state 7 of the student search results.")
-                cursor.execute('''SELECT * FROM students WHERE firstName LIKE %s AND courseCode LIKE %s AND yearLevel LIKE %s AND gender LIKE %s
-                                OR lastName LIKE %s AND courseCode LIKE %s AND yearLevel LIKE %s AND gender LIKE %s ''', 
-                                (student_key, course_key_Code, student_key_Level, student_key_Gender,  
-                                 student_key, course_key_Code, student_key_Level, student_key_Gender))
-                search_data = cursor.fetchall()
-                return render_template('student_results.html', student_key = search_data, Courses = courseCodes)
-            
-            elif course_key_Code != "By Course Code" and student_key_Level == "By Year Level" and student_key_Gender != "By Gender":
-                print("This is state 8 of the student search results.")
-                cursor.execute('''SELECT * FROM students WHERE
-                                firstName LIKE %s AND courseCode LIKE %s AND gender LIKE %s
-                                OR lastName LIKE %s AND courseCode LIKE %s AND gender LIKE %s''', 
-                                ( student_key, course_key_Code, student_key_Gender, student_key, course_key_Code, student_key_Gender))
-                search_data = cursor.fetchall()
-                return render_template('student_results.html', student_key = search_data, Courses = courseCodes)
-
-    #For editing/updating the student information
-    @app.route('/edit_student', methods=["POST"])
-    def edit_students():
-        if request.method == "POST":
-            print('successfully edited the select item')
-            student_id = request.form['student_id']
-            idNumberEdit = request.form['idNumberEdit']
-            firstNameEdit = request.form['firstNameEdit']
-            lastNameEdit =  request.form['lastNameEdit']
-            courseCodeEdit = request.form['courseCodeEdit']
-            yearLevelEdit = request.form['yearLevelEdit']
-            genderEdit = request.form['genderEdit']
-            
-            if len(idNumberEdit) < 6:
-                flash("You need to input valid ID Number!", category='error')
-            elif len(firstNameEdit) < 2:
-                flash("You need to input valid first name!", category='error')
-            elif len(lastNameEdit) < 2:
-                flash("You need to input valid last name!", category='error')    
-            else:    
-                cursor.execute('''UPDATE students SET idNumber=%s, firstName=%s, lastName=%s, 
-                            courseCode=%s, yearLevel=%s, gender=%s WHERE students_id=%s''', 
-                            (idNumberEdit, firstNameEdit, lastNameEdit, 
-                                courseCodeEdit, yearLevelEdit, genderEdit, student_id))
-                commit()
-                flash("you have successfully edited the student information!", category='success')
-        return redirect(url_for('students'))
-    
-    #For adding a new student information
-    @app.route('/add_students', methods=["POST"])
-    def add_student():
-        if request.method == "POST": 
-            idNumber = request.form['idNumber']
-            firstName = request.form['firstName']
-            lastName =  request.form['lastName']
-            courseCode = request.form['courseCode']
-            yearLevel = request.form['yearLevel']
-            gender = request.form['gender']
-            
-            if len(idNumber) < 1:
-                flash("You need to input valid ID Number!", category='error')
-            elif len(firstName) < 1:
-                flash("You need to input valid first name!", category='error')
-            elif len(lastName) < 1:
-                flash("You need to input valid last name!", category='error')    
-            else:
-                cursor.execute('''INSERT INTO students(idNumber, firstName, 
-                lastName, courseCode, yearLevel, gender) VALUES (%s, %s, %s, %s, %s, %s)''', 
-                            (idNumber, firstName, lastName, 
-                                    courseCode, yearLevel, gender))
-                commit()
-                flash("Successfully added the student information!", category='success')
-                print("You have successfully added a student")
-        return redirect(url_for('students'))
-    
-    #For deleting a selected student
-    @app.route('/delete_student/<string:students_id>', methods=["GET"])
-    def delete_student(students_id):
-        print('The student has been successfully deleted!')
-        flash("you have deleted a student information", category='secondary')
-        cursor.execute("DELETE FROM students WHERE students_id = %s", (students_id))
-        commit()
-        return redirect(url_for('students'))
-    
-    #<-------------------------------------------------->#
-    #THE CODES RELATED FOR HANDLING STUDENTS ENDS IN HERE.#
-    #<-------------------------------------------------->#
-       
+  
     
     #<-------------------------------------------------->#
     #THE CODES RELATED FOR HANDLING COURSES STARTS IN HERE.#
@@ -231,7 +41,7 @@ def create_app():
         course_data = cursor.fetchall()
         cursor.execute("SELECT * FROM college_table")
         college_data = cursor.fetchall()
-        return render_template('courses.html', Courses=course_data, Colleges=college_data)
+        return render_template('/courses/courses.html', Courses=course_data, Colleges=college_data)
     
     #For editing/updating the course information
     @app.route('/edit_course', methods = ["POST"])
@@ -356,7 +166,7 @@ def create_app():
     def colleges():
         cursor.execute("SELECT * FROM college_table")
         data = cursor.fetchall()
-        return render_template('colleges.html', College=data)
+        return render_template('/colleges/colleges.html', College=data)
     
     #For editing a college information
     @app.route('/edit_college', methods=["GET","POST"])

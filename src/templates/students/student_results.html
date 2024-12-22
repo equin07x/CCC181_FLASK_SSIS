@@ -7,18 +7,20 @@
     <link rel="stylesheet" href="/static/bootstrap.css"/>
     <script src="/static/jquery-3.6.0.js"></script>
     <script src="/static/bootstrap.js"></script>
-
+    <script src="/static/confirmation.js"></script>
 </head>
 <body>
     <br/>
 <div class="container-sm">
     <h1>
-        Students
+        Search Results
     </h1>
     <br>
+
+    <!--REDIRECTS TO STUDENTS TABLE-->
     <div class="container">
-    <a type="button" class="btn btn-light" href="home">
-        Back
+    <a type="button" class="btn btn-light" href="students">
+        Back to students
     </a>
     </div>
     <br>
@@ -44,41 +46,7 @@
         {% endfor %}
     {% endif %}
     {% endwith%}
-    <!--SEARCH FUNCTION FOR STUDENTS TABLE-->
-    <div class="container">
-        <form action="{{ url_for('student_search') }}" method="POST">
-            <label>Search Filters:</label>
-            <div class="input-group mb-3">
-            <select class="form-select btn-outline-secondary" aria-label="Default select example" id="course_key_Code"  name="course_key_Code">
-                <option selected>By Course Code</option>
-                {% for row in Courses %}
-                <option value="{{ row.2 }}">{{ row.2 }}</option>
-                {% endfor %}
-            </select>
-            <select class="form-select btn-outline-secondary" aria-label="Default select example" id="student_key_Level"  name="student_key_Level">
-                <option selected>By Year Level</option>
-                <option value="1st-Year">1st-Year</option>
-                <option value="2nd-Year">2nd-Year</option>
-                <option value="3rd-Year">3rd-Year</option>
-                <option value="4th-Year">4th-Year</option>
-            </select>
-            <select class="form-select btn-outline-secondary" aria-label="Default select example" id="student_key_Gender"  name="student_key_Gender">
-                <option selected>By Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-            </select>
-            </div>
-            <div class="input-group mb-3">
-                <input type="text" name="student_key" class="form-control" placeholder="Look for a student" 
-                aria-label="Look for a student" aria-describedby="search-button">
-                <button type="submit" class="btn btn-outline-secondary" id="search-button">
-                    Search
-                </button>
-            </div>
-     </form>
-    </div>
-    <!--SEARCH FUNCTION ENDS HERE-->
-    
+
     <!-- DISPLAYING THE STUDENTS TABLE-->
     <div class="container-sm">
         <table class="table table-hover">
@@ -94,7 +62,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for row in Students %}
+                {% for row in student_key %}
                 <tr>
                     <td>{{ row.1 }}</td>
                     <td>{{ row.2 }}</td>
@@ -116,7 +84,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
                 <div class="modal-body">
-                    <form action="{{ url_for('edit_students') }}" method="POST">
+                    <form action="{{ url_for('Sbp.edit_students') }}" method="POST">
                         <div class="form-group">
                             <input type="hidden" name="student_id" value="{{ row.0 }}" class="form-control" id="student_id">
                             </div>
@@ -194,7 +162,6 @@
                   </div>
                 </div>
               </div>
-              
         </td>
             </tr>
             {% endfor %}
@@ -221,7 +188,7 @@ data-bs-target="#addModal">
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form action="{{ url_for('add_student') }}" method="POST">
+            <form action="{{ url_for('Sbp.add_student') }}" method="POST">
                 <div class="form-group">
                 <label for="idNumber">ID Number</label>
                 <input type="text" name="idNumber" class="form-control" id="idNumber" placeholder="YYYY-NNNN">
