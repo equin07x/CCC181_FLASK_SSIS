@@ -47,7 +47,7 @@
 
     <!-- SEARCH FUNCTION -->
     <div class="container">
-        <form action="{{ url_for('college_search') }}" method="POST">
+        <form action="{{ url_for('Clbp.college_search') }}" method="POST">
             <label>Search Filters:</label>
             <div class="input-group mb-3">
                 <select class="form-select btn-outline-secondary" aria-label="Default select example" id="college_key_Code"  name="college_key_Code">
@@ -105,7 +105,7 @@
                     </div>
 
                     <div class="modal-body">
-                        <form action="{{ url_for('edit_college') }}" method="POST">
+                        <form action="{{ url_for('Clbp.edit_college') }}" method="POST">
                             <div class="form-group">
                                 <input type="hidden" name="college_id" value="{{ row.0 }}" class="form-control" id="college_id">
                                 </div>
@@ -172,7 +172,7 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ url_for('add_college') }}" method="POST">
+                    <form action="{{ url_for('Clbp.add_college') }}" method="POST">
                         <div class="form-group">
                         <label for="collegeCode">College Code</label>
                         <input type="text" name="collegeCode" class="form-control" id="collegeCode" placeholder="e.g. CCS">

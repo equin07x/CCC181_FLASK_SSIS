@@ -5,7 +5,7 @@
         – ADD Courses
         – EDIT Courses
         – DELETE Courses
-        – SEARCH
+        – SEARCH Courses
 '''
 from src.database import db_connection
 import pymysql.cursors
