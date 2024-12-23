@@ -96,6 +96,11 @@
             <tbody>
                 {% for row in Students %}
                 <tr>
+                    {% if row.8 == "" %}
+                    <td><img src="\static\default_photo.jpg" style="height: 50px; width: 50px;" /></td>
+                    {% else %}
+                    <td><img src="{{ row.8 }}" style="height: 50px; width: 50px;" /></td>
+                    {% endif %}
                     <td>{{ row.1 }}</td>
                     <td>{{ row.2 }}</td>
                     <td>{{ row.3 }}</td>
@@ -116,7 +121,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
                 <div class="modal-body">
-                    <form action="{{ url_for('Sbp.edit_students') }}" method="POST">
+                    <form action="{{ url_for('Sbp.edit_students') }}" method="POST" enctype="multipart/form-data">
                         <div class="form-group">
                             <input type="hidden" name="student_id" value="{{ row.0 }}" class="form-control" id="student_id">
                             </div>
@@ -162,6 +167,13 @@
                                     <option value="Male">Male</option>
                                 </select>
                             </div>
+
+                             <!-- For uploading a photo -->
+                        <label id="image" class="form-label">Update Student Image</label>         
+                        <div class="form-group">      
+                                <input class="form-control" type="file" id="imageEdit" name="imageEdit" accept=".jpg, .jpeg, .png">
+                        </div>
+
                         </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -221,7 +233,7 @@ data-bs-target="#addModal">
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form action="{{ url_for('Sbp.add_student') }}" method="POST">
+            <form action="{{ url_for('Sbp.add_student') }}" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                 <label for="idNumber">ID Number</label>
                 <input type="text" name="idNumber" class="form-control" id="idNumber" placeholder="YYYY-NNNN">
@@ -258,6 +270,11 @@ data-bs-target="#addModal">
                         <option selected>Male</option>
                         <option value="Female">Female</option>
                     </select>
+                </div>
+                <!-- For uploading a photo -->
+                <label id="image" class="form-label">Upload Student Image</label>         
+                <div class="form-group">      
+                        <input class="form-control" type="file" id="image_upd" name="image_upd" accept=".jpg, .jpeg, .png">
                 </div>
 
                 </div>

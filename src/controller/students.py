@@ -4,14 +4,17 @@ from config import SECRET_KEY
 from src.database import db_connection
 from models.students import student_M
 
-
+import cloudinary
+from cloudinary import CloudinaryImage
+from cloudinary.uploader import upload
+#IMPLEMENT CLOUDINARY UPLOAD HERE.
 
 students_bp = Blueprint("Sbp", __name__,  template_folder='/templates')
 
-  
-    #<-------------------------------------------------->#
-    #THE CODES RELATED FOR HANDLING STUDENTS STARTS IN HERE.#
-    #<-------------------------------------------------->#
+
+#<-------------------------------------------------->#
+#THE CODES RELATED FOR HANDLING STUDENTS STARTS IN HERE.#
+#<-------------------------------------------------->#
     
     #This is for accessing students table and its actions:
 @students_bp.route('/students')
@@ -57,15 +60,26 @@ def edit_students():
         yearLevelEdit = request.form['yearLevelEdit']
         genderEdit = request.form['genderEdit']
         
+        #taking in the uplaoded image from the front-end.
+        image = request.files['imageEdit']
+        
         if len(idNumberEdit) < 6:
             flash("You need to input valid ID Number!", category='error')
         elif len(firstNameEdit) < 2:
             flash("You need to input valid first name!", category='error')
         elif len(lastNameEdit) < 2:
-            flash("You need to input valid last name!", category='error')    
-        else:    
+            flash("You need to input valid last name!", category='error')
+        if not image:
+            print("image has not been changed")
             student_M.edit_Student(idNumberEdit, firstNameEdit, lastNameEdit, 
                             courseCodeEdit, yearLevelEdit, genderEdit, student_id)
+            flash("you have successfully edited the student information!", category='success')
+        else:
+            uploaded_file = upload(image)
+            image_id = CloudinaryImage(uploaded_file['public_id']).build_url(width = 50, height = 50, crop = "fill")
+            print(image_id)
+            student_M.edit_Student_p(idNumberEdit, firstNameEdit, lastNameEdit, 
+                            courseCodeEdit, yearLevelEdit, genderEdit, image_id, student_id)
             flash("you have successfully edited the student information!", category='success')
     return redirect(url_for('Sbp.students'))
 
@@ -79,15 +93,28 @@ def add_student():
         courseCode = request.form['courseCode']
         yearLevel = request.form['yearLevel']
         gender = request.form['gender']
+         
+        #taking in the uplaoded image from the front-end.
+        image = request.files['image_upd']
+       
         
         if len(idNumber) < 1:
             flash("You need to input valid ID Number!", category='error')
         elif len(firstName) < 1:
             flash("You need to input valid first name!", category='error')
         elif len(lastName) < 1:
-            flash("You need to input valid last name!", category='error')    
+            flash("You need to input valid last name!", category='error')
+            
+        elif not image:
+            image_id = ""
+            student_M.add_Students_p(idNumber, firstName, lastName, courseCode, yearLevel, gender, image_id)
+            flash("Successfully added the student information!", category='success')
+            
         else:
-            student_M.add_Students(idNumber, firstName, lastName, courseCode, yearLevel, gender)
+            uploaded_file = upload(image)
+            image_id = CloudinaryImage(uploaded_file['public_id']).build_url(width = 50, height = 50, crop = "fill")
+            print(image_id)
+            student_M.add_Students_p(idNumber, firstName, lastName, courseCode, yearLevel, gender, image_id)
             flash("Successfully added the student information!", category='success')
             print("You have successfully added a student")
     return redirect(url_for('Sbp.students'))

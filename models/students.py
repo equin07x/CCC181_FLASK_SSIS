@@ -46,6 +46,19 @@ class student_M:
         db.close()
         cursor.close()
         return student_M.display_Students()
+    # Add student with a photo into the database
+    def add_Students_p(idNumber, firstName, lastName, courseCode, yearLevel, gender, image):
+        db = db_connection()
+        cursor = db.cursor()
+        SqlQuery = '''INSERT INTO students(idNumber, firstName, 
+            lastName, courseCode, yearLevel, gender, image_id)  VALUES (%s, %s, %s, %s, %s, %s, %s)'''
+        SqlValues = (idNumber, firstName, lastName, 
+                                courseCode, yearLevel, gender, image)
+        cursor.execute(SqlQuery, SqlValues)
+        db.commit()
+        db.close()
+        cursor.close()
+        return student_M.display_Students()
     # Delete a student from the database
     def delete_Student(students_id):
         db = db_connection()
@@ -66,6 +79,20 @@ class student_M:
                         courseCode=%s, yearLevel=%s, gender=%s WHERE students_id=%s'''
         SqlValues = (idNumberEdit, firstNameEdit, lastNameEdit, 
                             courseCodeEdit, yearLevelEdit, genderEdit, student_id)
+        cursor.execute(SqlQuery, SqlValues)
+        db.commit()
+        db.close()
+        cursor.close()
+        return student_M.display_Students()
+    # Edit a student information with a photo from the database
+    def edit_Student_p(idNumberEdit, firstNameEdit, lastNameEdit, 
+                            courseCodeEdit, yearLevelEdit, genderEdit, image, student_id): 
+        db = db_connection()
+        cursor = db.cursor()
+        SqlQuery = '''UPDATE students SET idNumber=%s, firstName=%s, lastName=%s, 
+                        courseCode=%s, yearLevel=%s, gender=%s, image_id=%s WHERE students_id=%s'''
+        SqlValues = (idNumberEdit, firstNameEdit, lastNameEdit, 
+                            courseCodeEdit, yearLevelEdit, genderEdit, image, student_id)
         cursor.execute(SqlQuery, SqlValues)
         db.commit()
         db.close()
