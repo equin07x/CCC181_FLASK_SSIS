@@ -1,3 +1,10 @@
 /__pycache__
 /env/__pycache__
 .env
+models/__pycache__/__init__.cpython-312.pyc
+models/__pycache__/colleges.cpython-312.pyc
+models/__pycache__/courses.cpython-312.pyc
+models/__pycache__/students.cpython-312.pyc
+src/__pycache__/__init__.cpython-312.pyc
+src/__pycache__/database.cpython-312.pyc
+src/controller/__pycache__/colleges.cpython-312.pyc
