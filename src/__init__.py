@@ -9,13 +9,13 @@ def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = SECRET_KEY
     
-    from .views.students import students_bp
+    from .controller.students import students_bp
     app.register_blueprint(students_bp, url_prefix="/")
     
-    from .views.courses import courses_bp
+    from .controller.courses import courses_bp
     app.register_blueprint(courses_bp, url_prefix="/")
     
-    from .views.colleges import colleges_bp
+    from .controller.colleges import colleges_bp
     app.register_blueprint(colleges_bp, url_prefix="/")
     
     db = db_connection()
