@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Flask App</title>
+    <title>Flask SSIS</title>
     <link rel="stylesheet" href="/static/bootstrap.css"/>
 </head>
 <body>
@@ -15,11 +15,23 @@
 
     <br/>
     <!-- REDIRECT TO HOMEPAGE -->
-    <div class="container">
-    <a type="button" class="btn btn-light" href="home">
-        Back
-    </a>
-    </div>
+    <div class="container-fluid">
+        <div class="row gx-0">   
+        <div class="col">
+            <a type="button" class="btn btn-light" href="home">
+                Back
+            </a>
+        </div>
+         
+          <div class="col-6 col-md-2">
+            <button type="submit" class="btn btn-warning btn-outline-light btn-lg" 
+            data-bs-toggle="modal" 
+            data-bs-target="#addModal">
+                Add College
+            </button>
+            </div>
+          </div>
+        </div>
     <!-- REDIRECT TO HOMEPAGE -->
     <br>
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -120,7 +132,7 @@
                                 </div>
                                 <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Update</button>
+                                <button type="submit" class="btn btn-success btn-outline-light">Update</button>
                                 </div>
                             </form>
         </td>
@@ -157,13 +169,6 @@
 
 
     <div class="container">
-        <form method="GET">
-        </form>
-        <button type="submit" class="btn btn-secondary" 
-        data-bs-toggle="modal" 
-        data-bs-target="#addModal">
-            +
-          </button>
           <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModal" aria-hidden="true">
             <div class="modal-dialog  modal-dialog-centered">
               <div class="modal-content">
@@ -185,7 +190,7 @@
                         
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Add</button>
+                            <button type="submit" class="btn btn-warning btn-outline-light">Add</button>
                           </div>    
                     </form>
                 </div>

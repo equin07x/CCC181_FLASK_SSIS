@@ -15,10 +15,25 @@
         Search Results
     </h1>
     <br/>
-    <div class="container">
-    <a type="button" class="btn btn-light" href="colleges">
-        Back to colleges
-    </a>
+    <!--RETURN TO COLLEGES TABLE-->
+      <div class="row gx-0">   
+      <div class="col">
+        <a type="button" class="btn btn-light" href="colleges">
+          Back to colleges
+      </a>
+      </div>
+       
+        <div class="col-6 col-md-2">
+          <button type="submit" class="btn btn-warning btn-outline-light btn-lg" 
+          data-bs-toggle="modal" 
+          data-bs-target="#addModal">
+              Add College
+          </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- FLASH ERROR MESSAGES -->
     </div>
     <br>
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -64,33 +79,33 @@
         <a href="" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editModal{{ row.0 }}">
             Edit
         </a>
-            <div class="modal fade" id="editModal{{ row.0 }}" tabindex="-1" aria-labelledby="editModal" aria-hidden="true">
-                <div class="modal-dialog  modal-dialog-centered">
-                    <div class="modal-content">
-                    <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="editModal{{ row.0 }}">Edit Student Information</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
+        <div class="modal fade" id="editModal{{ row.0 }}" tabindex="-1" aria-labelledby="editModal" aria-hidden="true">
+          <div class="modal-dialog  modal-dialog-centered">
+              <div class="modal-content">
+              <div class="modal-header">
+              <h1 class="modal-title fs-5" id="editModal{{ row.0 }}">Edit College Information</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
 
-                    <div class="modal-body">
-                        <form action="{{ url_for('Clbp.edit_college') }}" method="POST">
-                            <div class="form-group">
-                                <input type="hidden" name="college_id" value="{{ row.0 }}" class="form-control" id="college_id">
-                                </div>
-                                <div class="form-group">
-                                <label for="collegeCode">Update College Code into:</label>
-                                <input type="text" name="collegeCodeEdit" value="{{ row.1 }}" class="form-control" id="collegeCodeEdit" placeholder="Enter New College Code">
-                                </div>
-                                <div class="form-group">
-                                <label for="collegeName">Update College Name into:</label>
-                                <input type="text" name="collegeNameEdit" value="{{ row.2 }}" class="form-control" id="collegeNameEdit" placeholder="Enter New College Name">
-                                </div> 
-                                <br>
-                                <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Update</button>
-                                </div>
-                            </form>
+              <div class="modal-body">
+                  <form action="{{ url_for('Clbp.edit_college') }}" method="POST">
+                      <div class="form-group">
+                          <input type="hidden" name="college_id" value="{{ row.0 }}" class="form-control" id="college_id">
+                          </div>
+                          <div class="form-group">
+                          <label for="collegeCode">Update College Code into:</label>
+                          <input type="text" name="collegeCodeEdit" value="{{ row.1 }}" class="form-control" id="collegeCodeEdit" placeholder="Enter New College Code">
+                          </div>
+                          <div class="form-group">
+                          <label for="collegeName">Update College Name into:</label>
+                          <input type="text" name="collegeNameEdit" value="{{ row.2 }}" class="form-control" id="collegeNameEdit" placeholder="Enter New College Name">
+                          </div>
+                          </div>
+                          <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="submit" class="btn btn-success btn-outline-light">Update</button>
+                          </div>
+                      </form>
         </td>
         <!--DELETE FUNCTION-->
         <td>
@@ -125,42 +140,35 @@
 
 
     <div class="container">
-        <form method="GET">
-        </form>
-        <button type="submit" class="btn btn-secondary" 
-        data-bs-toggle="modal" 
-        data-bs-target="#addModal">
-            +
-          </button>
-          <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModal" aria-hidden="true">
-            <div class="modal-dialog  modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="addModal">Add New Student Information</h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModal" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="addModal">Add New College Information</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url_for('Clbp.add_college') }}" method="POST">
+                    <div class="form-group">
+                    <label for="collegeCode">College Code</label>
+                    <input type="text" name="collegeCode" class="form-control" id="collegeCode" placeholder="e.g. CCS">
+                    </div>
+                    <div class="form-group">
+                    <label for="collegeName">College Name</label>
+                    <input type="text" name="collegeName" class="form-control" id="collegeName" placeholder="e.g. College of Computer Studies">
+                    </div>  
                 </div>
-                <div class="modal-body">
-                    <form action="{{ url_for('Clbp.add_college') }}" method="POST">
-                        <div class="form-group">
-                        <label for="collegeCode">College Code</label>
-                        <input type="text" name="collegeCode" class="form-control" id="collegeCode" placeholder="e.g. CCS">
-                        </div>
-                        <div class="form-group">
-                        <label for="collegeName">College Name</label>
-                        <input type="text" name="collegeName" class="form-control" id="collegeName" placeholder="e.g. College of Computer Studies">
-                        </div>  
-                        <br>
-                        
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Add</button>
-                          </div>    
-                    </form>
-                </div>
-              </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-warning btn-outline-light">Add</button>
+                      </div>    
+                </form>
             </div>
           </div>
-    </div>
+        </div>
+      </div>
+  </div>
 </div>
 </body>
     </html>

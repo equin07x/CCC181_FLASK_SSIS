@@ -16,20 +16,37 @@ students_bp = Blueprint("Sbp", __name__,  template_folder='/templates')
     #This is for accessing students table and its actions:
 @students_bp.route('/students')
 def students():
-    
     #displays all of the students
-    student = student_M.display_Students()
+    students = student_M.display_Students()
+
+    # 2.) IMPLEMENT A DYNAMIC PAGINATION ON SEARCH
+    # 3.) THE SEARCH SHOULD SHOW THE COURSE NAME ALONG SIDE THE COLLEGE CODE IN THIS FORMAT: <COURSE_CODE>(<COURSE_NAME>)
+    page = request.args.get('page', 1, type=int)
+    print(page)
+    per_Page = 10
+    start_Page = (page - 1) * per_Page
+    end_Page = start_Page + per_Page
+    
+    students_on_Page = students[start_Page:end_Page]
+
+    total_Pages = len(students_on_Page) + per_Page - 1 // per_Page
+    print(total_Pages)
+    page_Number = list(range(1, total_Pages))
+    print(page_Number)
+    
     #displays all of the courses
     courses = student_M.display_Courses()
     
-    return render_template('/students/students.html', Students=student, Courses=courses)
+    return render_template('/students/students.html', Students=students_on_Page, Courses=courses,
+                           page = page, number_of_Pages = page_Number, total_Pages = total_Pages)
 
 #For searching student information along with its selected fields
 @students_bp.route('/student_search', methods=["POST"])
 def student_search():
     #displays all of the courses
     courses = student_M.display_Courses()
-    courseCodes = courses
+    courseCodes = courses[2]
+    courseName = courses[3]
     if (request.method == "POST"):
         #GENERAL SEARCH
         student_key = request.form['student_key']
@@ -42,7 +59,7 @@ def student_search():
             return (redirect(url_for('Sbp.students')))
         else:
             search_data = student_M.search_Student(student_key, course_key_Code, student_key_Level, student_key_Gender)
-            return render_template('/students/student_results.html', student_key = search_data, Courses = courseCodes)
+            return render_template('/students/student_results.html', student_key = search_data, Courses = courseCodes, CourseName = courseName)
 
 #For editing/updating the student information
 @students_bp.route('/edit_student', methods=["POST"])
