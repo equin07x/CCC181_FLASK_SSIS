@@ -18,11 +18,26 @@
     <br>
 
     <!--REDIRECTS TO STUDENTS TABLE-->
-    <div class="container">
-    <a type="button" class="btn btn-light" href="students">
-        Back to students
-    </a>
-    </div>
+
+    
+    <div class="container-fluid">
+        <div class="row gx-0">   
+        <div class="col">
+                <a type="button" class="btn btn-light" href="students">
+                    Back to students
+                </a>
+        </div>
+         
+          <div class="col-6 col-md-2">
+            <button type="submit" class="btn btn-warning btn-outline-light btn-lg" 
+            data-bs-toggle="modal" 
+            data-bs-target="#addModal">
+                Add Student
+            </button>
+            </div>
+          </div>
+        </div>
+   
     <br>
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
@@ -145,7 +160,7 @@
                         </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Update</button>
+                            <button type="submit" class="btn btn-success btn-outline-light">Update</button>
                             </div>
                     </form>
             </td>
@@ -184,13 +199,6 @@
 
 <!-- ADD STUDENT FUNCTION TRIGGER BUTTON-->
 <div class="container">
-<form method="GET">
-</form>
-<button type="submit" class="btn btn-secondary" 
-data-bs-toggle="modal" 
-data-bs-target="#addModal">
-    +
-  </button>
   <!-- ADD STUDENT FUNCTION -->
   <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModal" aria-hidden="true">
     <div class="modal-dialog  modal-dialog-centered">
@@ -247,7 +255,7 @@ data-bs-target="#addModal">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="submit" class="btn btn-warning btn-outline-light">Add</button>
                   </div>
             </form>
         </div>
