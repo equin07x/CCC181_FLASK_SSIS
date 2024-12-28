@@ -108,7 +108,7 @@
             <tbody>
                 {% for row in Students %}
                 <tr>
-                    {% if row.8 == "" %}
+                    {% if row.8 == "" or row.8 == None %}
                     <td><img src="\static\default_photo.jpg" style="height: 50px; width: 50px;" /></td>
                     {% else %}
                     <td><img src="{{ row.8 }}" style="height: 50px; width: 50px;" /></td>
