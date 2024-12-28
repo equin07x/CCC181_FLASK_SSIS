@@ -245,7 +245,9 @@
                     {% endif %}
                     {% endfor%}
 
-                    {% if page %}
+                    {% if page == total_Pages %}
+                    <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a></li>
+                    {% else %}
                     <li class="page-item"><a class="{{ default_page }}" href="{{ url_for('Sbp.students', page = page + 1) }}">Next</a></li>
                     {% endif %}
                     </ul>

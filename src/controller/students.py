@@ -21,6 +21,15 @@ students_bp = Blueprint("Sbp", __name__,  template_folder='/templates')
 def students():
     #displays all of the students
     students = student_M.display_Students()
+    number = 0
+    for student in students:
+        number = number + 1
+    total = 0
+    total_students = total + number
+    print(total_students) 
+    
+    student_per_page = total_students // 10
+    print(student_per_page)
 
     # 2.) IMPLEMENT A DYNAMIC PAGINATION ON SEARCH
     # 3.) THE SEARCH SHOULD SHOW THE COURSE NAME ALONG SIDE THE COLLEGE CODE IN THIS FORMAT: <COURSE_CODE>(<COURSE_NAME>)
@@ -32,9 +41,10 @@ def students():
     
     students_on_Page = students[start_Page:end_Page]
 
-    total_Pages = len(students_on_Page) + per_Page - 1 // per_Page
+    total_Pages = (total_students + per_Page - 1) // per_Page
     print(total_Pages)
-    page_Number = list(range(1, total_Pages))
+    
+    page_Number = list(range(1, total_Pages + 1))
     print(page_Number)
     
     #displays all of the courses
