@@ -105,7 +105,7 @@
                             </div>
                             <div class="form-group">
                             <label for="idNumberEdit">Update ID Number </label>
-                            <input type="text" name="idNumberEdit" value="{{ row.1 }}" class="form-control" id="idNumberEdit" placeholder="Enter New ID Nubmer">
+                            <input type="text" name="idNumberEdit" value="{{ row.1 }}" class="form-control" id="idNumberEdit" placeholder="Enter New ID Nubmer" oninput="formatInput(event)">
                             </div>
                             <div class="form-group">
                             <label for="firstNameEdit">Update First Name </label>
@@ -227,7 +227,7 @@
             <form action="{{ url_for('Sbp.add_student') }}" method="POST">
                 <div class="form-group">
                 <label for="idNumber">ID Number</label>
-                <input type="text" name="idNumber" class="form-control" id="idNumber" placeholder="YYYY-NNNN">
+                <input type="text" name="idNumber" class="form-control" id="idNumber" placeholder="YYYY-NNNN" oninput="formatInput(event)">
                 </div>
                 <div class="form-group">
                 <label for="firstName">First Name</label>
@@ -277,3 +277,23 @@
 </div>
 </body>
     </html>
+
+    <script>
+        function formatInput(event) {
+            let input = event.target.value;
+
+            // Remove non-digit characters
+            input = input.replace(/\D/g, '');
+
+            // Limit the length of the input to 8 digits (YYYYNNNN)
+            input = input.substring(0, 8);
+
+            // Add the hyphen after the year (YYYY-NNNN format)
+            if (input.length > 4) {
+                input = input.substring(0, 4) + '-' + input.substring(4, 8);
+            }
+
+            // Set the formatted value back to the input field
+            event.target.value = input;
+        }
+    </script>
