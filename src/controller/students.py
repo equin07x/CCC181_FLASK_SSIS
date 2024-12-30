@@ -45,25 +45,55 @@ def students():
                            page = page, number_of_Pages = page_Number, total_Pages = total_Pages)
 
 #For searching student information along with its selected fields
-@students_bp.route('/student_search', methods=["POST"])
+@students_bp.route('/student_search', methods=["GET"])
 def student_search():
     #displays all of the courses
     courses = student_M.display_Courses()
     courseCodes = courses[2]
     courseName = courses[3]
-    if (request.method == "POST"):
-        #GENERAL SEARCH
-        student_key = request.form['student_key']
-        course_key_Code = request.form['course_key_Code']
-        student_key_Level = request.form['student_key_Level']
-        student_key_Gender = request.form['student_key_Gender']
+
+    #GENERAL SEARCH
+    student_key = request.args.get('student_key', '')
+    course_key_Code = request.args.get('course_key_Code', '')
+    student_key_Level = request.args.get('student_key_Level', '')
+    student_key_Gender = request.args.get('student_key_Gender', '')
+    page = request.args.get('page', 1, type=int)
+      
+    try:
+        search_data = student_M.search_Student(student_key, course_key_Code, student_key_Level, student_key_Gender)
+        number = 0
+        for student in search_data:
+            number = number + 1
+        total = 0
+        total_students = total + number
         
-        if len(student_key) < 1:
+        print(page)
+        per_Page = 10
+        start_Page = (page - 1) * per_Page
+        end_Page = start_Page + per_Page
+        
+        students_on_Page = search_data[start_Page:end_Page]
+
+        total_Pages = (total_students + per_Page - 1) // per_Page
+        print(f"The amout of total pages are: {total_Pages}")
+        
+        page_Number = list(range(1, total_Pages + 1))
+        print(page_Number)
+        
+        next_url = url_for('Sbp.student_search', course_key_Code=course_key_Code, student_key_Level=student_key_Level,
+                          student_key_Gender=student_key_Gender, student_key=student_key, page=page+1) if page < total_Pages else None
+
+        prev_url = url_for('Sbp.student_search', course_key_Code=course_key_Code, student_key_Level=student_key_Level,
+                          student_key_Gender=student_key_Gender, student_key=student_key, page=page-1) if page > 1 else None
+    except:
+            len(student_key) < 1
             flash("You need to input a valid search", category='error')
             return (redirect(url_for('Sbp.students')))
-        else:
-            search_data = student_M.search_Student(student_key, course_key_Code, student_key_Level, student_key_Gender)
-            return render_template('/students/student_results.html', student_key = search_data, Courses = courseCodes, CourseName = courseName)
+        
+    return render_template('/students/student_results.html', search_results = students_on_Page, Courses = courseCodes, 
+                            CourseName = courseName, page = page, number_of_Pages = page_Number, total_Pages = total_Pages,
+                            next_page = next_url, prev_page = prev_url, course_key_Code=course_key_Code, student_key_Level=student_key_Level,
+                            student_key_Gender=student_key_Gender, student_key=student_key)
 
 #For editing/updating the student information
 @students_bp.route('/edit_student', methods=["POST"])

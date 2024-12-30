@@ -57,9 +57,10 @@
         {% endfor %}
     {% endif %}
     {% endwith%}
+    
     <!--SEARCH FUNCTION FOR STUDENTS TABLE-->
     <div class="container">
-        <form action="{{ url_for('Sbp.student_search') }}" method="POST">
+        <form action="{{ url_for('Sbp.student_search') }}" method="GET">
             <label>Search Filters:</label>
             <div class="input-group mb-3">
             <select class="form-select btn-outline-secondary" aria-label="Default select example" id="course_key_Code"  name="course_key_Code">
@@ -82,7 +83,7 @@
             </select>
             </div>
             <div class="input-group mb-3">
-                <input type="text" name="student_key" class="form-control" placeholder="Look for a student" 
+                <input type="text" name="student_key" id="student_key" class="form-control" placeholder="Look for a student" 
                 aria-label="Look for a student" aria-describedby="search-button">
                 <button type="submit" class="btn btn-outline-secondary" id="search-button">
                     Search
@@ -212,8 +213,8 @@
             {% endfor %}
         </table>
     </div>
-
-<!-- ADD STUDENT FUNCTION TRIGGER BUTTON-->
+    
+<!-- PAGINATION -->
 <div class="container-fluid">
     {% set current_page = "btn btn-primary btn-outline-light" %}
     {% set default_page = "btn btn-light btn-outline-primary" %}
