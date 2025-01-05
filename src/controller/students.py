@@ -41,19 +41,19 @@ def students():
     page_Number = list(range(1, total_Pages + 1))
     print(page_Number)
     
+    image = request.files.get('image_upd')
+    
     #displays all of the courses
     courses = student_M.display_Courses()
     
     return render_template('/students/students.html', Students=students_on_Page, Courses=courses,
-                           page = page, number_of_Pages = page_Number, total_Pages = total_Pages)
+                           page = page, number_of_Pages = page_Number, total_Pages = total_Pages, image = image)
 
 #For searching student information along with its selected fields
 @students_bp.route('/student_search', methods=["GET"])
 def student_search():
     #displays all of the courses
     courses = student_M.display_Courses()
-    courseCodes = courses[2]
-    courseName = courses[3]
 
     #GENERAL SEARCH
     student_key = request.args.get('student_key', '')
@@ -93,9 +93,9 @@ def student_search():
             flash("You need to input a valid search", category='error')
             return (redirect(url_for('Sbp.students')))
         
-    return render_template('/students/student_results.html', search_results = students_on_Page, Courses = courseCodes, 
-                            CourseName = courseName, page = page, number_of_Pages = page_Number, total_Pages = total_Pages,
-                            next_page = next_url, prev_page = prev_url, course_key_Code=course_key_Code, student_key_Level=student_key_Level,
+    return render_template('/students/student_results.html', search_results = students_on_Page, Courses = courses, page = page, 
+                           number_of_Pages = page_Number, total_Pages = total_Pages, next_page = next_url, prev_page = prev_url, 
+                           course_key_Code=course_key_Code, student_key_Level=student_key_Level,
                             student_key_Gender=student_key_Gender, student_key=student_key)
 
 #For editing/updating the student information
@@ -113,6 +113,8 @@ def edit_students():
         
         #taking in the uplaoded image from the front-end.
         image = request.files['imageEdit']
+        file_size = len(image.read())
+        image.seek(0)
         
         if len(idNumberEdit) < 6:
             flash("You need to input valid ID Number!", category='error')
@@ -120,7 +122,10 @@ def edit_students():
             flash("You need to input valid first name!", category='error')
         elif len(lastNameEdit) < 2:
             flash("You need to input valid last name!", category='error')
-        if not image:
+        elif file_size > 5 * 1024 * 1024:
+            flash("The image uploaded exceeds the maximum file size!", category='error')
+            
+        elif not image:
             print("image has not been changed")
             student_M.edit_Student(idNumberEdit, firstNameEdit, lastNameEdit, 
                             courseCodeEdit, yearLevelEdit, genderEdit, student_id)
@@ -147,7 +152,8 @@ def add_student():
          
         #taking in the uplaoded image from the front-end.
         image = request.files['image_upd']
-       
+        file_size = len(image.read())
+        image.seek(0)
         
         if len(idNumber) < 1:
             flash("You need to input valid ID Number!", category='error')
@@ -155,6 +161,8 @@ def add_student():
             flash("You need to input valid first name!", category='error')
         elif len(lastName) < 1:
             flash("You need to input valid last name!", category='error')
+        elif file_size > 5 * 1024 * 1024:
+            flash("The image uploaded exceeds the maximum file size!", category='error')
             
         elif not image:
             image_id = ""

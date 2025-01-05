@@ -67,6 +67,7 @@
         <table class="table table-hover">
             <thead>
                 <tr>
+                    <th scope="col">Photo</th>
                     <th scope="col">ID Number</th>
                     <th scope="col">First Name</th>
                     <th scope="col">Last Name</th>
@@ -79,23 +80,23 @@
             <tbody>
                 {% for row in search_results %}
                 <tr>
-                  {% if row.8 == "" or row.8 == None %}
+                  {% if row.1 == "" or row.1 == None %}
                   <td><img src="./static/default_photo.jpg" style="height: 50px; width: 50px;" /></td>
                   {% else %}
-                  <td><img src="{{ row.8 }}" style="height: 50px; width: 50px;" /></td>
+                  <td><img src="{{ row.1 }}" style="height: 50px; width: 50px;" /></td>
                   {% endif %}
-                    <td>{{ row.1 }}</td>
                     <td>{{ row.2 }}</td>
                     <td>{{ row.3 }}</td>
                     <td>{{ row.4 }}</td>
-                    <td>{{ row.6 }}</td>
+                    <td>{{ row.5 }} ({{ row.6 }})</td>
                     <td>{{ row.7 }}</td>
+                    <td>{{ row.8 }}</td>
                     
         <td>  
                 <!-- EDIT FUNCTION TRIGGER BUTTON -->
-            <a href="" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editModal{{ row.0 }}">
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editModal{{ row.0 }}">
                 Edit
-            </a>
+            </button>
                 <div class="modal fade" id="editModal{{ row.0 }}" tabindex="-1" aria-labelledby="editModal" aria-hidden="true">
                     <div class="modal-dialog  modal-dialog-centered">
                         <div class="modal-content">
@@ -110,20 +111,20 @@
                             </div>
                             <div class="form-group">
                             <label for="idNumberEdit">Update ID Number </label>
-                            <input type="text" name="idNumberEdit" value="{{ row.1 }}" class="form-control" id="idNumberEdit" placeholder="Enter New ID Nubmer" oninput="formatInput(event)">
+                            <input type="text" name="idNumberEdit" value="{{ row.2 }}" class="form-control" id="idNumberEdit" placeholder="Enter New ID Nubmer" oninput="formatInput(event)">
                             </div>
                             <div class="form-group">
                             <label for="firstNameEdit">Update First Name </label>
-                            <input type="text" name="firstNameEdit" value="{{ row.2 }}" class="form-control" id="firstNameEdit" placeholder="Enter New First Name">
+                            <input type="text" name="firstNameEdit" value="{{ row.3 }}" class="form-control" id="firstNameEdit" placeholder="Enter New First Name">
                             </div>
                             <div class="form-group">
                                 <label for="lastNameEdit">Update Last Name </label>
-                                <input type="text" name="lastNameEdit" value="{{ row.3 }}" class="form-control" id="lastNameEdit" placeholder="Enter New Last Name">
+                                <input type="text" name="lastNameEdit" value="{{ row.4 }}" class="form-control" id="lastNameEdit" placeholder="Enter New Last Name">
                             </div>  
                             <label for="courseCodeEdit">Update College Code </label> 
                                 <div class="form-group">
                                     <select class="form-select" aria-label="Default select example" id="courseCodeEdit"  name="courseCodeEdit">
-                                        <option selected>{{ row.4}} </option>
+                                        <option selected>{{ row.5}} </option>
                                         {% for row in Courses %}
                                         <option value="{{ row.2 }}">{{ row.2 }}</option>
                                         {% endfor %}
@@ -133,7 +134,7 @@
                             <label for="yearLevelEdit">Update Year Level </label> 
                             <div class="form-group">
                                 <select class="form-select" aria-label="Default select example" id="yearLevelEdit"  name="yearLevelEdit">
-                                    <option selected>{{ row.6 }}</option>
+                                    <option selected>{{ row.7 }}</option>
                                     <option value="1st-Year">1st-Year</option>
                                     <option value="2nd-Year">2nd-Year</option>
                                     <option value="3rd-Year">3rd-Year</option>
@@ -145,7 +146,7 @@
                             <label for="genderEdit">Update Year Level </label> 
                             <div class="form-group">
                                 <select class="form-select" aria-label="Default select example" id="genderEdit"  name="genderEdit">
-                                    <option selected>{{ row.7 }}</option>
+                                    <option selected>{{ row.8 }}</option>
                                     <option value="Female">Female</option>
                                     <option value="Male">Male</option>
                                 </select>

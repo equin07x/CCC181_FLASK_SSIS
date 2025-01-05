@@ -105,12 +105,16 @@ class student_M:
                 db = db_connection()
                 cursor = db.cursor()
                 print("This is state 1 of the student search results.")
-                SqlQuery = '''SELECT * FROM students WHERE idNumber LIKE %s 
-                                OR firstName LIKE %s
-                                OR lastName LIKE %s
-                                OR courseCode LIKE %s
-                                OR yearLevel LIKE %s
-                                OR gender LIKE %s'''
+                SqlQuery = '''SELECT students.students_id, students.image_id, students.idNumber, students.firstName, students.lastName, 
+                        students.courseCode, course_table.courseName, students.yearLevel ,students.gender 
+                        FROM students
+                        LEFT JOIN course_table ON course_table.courseCode = students.courseCode
+                        WHERE  students.idNumber LIKE %s 
+                                OR students.firstName LIKE %s
+                                OR students.lastName LIKE %s
+                                OR students.courseCode LIKE %s
+                                OR students.yearLevel LIKE %s
+                                OR students.gender LIKE %s'''
                 SqlValues = (student_key, student_key, student_key, 
                                     student_key, student_key, student_key)
                 cursor.execute(SqlQuery, SqlValues)
@@ -124,11 +128,15 @@ class student_M:
             db = db_connection()
             cursor = db.cursor()
             print("This is state 1 of the student search results.")
-            SqlQuery = '''SELECT * FROM students WHERE
-                            courseCode LIKE %s
-                            AND firstName LIKE %s
-                            OR courseCode LIKE %s AND lastName LIKE %s
-                            OR courseCode LIKE %s AND idNumber LIKE %s'''
+            SqlQuery = '''SELECT students.image_id, students.idNumber, students.firstName, students.lastName, 
+                        students.courseCode, course_table.courseName, students.yearLevel ,students.gender 
+                        FROM students
+                        LEFT JOIN course_table ON course_table.courseCode = students.courseCode
+                        WHERE
+                            students.courseCode LIKE %s
+                            AND students.firstName LIKE %s
+                            OR students.courseCode LIKE %s AND students.lastName LIKE %s
+                            OR students.courseCode LIKE %s AND students.idNumber LIKE %s'''
             SqlValues = (course_key_Code, student_key, course_key_Code, 
                                     student_key, course_key_Code, student_key)
             cursor.execute(SqlQuery, SqlValues)
@@ -141,10 +149,14 @@ class student_M:
             print("This is state 3 of the student search results.")
             db = db_connection()
             cursor = db.cursor()
-            SqlQuery = '''SELECT * FROM students WHERE
-                            courseCode LIKE %s AND yearLevel LIKE %s AND firstName LIKE %s OR 
-                            courseCode LIKE %s AND yearLevel LIKE %s AND lastName LIKE %s OR 
-                            idNumber LIKE %s'''
+            SqlQuery = '''SELECT students.students_id, students.image_id, students.idNumber, students.firstName, students.lastName, 
+                        students.courseCode, course_table.courseName, students.yearLevel ,students.gender 
+                        FROM students
+                        LEFT JOIN course_table ON course_table.courseCode = students.courseCode
+                        WHERE
+                            students.courseCode LIKE %s AND students.yearLevel LIKE %s AND students.firstName LIKE %s OR 
+                            students.courseCode LIKE %s AND students.yearLevel LIKE %s AND students.lastName LIKE %s OR 
+                            students.idNumber LIKE %s'''
             SqlValues = (course_key_Code, student_key_Level, student_key, 
                                  course_key_Code, student_key_Level, student_key, student_key)
             cursor.execute(SqlQuery, SqlValues)
@@ -157,10 +169,14 @@ class student_M:
                 print("This is state 4 of the student search results.")
                 db = db_connection()
                 cursor = db.cursor()
-                SqlQuery = '''SELECT * FROM students WHERE
-                                yearLevel LIKE %s AND firstName LIKE %s OR 
-                                yearLevel LIKE %s AND lastName LIKE %s OR
-                                yearLevel LIKE %s AND idNumber LIKE %s
+                SqlQuery = '''SELECT students.students_id, students.image_id, students.idNumber, students.firstName, students.lastName, 
+                        students.courseCode, course_table.courseName, students.yearLevel ,students.gender 
+                        FROM students
+                        LEFT JOIN course_table ON course_table.courseCode = students.courseCode
+                        WHERE
+                                students.yearLevel LIKE %s AND students.firstName LIKE %s OR 
+                                students.yearLevel LIKE %s AND students.lastName LIKE %s OR
+                                students.yearLevel LIKE %s AND students.idNumber LIKE %s
                                 '''
                 SqlValues = (student_key_Level, student_key, student_key_Level, 
                                     student_key, student_key_Level, student_key)
@@ -174,10 +190,14 @@ class student_M:
             print("This is state 5 of the student search results.")
             db = db_connection()
             cursor = db.cursor()
-            SqlQuery = '''SELECT * FROM students WHERE
-                            gender LIKE %s AND firstName LIKE %s OR 
-                            gender LIKE %s AND lastName LIKE %s OR
-                            gender LIKE %s AND idNumber LIKE %s'''
+            SqlQuery = '''SELECT students.students_id, students.image_id, students.idNumber, students.firstName, students.lastName, 
+                        students.courseCode, course_table.courseName, students.yearLevel ,students.gender 
+                        FROM students
+                        LEFT JOIN course_table ON course_table.courseCode = students.courseCode
+                        WHERE
+                            students.gender LIKE %s AND students.firstName LIKE %s OR 
+                            students.gender LIKE %s AND students.lastName LIKE %s OR
+                            students.gender LIKE %s AND students.idNumber LIKE %s'''
             SqlValues = (student_key_Gender, student_key, student_key_Gender, 
                                 student_key, student_key_Gender, student_key)
             cursor.execute(SqlQuery, SqlValues)
@@ -190,14 +210,18 @@ class student_M:
             print("This is state 6 of the student search results.")
             db = db_connection()
             cursor = db.cursor()
-            SqlQuery = '''SELECT * FROM students WHERE 
-                                yearLevel LIKE %s 
-                                AND gender LIKE %s 
-                                AND firstName LIKE %s
-                            OR  yearLevel LIKE %s 
-                                AND gender LIKE %s 
-                                AND lastName LIKE %s
-                            OR idNumber LIKE %s
+            SqlQuery = '''SELECT students.students_id, students.image_id, students.idNumber, students.firstName, students.lastName, 
+                        students.courseCode, course_table.courseName, students.yearLevel ,students.gender 
+                        FROM students
+                        LEFT JOIN course_table ON course_table.courseCode = students.courseCode
+                        WHERE
+                                students.yearLevel LIKE %s 
+                                AND students.gender LIKE %s 
+                                AND students.firstName LIKE %s
+                            OR  students.yearLevel LIKE %s 
+                                AND students.gender LIKE %s 
+                                AND students.lastName LIKE %s
+                            OR students.idNumber LIKE %s
                                 '''
             SqlValues = (student_key_Level, student_key_Gender, student_key, 
                                 student_key_Level, student_key_Gender, student_key, student_key)
@@ -211,10 +235,14 @@ class student_M:
             print("This is state 7 of the student search results.")     
             db = db_connection()
             cursor = db.cursor()
-            SqlQuery = '''SELECT * FROM students WHERE 
-            courseCode LIKE %s AND yearLevel LIKE %s AND gender LIKE %s AND firstName LIKE %s OR 
-            courseCode LIKE %s AND yearLevel LIKE %s AND gender LIKE %s AND lastName LIKE %s OR
-            idNumber = %s'''
+            SqlQuery = '''SELECT students.students_id, students.image_id, students.idNumber, students.firstName, students.lastName, 
+                        students.courseCode, course_table.courseName, students.yearLevel ,students.gender 
+                        FROM students
+                        LEFT JOIN course_table ON course_table.courseCode = students.courseCode
+                        WHERE
+            students.courseCode LIKE %s AND students.yearLevel LIKE %s AND students.gender LIKE %s AND students.firstName LIKE %s OR 
+            students.courseCode LIKE %s AND students.yearLevel LIKE %s AND students.gender LIKE %s AND students.lastName LIKE %s OR
+            students.idNumber LIKE %s'''
             SqlValues = (course_key_Code, student_key_Level, student_key_Gender, student_key, 
                             course_key_Code, student_key_Level, student_key_Gender, student_key, student_key)
             cursor.execute(SqlQuery, SqlValues)
@@ -227,10 +255,14 @@ class student_M:
             print("This is state 8 of the student search results.")
             db = db_connection()
             cursor = db.cursor()
-            SqlQuery = '''SELECT * FROM students WHERE
-                            firstName LIKE %s AND courseCode LIKE %s AND gender LIKE %s
-                            OR lastName LIKE %s AND courseCode LIKE %s AND gender LIKE %s
-                            OR idNumber'''
+            SqlQuery = '''SELECT students.students_id, students.image_id, students.idNumber, students.firstName, students.lastName, 
+                        students.courseCode, course_table.courseName, students.yearLevel ,students.gender 
+                        FROM students
+                        LEFT JOIN course_table ON course_table.courseCode = students.courseCode
+                        WHERE
+                            students.firstName LIKE %s AND students.courseCode LIKE %s AND students.gender LIKE %s
+                            OR students.lastName LIKE %s AND students.courseCode LIKE %s AND students.gender LIKE %s
+                            OR students.idNumber LIKE %s'''
             SqlValues = (student_key, course_key_Code, student_key_Gender, 
                                 student_key, course_key_Code, student_key_Gender, student_key)
             cursor.execute(SqlQuery, SqlValues)

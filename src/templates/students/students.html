@@ -97,6 +97,7 @@
         <table class="table table-hover">
             <thead>
                 <tr>
+                    <th scope="col">Photo</th>
                     <th scope="col">ID Number</th>
                     <th scope="col">First Name</th>
                     <th scope="col">Last Name</th>
@@ -171,63 +172,63 @@
                                 </select>
                             </div>
 
-                            
-                            <label for="genderEdit">Update Year Level </label> 
-                            <div class="form-group">
-                                <select class="form-select" aria-label="Default select example" id="genderEdit"  name="genderEdit">
-                                    <option selected>{{ row.7 }}</option>
-                                    <option value="Female">Female</option>
-                                    <option value="Male">Male</option>
-                                </select>
+                                
+                                <label for="genderEdit">Update Year Level </label> 
+                                <div class="form-group">
+                                    <select class="form-select" aria-label="Default select example" id="genderEdit"  name="genderEdit">
+                                        <option selected>{{ row.7 }}</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Male">Male</option>
+                                    </select>
+                                </div>
+
+                                <!-- For uploading a photo -->
+                            <label id="image" class="form-label">Update Student Image</label>         
+                            <div class="form-group">      
+                                    <input class="form-control" type="file" id="imageEdit" name="imageEdit" accept=".jpg, .jpeg, .png">
                             </div>
 
-                             <!-- For uploading a photo -->
-                        <label id="image" class="form-label">Update Student Image</label>         
-                        <div class="form-group">      
-                                <input class="form-control" type="file" id="imageEdit" name="imageEdit" onchange="FilevalidationEdit()" accept=".jpg, .jpeg, .png">
-                        </div>
-
-                        </div>
-                            <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-success btn-outline-light">Update</button>
                             </div>
-                    </form>
-            </td>
-         
-            <!--DELETE FUNCTION-->
-        <td>
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ row.0 }}">
-                Delete
-              </button>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-success btn-outline-light">Update</button>
+                                </div>
+                        </form>
+                </td>
             
-              <div class="modal fade" id="deleteModal{{ row.0 }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="deleteModal{{ row.0 }}">Deletion</h5>
+                <!--DELETE FUNCTION-->
+            <td>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ row.0 }}">
+                    Delete
+                </button>
+                
+                <div class="modal fade" id="deleteModal{{ row.0 }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModal{{ row.0 }}">Deletion</h5>
+                        </div>
+                        <div class="modal-body">
+                        Are you sure you want to delete this student information?
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <a href="/delete_student/{{ row.0 }}" class="btn btn-danger" data-title="Delete Student?">    
+                            Confirm
+                            </a>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                      Are you sure you want to delete this student information?
                     </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                      <a href="/delete_student/{{ row.0 }}" class="btn btn-danger" data-title="Delete Student?">    
-                        Confirm
-                        </a>
-                    </div>
-                  </div>
                 </div>
-              </div>
-              
-        </td>
-            </tr>
-            {% endfor %}
-        </table>
+                
+            </td>
+                </tr>
+                {% endfor %}
+            </table>
     </div>
     
 <!-- PAGINATION -->
-<div class="container-fluid">
+    <div class="container-fluid">
     {% set current_page = "btn btn-primary btn-outline-light" %}
     {% set default_page = "btn btn-light btn-outline-primary" %}
                 <nav aria-label="Page navigation">
@@ -306,8 +307,7 @@
                 <!-- For uploading a photo -->
                 <label id="image" class="form-label">Upload Student Image</label>         
                 <div class="form-group">      
-                        <input class="form-control" type="file" id="image_upd" name="image_upd" accept=".jpg, .jpeg, .png"
-                        onchange="Filevalidation()">
+                        <input class="form-control" type="file" id="image_upd" name="image_upd" accept=".jpg, .jpeg, .png">
                 </div>
 
                 </div>
@@ -321,12 +321,8 @@
     </div>
   </div>
     </div>
-</div>
+    </div>
 
-<div class="alert alert-danger" role="alert">
-    A simple danger alert with <a href="#" class="alert-link">an example link</a>. Give it a click if you like.
-  </div>
-  
 </body>
     </html>
 
@@ -348,51 +344,4 @@
             // Set the formatted value back to the input field
             event.target.value = input;
         }
-
-        Filevalidation = () => {
-            const fi = document.getElementById('image_upd');
-            // Check if any file is selected.
-            if (fi.files.length > 0) {
-                for (const i = 0; i <= fi.files.length - 1; i++) {
-
-                    const fsize = fi.files.item(i).size;
-                    const file = Math.round((fsize / 1024));
-                    // The size of the file.
-                    if (file >= 4096) {
-                        alert(
-        "File too Big, please select a file less than 4mb");
-                    } else if (file < 32) {
-                        alert(
-        "File too small, please select a file greater than 2mb");
-                    } else {
-                        document.getElementById('size').innerHTML = 
-                          '<b>'+ file + '</b> KB';
-                    }
-                }
-            }
-        }
-
-        FilevalidationEdit = () => {
-            const fileEdit = document.getElementById('imageEdit');
-            // Check if any fileEdit is selected.
-            if (fileEdit.files.length > 0) {
-                for (const i = 0; i <= fileEdit.files.length - 1; i++) {
-
-                    const fsize = fileEdit.files.item(i).size;
-                    const file = Math.round((fsize / 1024));
-                    // The size of the file.
-                    if (file >= 4096) {
-                        alert(
-        "File too Big, please select a file less than 4mb");
-                    } else if (file < 32) {
-                        alert(
-        "File too small, please select a file greater than 2mb");
-                    } else {
-                        document.getElementById('size').innerHTML = 
-                          '<b>'+ file + '</b> KB';
-                    }
-                }
-            }
-        }
-
     </script>
