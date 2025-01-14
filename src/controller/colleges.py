@@ -56,7 +56,7 @@ def college_search():
           #  return render_template('college_results.html', college_key = search_data)
         if len(college_key) > 1:
             search_data = college_M.search_College(college_key, college_key_Code, college_key_Name)
-            return render_template('/colleges/college_results.html', college_key = search_data)
+            return render_template('/colleges/college_results.html', College = search_data)
         else:
             return render_template('/colleges/colleges.html')
     

@@ -96,7 +96,6 @@ class student_M:
             print("This is state 2 of the student search results.")
             db = db_connection()
             cursor = db.cursor()
-            print("This is state 1 of the student search results.")
             SqlQuery = '''SELECT * FROM students WHERE
                             courseCode LIKE %s
                             AND firstName LIKE %s
