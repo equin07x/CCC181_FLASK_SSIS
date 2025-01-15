@@ -1,16 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Flask App</title>
-    <link rel="stylesheet" href="/static/bootstrap.css"/>
-    <script src="/static/jquery-3.6.0.js"></script>
-    <script src="/static/bootstrap.js"></script>
-    <script src="/static/confirmation.js"></script>
-</head>
-<body>
-    <br/>
+{% extends 'students/students.html' %}
+
+    {% block headings %}
 <div class="container-sm">
     <h1>
         Search Results
@@ -37,31 +27,9 @@
             </div>
           </div>
         </div>
+   {% endblock %}
    
-    <br>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        {% for category, message in messages %}
-        {% if category == "error" %}
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>Invalid!</strong> {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        {% elif category == "secondary" %}
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>Note:</strong> {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        {% else %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Success!</strong> {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        {% endif %}
-        {% endfor %}
-    {% endif %}
-    {% endwith%}
-
+    {% block students_table %}
     <!-- DISPLAYING THE STUDENTS TABLE-->
     <div class="container-sm">
         <table class="table table-hover">
@@ -196,7 +164,9 @@
             {% endfor %}
         </table>
     </div>
+        {% endblock %}
 
+        {% block pagination %}
     <!-- PAGINATION -->
     <div class="container-fluid">
         {% set current_page = "btn btn-primary btn-outline-light" %}
@@ -227,73 +197,8 @@
                         </ul>
                       </nav>
         </div>
+        {% endblock %}
 
-<div class="container">
-  <!-- ADD STUDENT FUNCTION -->
-  <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModal" aria-hidden="true">
-    <div class="modal-dialog  modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="addModal">Add New Student Information</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form action="{{ url_for('Sbp.add_student') }}" method="POST" enctype="multipart/form-data">
-                <div class="form-group">
-                <label for="idNumber">ID Number</label>
-                <input type="text" name="idNumber" class="form-control" id="idNumber" placeholder="YYYY-NNNN" oninput="formatInput(event)">
-                </div>
-                <div class="form-group">
-                <label for="firstName">First Name</label>
-                <input type="text" name="firstName" class="form-control" id="firstName" placeholder="e.g. John">
-                </div>
-                <div class="form-group">
-                <label for="lastName">Last Name</label>
-                <input type="text" name="lastName" class="form-control" id="lastName" placeholder="e.g. Doe">
-                </div>
-                <div class="form-group">
-                <label for="courseCode">Course</label>
-                <select class="form-select" aria-label="Default select example" id="courseCode"  name="courseCode">
-                    <option selected>Select a Course</option>
-                    {% for row in Courses %}
-                    <option value="{{ row.2 }}">{{ row.2 }}</option>
-                    {% endfor %}
-                </select>
-                </div>
-                <label for="yearLevel">Year Level </label> 
-                <div class="form-group">
-                    <select class="form-select" aria-label="Default select example" id="yearLevel"  name="yearLevel">
-                        <option selected>1st-Year</option>
-                        <option value="2nd-Year">2nd-Year</option>
-                        <option value="3rd-Year">3rd-Year</option>
-                        <option value="4th-Year">4th-Year</option>
-                    </select>
-                </div> 
-                <label for="gender">Gender </label> 
-                <div class="form-group">
-                    <select class="form-select" aria-label="Default select example" id="gender"  name="gender">
-                        <option selected>Male</option>
-                        <option value="Female">Female</option>
-                    </select>
-                </div>
-                <!-- For uploading a photo -->
-                <label id="image" class="form-label">Upload Student Image</label>         
-                <div class="form-group">      
-                        <input class="form-control" type="file" id="image_upd" name="image_upd" accept=".jpg, .jpeg, .png"
-                        onchange="Filevalidation()" >
-                </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-warning btn-outline-light">Add</button>
-                  </div>
-            </form>
-        </div>
-      </div>
-    </div>
-  </div>
-    </div>
 </div>
 </body>
     </html>

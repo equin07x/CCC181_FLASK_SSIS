@@ -11,6 +11,7 @@
 </head>
 <body>
     <br/>
+    {% block headings %}
 <div class="container-sm">
     <h1>
         Students
@@ -33,6 +34,7 @@
             </div>
           </div>
         </div>
+        {% endblock %}
         
     <br>
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -91,7 +93,7 @@
             </div>
      </form>
     <!--SEARCH FUNCTION ENDS HERE-->
-    
+    {% block students_table %}
     <!-- DISPLAYING THE STUDENTS TABLE-->
     <div class="container-sm">
         <table class="table table-hover">
@@ -226,7 +228,9 @@
                 {% endfor %}
             </table>
     </div>
+    {% endblock %}
     
+    {% block pagination %}
 <!-- PAGINATION -->
     <div class="container-fluid">
     {% set current_page = "btn btn-primary btn-outline-light" %}
@@ -256,6 +260,7 @@
                   </nav>
     </div>
  </div>
+ {% endblock %}
 
   <!-- ADD STUDENT FUNCTION -->
   <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModal" aria-hidden="true">
