@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/static/bootstrap.css"/>
 </head>
 <body>
+  {% block headings %}
 <div class="container-sm">
     <br/>
     <h1>
@@ -32,6 +33,7 @@
             </div>
           </div>
         </div>
+        {% endblock %}
     <!-- REDIRECT TO HOMEPAGE -->
     <br>
     {% with messages = get_flashed_messages(with_categories=true) %}
