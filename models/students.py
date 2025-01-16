@@ -23,6 +23,16 @@ class student_M:
         db.close()
         cursor.close()
         return students
+    #idNumber Checking
+    def check_idNumber_Dict(idNumber):
+        db = db_connection()
+        cursor = db.cursor(pymysql.cursors.DictCursor)
+        SqlQuery = '''SELECT * from students WHERE idNumber LIKE %s'''
+        cursor.execute(SqlQuery, idNumber)
+        students = cursor.fetchone()
+        db.close()
+        cursor.close()
+        return students
     # Display all courses
     def display_Courses():
         db = db_connection()

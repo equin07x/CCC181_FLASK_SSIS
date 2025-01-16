@@ -26,6 +26,7 @@ def students():
         number = number + 1
     total = 0
     total_students = total + number
+    
 
     page = request.args.get('page', 1, type=int)
     print(page)
@@ -142,10 +143,6 @@ def edit_students():
 #For adding a new student information
 @students_bp.route('/add_students', methods=["POST"])
 def add_student():
-    student_idNumber = student_M.display_Students()
-    for idNumbers in student_idNumber:
-        print(idNumbers)
-    
     if request.method == "POST": 
         idNumber = request.form['idNumber']
         firstName = request.form['firstName']
@@ -153,6 +150,9 @@ def add_student():
         courseCode = request.form['courseCode']
         yearLevel = request.form['yearLevel']
         gender = request.form['gender']
+        
+        student_idNumber = student_M.check_idNumber_Dict(idNumber)
+        print(student_idNumber['idNumber'])
          
         #taking in the uplaoded image from the front-end.
         image = request.files['image_upd']
@@ -161,7 +161,7 @@ def add_student():
         
         if len(idNumber) < 1:
             flash("You need to input valid ID Number!", category='error')
-        elif idNumber == idNumbers[1]:
+        elif idNumber == student_idNumber['idNumber']:
             flash("You ID Number already exists!", category='error')
         elif len(firstName) < 1:
             flash("You need to input valid first name!", category='error')
