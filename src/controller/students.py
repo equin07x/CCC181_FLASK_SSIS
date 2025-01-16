@@ -112,6 +112,11 @@ def edit_students():
         yearLevelEdit = request.form['yearLevelEdit']
         genderEdit = request.form['genderEdit']
         
+        
+        student_idNumber = student_M.check_idNumber_Dict(idNumberEdit)
+        print(student_idNumber['idNumber'])
+         
+        
         #taking in the uplaoded image from the front-end.
         image = request.files['imageEdit']
         file_size = len(image.read())
@@ -119,6 +124,8 @@ def edit_students():
         
         if len(idNumberEdit) < 6:
             flash("You need to input valid ID Number!", category='error')
+        elif idNumberEdit == student_idNumber['idNumber']:
+            flash("You ID Number already exists!", category='error')
         elif len(firstNameEdit) < 2:
             flash("You need to input valid first name!", category='error')
         elif len(lastNameEdit) < 2:
