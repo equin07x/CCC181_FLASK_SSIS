@@ -142,6 +142,10 @@ def edit_students():
 #For adding a new student information
 @students_bp.route('/add_students', methods=["POST"])
 def add_student():
+    student_idNumber = student_M.display_Students()
+    for idNumbers in student_idNumber:
+        print(idNumbers)
+    
     if request.method == "POST": 
         idNumber = request.form['idNumber']
         firstName = request.form['firstName']
@@ -157,6 +161,8 @@ def add_student():
         
         if len(idNumber) < 1:
             flash("You need to input valid ID Number!", category='error')
+        elif idNumber == idNumbers[1]:
+            flash("You ID Number already exists!", category='error')
         elif len(firstName) < 1:
             flash("You need to input valid first name!", category='error')
         elif len(lastName) < 1:
