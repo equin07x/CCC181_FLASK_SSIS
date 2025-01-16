@@ -52,13 +52,12 @@ def edit_course():
         courseNameEdit = request.form['courseNameEdit']
         collegeCodeEdit =  request.form['collegeCodeEdit']
         
-        courseCode_unique = course_M.check_courses(courseCodeEdit)
-        courseName_unique = course_M.check_courses(courseNameEdit)
-        
+        courseCode_unique = course_M.check_courseCode(courseCodeEdit)
+        courseName_unique = course_M.check_courseName(courseNameEdit)
         
         if len(courseCodeEdit) < 1:
             flash("You need to input valid course code!", category='error')
-        elif courseCodeEdit == courseCode_unique['courseCode'] or courseNameEdit == courseName_unique['courseName']:
+        elif courseCode_unique == True or courseName_unique == True:
             flash("Course already exists!", category='error')
         elif len(courseNameEdit) < 1:
             flash("You need to input valid course name!", category='error') 
@@ -75,12 +74,12 @@ def add_course():
         courseName = request.form['courseName']
         collegeCode = request.form['collegeCode']
         
-        courseCode_unique = course_M.check_courses(courseCode)
-        courseName_unique = course_M.check_courses(courseName)
+        courseCode_unique = course_M.check_courseCode(courseCode)
+        courseName_unique = course_M.check_courseName(courseName)
         
         if len(courseCode) < 1:
             flash("You need to input valid course code!", category='error')
-        elif courseCode == courseCode_unique['courseCode'] or courseName == courseName_unique['courseName']:
+        elif courseCode_unique == True or courseName_unique == True:
             flash("Course already exists!", category='error')
         elif len(courseName) < 1:
             flash("You need to input valid course name!", category='error') 

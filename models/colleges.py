@@ -44,17 +44,34 @@ class college_M:
             db.close()
             return college_M.display_Colleges()
     
-    #check college
-    def check_College_Dict(college):
+    # check college for edit
+    def check_CollegeCode(college):
         db = db_connection()
         cursor = db.cursor(pymysql.cursors.DictCursor)
-        SqlQuery = '''SELECT * from college_table WHERE collegeCode LIKE %s OR collegeName LIKE %s'''
-        SqlValues = (college, college)
-        cursor.execute(SqlQuery, SqlValues)
-        college_unique = cursor.fetchone()
+        SqlQuery = '''SELECT college_table.collegeCode FROM college_table'''
+        cursor.execute(SqlQuery)
+        college_unique = cursor.fetchall()
+        
+        for collegeCode in college_unique:
+            if college == collegeCode:
+                print(f"{college} exists!")
         db.close()
         cursor.close()
-        return college_unique
+        return True
+    
+    def check_CollegeName(college):
+        db = db_connection()
+        cursor = db.cursor(pymysql.cursors.DictCursor)
+        SqlQuery = '''SELECT college_table.collegeName FROM college_table'''
+        cursor.execute(SqlQuery)
+        college_unique = cursor.fetchall()
+        
+        for collegeName in college_unique:
+            if college == collegeName:
+                print(f"{college} exists!")
+        db.close()
+        cursor.close()
+        return True
             
     # Delete college information
     def delete_College(collegeCode):

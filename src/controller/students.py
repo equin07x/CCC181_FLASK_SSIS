@@ -112,10 +112,7 @@ def edit_students():
         yearLevelEdit = request.form['yearLevelEdit']
         genderEdit = request.form['genderEdit']
         
-        
         student_idNumber = student_M.check_idNumber_Dict(idNumberEdit)
-        print(student_idNumber['idNumber'])
-         
         
         #taking in the uplaoded image from the front-end.
         image = request.files['imageEdit']
@@ -124,8 +121,10 @@ def edit_students():
         
         if len(idNumberEdit) < 6:
             flash("You need to input valid ID Number!", category='error')
-        elif idNumberEdit == student_idNumber['idNumber']:
-            flash("You ID Number already exists!", category='error')
+            
+        elif student_idNumber == True:
+            flash("ID Number already exists!", category='error')
+       
         elif len(firstNameEdit) < 2:
             flash("You need to input valid first name!", category='error')
         elif len(lastNameEdit) < 2:
@@ -159,8 +158,7 @@ def add_student():
         gender = request.form['gender']
         
         student_idNumber = student_M.check_idNumber_Dict(idNumber)
-        print(student_idNumber['idNumber'])
-         
+        
         #taking in the uplaoded image from the front-end.
         image = request.files['image_upd']
         file_size = len(image.read())
@@ -168,8 +166,8 @@ def add_student():
         
         if len(idNumber) < 1:
             flash("You need to input valid ID Number!", category='error')
-        elif idNumber == student_idNumber['idNumber']:
-            flash("You ID Number already exists!", category='error')
+        elif student_idNumber == True:
+            flash("ID Number already exists!", category='error')
         elif len(firstName) < 1:
             flash("You need to input valid first name!", category='error')
         elif len(lastName) < 1:

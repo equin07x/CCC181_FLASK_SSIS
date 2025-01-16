@@ -29,10 +29,14 @@ class student_M:
         cursor = db.cursor(pymysql.cursors.DictCursor)
         SqlQuery = '''SELECT * from students WHERE idNumber LIKE %s'''
         cursor.execute(SqlQuery, idNumber)
-        students = cursor.fetchone()
+        idNumber_unique = cursor.fetchall()
+        
+        for idNumbers in idNumber_unique:
+            if idNumber == idNumbers:
+                print(f"{idNumber} exists!")
         db.close()
         cursor.close()
-        return students
+        return True
     # Display all courses
     def display_Courses():
         db = db_connection()
@@ -137,8 +141,7 @@ class student_M:
             print("This is state 2 of the student search results.")
             db = db_connection()
             cursor = db.cursor()
-            print("This is state 1 of the student search results.")
-            SqlQuery = '''SELECT students.image_id, students.idNumber, students.firstName, students.lastName, 
+            SqlQuery = '''SELECT students.students_id, students.image_id, students.idNumber, students.firstName, students.lastName, 
                         students.courseCode, course_table.courseName, students.yearLevel ,students.gender 
                         FROM students
                         LEFT JOIN course_table ON course_table.courseCode = students.courseCode

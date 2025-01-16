@@ -31,16 +31,18 @@ def edit_college():
         collegeCodeEdit = request.form['collegeCodeEdit']
         collegeNameEdit = request.form['collegeNameEdit']
         
-        collegeCode_unique = college_M.check_College_Dict(collegeCodeEdit)
-        collegeName_unique = college_M.check_College_Dict(collegeNameEdit)
-        
+        collegeCode_Checking = college_M.check_CollegeCode(collegeCodeEdit)
+        collegeName_Checking = college_M.check_CollegeName(collegeNameEdit)
         
         if len(collegeCodeEdit) < 1:
             flash("You have to input a valid college!", category="error")
+        elif collegeCode_Checking == True:
+            flash("College already Exists!", category="error")
+        elif collegeName_Checking == True:
+            flash("College already Exists!", category="error")
         elif len(collegeNameEdit) < 1:
             flash("You have to input a valid college!", category="error")
-        elif collegeCodeEdit == collegeCode_unique['collegeCode'] or collegeNameEdit == collegeName_unique['collegeName']:
-            flash("College already exists!", category="error")
+            
         else:
             college_M.edit_College(collegeCodeEdit, collegeNameEdit, college_id)
             flash("You have successfuly edited a college!", category="success")
@@ -81,12 +83,14 @@ def add_college():
         collegeCode = request.form['collegeCode']
         collegeName = request.form['collegeName']
         
-        collegeCode_unique = college_M.check_College_Dict(collegeCode)
-        collegeName_unique = college_M.check_College_Dict(collegeName)
+        collegeCode_unique = college_M.check_CollegeCode(collegeCode)
+        collegeName_unique = college_M.check_CollegeName(collegeName)
         
         if len(collegeCode) < 1:
             flash("You have to input a valid college!", category="error")
-        elif collegeCode == collegeCode_unique['collegeCode'] or collegeName == collegeName_unique['collegeName']:
+        elif collegeCode_unique == True:
+            flash("College already exists!", category="error")
+        elif collegeName_unique == True:
             flash("College already exists!", category="error")
         elif len(collegeName) < 1:
             flash("You have to input a valid college!", category="error")
