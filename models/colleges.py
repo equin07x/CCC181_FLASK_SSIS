@@ -43,6 +43,18 @@ class college_M:
             cursor.close()
             db.close()
             return college_M.display_Colleges()
+    
+    #check college
+    def check_College_Dict(college):
+        db = db_connection()
+        cursor = db.cursor(pymysql.cursors.DictCursor)
+        SqlQuery = '''SELECT * from college_table WHERE collegeCode LIKE %s OR collegeName LIKE %s'''
+        SqlValues = (college, college)
+        cursor.execute(SqlQuery, SqlValues)
+        college_unique = cursor.fetchone()
+        db.close()
+        cursor.close()
+        return college_unique
             
     # Delete college information
     def delete_College(collegeCode):

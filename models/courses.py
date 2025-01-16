@@ -31,6 +31,17 @@ class course_M:
         cursor.close()
         db.close()
         return college
+    # Courses Checking
+    def check_courses(courses):
+        db = db_connection()
+        cursor = db.cursor(pymysql.cursors.DictCursor)
+        SqlQuery = '''SELECT * from course_table WHERE courseCode LIKE %s OR courseName LIKE %s'''
+        SqlValues = (courses, courses)
+        cursor.execute(SqlQuery, SqlValues)
+        courses_unique = cursor.fetchone()
+        db.close()
+        cursor.close()
+        return courses_unique
     # Edit a course information from the database
     def edit_Course(courseCodeEdit, courseNameEdit, collegeCodeEdit, course_id):
         db = db_connection()

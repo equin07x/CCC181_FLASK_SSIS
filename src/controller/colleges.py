@@ -31,10 +31,16 @@ def edit_college():
         collegeCodeEdit = request.form['collegeCodeEdit']
         collegeNameEdit = request.form['collegeNameEdit']
         
+        collegeCode_unique = college_M.check_College_Dict(collegeCodeEdit)
+        collegeName_unique = college_M.check_College_Dict(collegeNameEdit)
+        
+        
         if len(collegeCodeEdit) < 1:
             flash("You have to input a valid college!", category="error")
         elif len(collegeNameEdit) < 1:
             flash("You have to input a valid college!", category="error")
+        elif collegeCodeEdit == collegeCode_unique['collegeCode'] or collegeNameEdit == collegeName_unique['collegeName']:
+            flash("College already exists!", category="error")
         else:
             college_M.edit_College(collegeCodeEdit, collegeNameEdit, college_id)
             flash("You have successfuly edited a college!", category="success")
@@ -75,8 +81,13 @@ def add_college():
         collegeCode = request.form['collegeCode']
         collegeName = request.form['collegeName']
         
+        collegeCode_unique = college_M.check_College_Dict(collegeCode)
+        collegeName_unique = college_M.check_College_Dict(collegeName)
+        
         if len(collegeCode) < 1:
             flash("You have to input a valid college!", category="error")
+        elif collegeCode == collegeCode_unique['collegeCode'] or collegeName == collegeName_unique['collegeName']:
+            flash("College already exists!", category="error")
         elif len(collegeName) < 1:
             flash("You have to input a valid college!", category="error")
         else:
