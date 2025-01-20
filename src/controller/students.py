@@ -105,43 +105,34 @@ def edit_students():
     if request.method == "POST":
         print('successfully edited the select item')
         student_id = request.form['student_id']
-        idNumberEdit = request.form['idNumberEdit']
         firstNameEdit = request.form['firstNameEdit']
         lastNameEdit =  request.form['lastNameEdit']
         courseCodeEdit = request.form['courseCodeEdit']
         yearLevelEdit = request.form['yearLevelEdit']
         genderEdit = request.form['genderEdit']
         
-        student_idNumber = student_M.check_idNumber_Dict(idNumberEdit)
-        
         #taking in the uplaoded image from the front-end.
         image = request.files['imageEdit']
         file_size = len(image.read())
         image.seek(0)
         
-        if len(idNumberEdit) < 6:
-            flash("You need to input valid ID Number!", category='error')
-            
-        elif student_idNumber == True:
-            flash("ID Number already exists!", category='error')
-       
-        elif len(firstNameEdit) < 2:
+        if len(firstNameEdit) < 2:
             flash("You need to input valid first name!", category='error')
         elif len(lastNameEdit) < 2:
             flash("You need to input valid last name!", category='error')
         elif file_size > 5 * 1024 * 1024:
             flash("The image uploaded exceeds the maximum file size!", category='error')
-            
+        
         elif not image:
             print("image has not been changed")
-            student_M.edit_Student(idNumberEdit, firstNameEdit, lastNameEdit, 
+            student_M.edit_Student(firstNameEdit, lastNameEdit, 
                             courseCodeEdit, yearLevelEdit, genderEdit, student_id)
             flash("you have successfully edited the student information!", category='success')
         else:
             uploaded_file = upload(image)
             image_id = CloudinaryImage(uploaded_file['public_id']).build_url(width = 50, height = 50, crop = "fill")
             print(image_id)
-            student_M.edit_Student_p(idNumberEdit, firstNameEdit, lastNameEdit, 
+            student_M.edit_Student_p(firstNameEdit, lastNameEdit, 
                             courseCodeEdit, yearLevelEdit, genderEdit, image_id, student_id)
             flash("you have successfully edited the student information!", category='success')
     return redirect(url_for('Sbp.students'))
@@ -157,21 +148,31 @@ def add_student():
         yearLevel = request.form['yearLevel']
         gender = request.form['gender']
         
-        student_idNumber = student_M.check_idNumber_Dict(idNumber)
-        
+        student_idNumber = student_M.check_idNumber_Dict()
         #taking in the uplaoded image from the front-end.
         image = request.files['image_upd']
         file_size = len(image.read())
         image.seek(0)
         
+        for ids in student_idNumber:
+            print(ids['idNumber'])
+            if idNumber == ids['idNumber']:
+                checking = True
+            else:
+                checking = False
+
+        print(checking)
+             
         if len(idNumber) < 1:
             flash("You need to input valid ID Number!", category='error')
-        elif student_idNumber == True:
-            flash("ID Number already exists!", category='error')
         elif len(firstName) < 1:
             flash("You need to input valid first name!", category='error')
         elif len(lastName) < 1:
             flash("You need to input valid last name!", category='error')
+            
+        elif checking == True:
+            flash("ID Number Already Exists!", category='error')
+            
         elif file_size > 5 * 1024 * 1024:
             flash("The image uploaded exceeds the maximum file size!", category='error')
             

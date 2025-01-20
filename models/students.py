@@ -24,19 +24,15 @@ class student_M:
         cursor.close()
         return students
     #idNumber Checking
-    def check_idNumber_Dict(idNumber):
+    def check_idNumber_Dict():
         db = db_connection()
         cursor = db.cursor(pymysql.cursors.DictCursor)
-        SqlQuery = '''SELECT * from students WHERE idNumber LIKE %s'''
-        cursor.execute(SqlQuery, idNumber)
+        SqlQuery = '''SELECT students.idNumber FROM students'''
+        cursor.execute(SqlQuery)
         idNumber_unique = cursor.fetchall()
-        
-        for idNumbers in idNumber_unique:
-            if idNumber == idNumbers:
-                print(f"{idNumber} exists!")
         db.close()
         cursor.close()
-        return True
+        return idNumber_unique
     # Display all courses
     def display_Courses():
         db = db_connection()
@@ -85,13 +81,13 @@ class student_M:
         cursor.close()
         return student_M.display_Students()
     # Edit a student information from the datbase
-    def edit_Student(idNumberEdit, firstNameEdit, lastNameEdit, 
+    def edit_Student(firstNameEdit, lastNameEdit, 
                             courseCodeEdit, yearLevelEdit, genderEdit, student_id): 
         db = db_connection()
         cursor = db.cursor()
-        SqlQuery = '''UPDATE students SET idNumber=%s, firstName=%s, lastName=%s, 
+        SqlQuery = '''UPDATE students SET firstName=%s, lastName=%s, 
                         courseCode=%s, yearLevel=%s, gender=%s WHERE students_id=%s'''
-        SqlValues = (idNumberEdit, firstNameEdit, lastNameEdit, 
+        SqlValues = (firstNameEdit, lastNameEdit, 
                             courseCodeEdit, yearLevelEdit, genderEdit, student_id)
         cursor.execute(SqlQuery, SqlValues)
         db.commit()
@@ -99,13 +95,13 @@ class student_M:
         cursor.close()
         return student_M.display_Students()
     # Edit a student information with a photo from the database
-    def edit_Student_p(idNumberEdit, firstNameEdit, lastNameEdit, 
+    def edit_Student_p(firstNameEdit, lastNameEdit, 
                             courseCodeEdit, yearLevelEdit, genderEdit, image, student_id): 
         db = db_connection()
         cursor = db.cursor()
-        SqlQuery = '''UPDATE students SET idNumber=%s, firstName=%s, lastName=%s, 
+        SqlQuery = '''UPDATE students SET firstName=%s, lastName=%s, 
                         courseCode=%s, yearLevel=%s, gender=%s, image_id=%s WHERE students_id=%s'''
-        SqlValues = (idNumberEdit, firstNameEdit, lastNameEdit, 
+        SqlValues = (firstNameEdit, lastNameEdit, 
                             courseCodeEdit, yearLevelEdit, genderEdit, image, student_id)
         cursor.execute(SqlQuery, SqlValues)
         db.commit()

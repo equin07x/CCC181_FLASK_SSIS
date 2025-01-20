@@ -33,33 +33,25 @@ class course_M:
         return college
     # Courses Checking
       # check college for edit
-    def check_courseCode(course):
+    def check_courseCode(courseCode):
         db = db_connection()
         cursor = db.cursor(pymysql.cursors.DictCursor)
-        SqlQuery = '''SELECT course_table.courseCode FROM course_table'''
-        cursor.execute(SqlQuery)
-        course_Unique = cursor.fetchall()
-        
-        for courseCode in course_Unique:
-            if course == courseCode:
-                print(f"{courseCode} exists!")
+        SqlQuery = '''SELECT course_table.courseCode FROM course_table WHERE courseCode = %s'''
+        cursor.execute(SqlQuery, courseCode,)
+        course_Unique = cursor.fetchone()
         db.close()
         cursor.close()
-        return True
+        return course_Unique
     # check college for edit
-    def check_courseName(course):
+    def check_courseName():
         db = db_connection()
         cursor = db.cursor(pymysql.cursors.DictCursor)
         SqlQuery = '''SELECT course_table.courseName FROM course_table'''
         cursor.execute(SqlQuery)
         course_Unique = cursor.fetchall()
-        
-        for courseName in course_Unique:
-            if course == courseName:
-                print(f"{courseName} exists!")
         db.close()
         cursor.close()
-        return True
+        return course_Unique
     # Edit a course information from the database
     def edit_Course(courseCodeEdit, courseNameEdit, collegeCodeEdit, course_id):
         db = db_connection()
@@ -90,15 +82,14 @@ class course_M:
         SqlQuery = "DELETE FROM course_table WHERE courseCode = %s"
         SqlValues = (courseCode)
         cursor.execute(SqlQuery, SqlValues)
+        db.commit()
         #Setting the course into N/A on the student's database
         SqlQuery = "UPDATE students SET courseCode = 'N/A' WHERE courseCode = %s"
         SqlValues = (courseCode)
         cursor.execute(SqlQuery, SqlValues)
-    
         cursor.close()
         db.commit()
         db.close()
-        
         return course_M.display_Courses()
     # searching for a course from the database
     def search_Course(course_key, course_key_Name, course_key_Code, college_key_Code):

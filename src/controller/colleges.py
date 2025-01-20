@@ -36,9 +36,9 @@ def edit_college():
         
         if len(collegeCodeEdit) < 1:
             flash("You have to input a valid college!", category="error")
-        elif collegeCode_Checking == True:
+        elif collegeCode_Checking:
             flash("College already Exists!", category="error")
-        elif collegeName_Checking == True:
+        elif collegeName_Checking:
             flash("College already Exists!", category="error")
         elif len(collegeNameEdit) < 1:
             flash("You have to input a valid college!", category="error")
@@ -88,9 +88,9 @@ def add_college():
         
         if len(collegeCode) < 1:
             flash("You have to input a valid college!", category="error")
-        elif collegeCode_unique == True:
+        elif collegeCode_unique:
             flash("College already exists!", category="error")
-        elif collegeName_unique == True:
+        elif collegeName_unique:
             flash("College already exists!", category="error")
         elif len(collegeName) < 1:
             flash("You have to input a valid college!", category="error")

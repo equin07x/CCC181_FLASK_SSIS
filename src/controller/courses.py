@@ -52,15 +52,15 @@ def edit_course():
         courseNameEdit = request.form['courseNameEdit']
         collegeCodeEdit =  request.form['collegeCodeEdit']
         
-        courseCode_unique = course_M.check_courseCode(courseCodeEdit)
-        courseName_unique = course_M.check_courseName(courseNameEdit)
+        unique_courseCode = course_M.check_courseCode(courseCodeEdit)
         
         if len(courseCodeEdit) < 1:
             flash("You need to input valid course code!", category='error')
-        elif courseCode_unique == True or courseName_unique == True:
-            flash("Course already exists!", category='error')
+            
         elif len(courseNameEdit) < 1:
-            flash("You need to input valid course name!", category='error') 
+            flash("You need to input valid course name!", category='error')
+        elif unique_courseCode:
+            flash("Course already exists!", category='error')
         else:
             course_M.edit_Course(courseCodeEdit, courseNameEdit, collegeCodeEdit, course_id)
             flash("you have successfully edited the course information!", category='success')
@@ -73,16 +73,15 @@ def add_course():
         courseCode = request.form['courseCode']
         courseName = request.form['courseName']
         collegeCode = request.form['collegeCode']
-        
-        courseCode_unique = course_M.check_courseCode(courseCode)
-        courseName_unique = course_M.check_courseName(courseName)
-        
+            
+        unique_courseCode = course_M.check_courseCode(courseCode)
+
         if len(courseCode) < 1:
             flash("You need to input valid course code!", category='error')
-        elif courseCode_unique == True or courseName_unique == True:
-            flash("Course already exists!", category='error')
         elif len(courseName) < 1:
-            flash("You need to input valid course name!", category='error') 
+            flash("You need to input valid course name!", category='error')
+        elif unique_courseCode:
+            flash("Course already exists!", category='error')
         else:
             course_M.add_Course(courseCode, courseName, collegeCode)
             flash("Successfully added the course information!", category="success")
