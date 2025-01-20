@@ -24,12 +24,12 @@ class student_M:
         cursor.close()
         return students
     #idNumber Checking
-    def check_idNumber_Dict():
+    def check_idNumber_Dict(idNumber):
         db = db_connection()
         cursor = db.cursor(pymysql.cursors.DictCursor)
-        SqlQuery = '''SELECT students.idNumber FROM students'''
-        cursor.execute(SqlQuery)
-        idNumber_unique = cursor.fetchall()
+        SqlQuery = '''SELECT students.idNumber FROM students WHERE idNumber = %s'''
+        cursor.execute(SqlQuery, idNumber)
+        idNumber_unique = cursor.fetchone()
         db.close()
         cursor.close()
         return idNumber_unique

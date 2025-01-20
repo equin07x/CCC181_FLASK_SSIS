@@ -148,20 +148,11 @@ def add_student():
         yearLevel = request.form['yearLevel']
         gender = request.form['gender']
         
-        student_idNumber = student_M.check_idNumber_Dict()
+        student_idNumber = student_M.check_idNumber_Dict(idNumber)
         #taking in the uplaoded image from the front-end.
         image = request.files['image_upd']
         file_size = len(image.read())
         image.seek(0)
-        
-        for ids in student_idNumber:
-            print(ids['idNumber'])
-            if idNumber == ids['idNumber']:
-                checking = True
-            else:
-                checking = False
-
-        print(checking)
              
         if len(idNumber) < 1:
             flash("You need to input valid ID Number!", category='error')
@@ -170,7 +161,7 @@ def add_student():
         elif len(lastName) < 1:
             flash("You need to input valid last name!", category='error')
             
-        elif checking == True:
+        elif student_idNumber:
             flash("ID Number Already Exists!", category='error')
             
         elif file_size > 5 * 1024 * 1024:

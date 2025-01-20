@@ -74,6 +74,7 @@ class college_M:
         SqlQuery = "DELETE FROM college_table WHERE collegeCode = %s"
         SqlValues = (collegeCode)
         cursor.execute( SqlQuery, SqlValues)
+        db.commit()
         
         # setting college data into N/A on courses table
         SqlQuery = "UPDATE course_table SET collegeCode = 'N/A' WHERE collegeCode = %s"
