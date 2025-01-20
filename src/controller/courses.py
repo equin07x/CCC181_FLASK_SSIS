@@ -59,8 +59,6 @@ def edit_course():
             
         elif len(courseNameEdit) < 1:
             flash("You need to input valid course name!", category='error')
-        elif unique_courseCode:
-            flash("Course already exists!", category='error')
         else:
             course_M.edit_Course(courseCodeEdit, courseNameEdit, collegeCodeEdit, course_id)
             flash("you have successfully edited the course information!", category='success')

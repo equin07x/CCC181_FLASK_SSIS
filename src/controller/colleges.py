@@ -36,10 +36,7 @@ def edit_college():
         
         if len(collegeCodeEdit) < 1:
             flash("You have to input a valid college!", category="error")
-        elif collegeCode_Checking:
-            flash("College already Exists!", category="error")
-        elif collegeName_Checking:
-            flash("College already Exists!", category="error")
+
         elif len(collegeNameEdit) < 1:
             flash("You have to input a valid college!", category="error")
             
