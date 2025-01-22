@@ -44,26 +44,27 @@ class college_M:
             db.close()
             return college_M.display_Colleges()
     
-    # check college for edit
-    def check_CollegeCode(college):
+    # check college code for edit
+    def check_CollegeCode(collegeCode):
         db = db_connection()
         cursor = db.cursor(pymysql.cursors.DictCursor)
         SqlQuery = '''SELECT college_table.collegeCode FROM college_table WHERE collegeCode = %s'''
-        cursor.execute(SqlQuery, college,)
-        college_unique = cursor.fetchone()
+        cursor.execute(SqlQuery, collegeCode,)
+        collegeCode_unique = cursor.fetchone()
         db.close()
         cursor.close()
-        return college_unique
+        return collegeCode_unique
     
-    def check_CollegeName(college):
+    # check college name for edit
+    def check_CollegeName(collegeName):
         db = db_connection()
         cursor = db.cursor(pymysql.cursors.DictCursor)
         SqlQuery = '''SELECT college_table.collegeName FROM college_table WHERE collegeName = %s'''
-        cursor.execute(SqlQuery, college,)
-        college_unique = cursor.fetchone()
+        cursor.execute(SqlQuery, collegeName,)
+        collegeName_unique = cursor.fetchone()
         db.close()
         cursor.close()
-        return college_unique
+        return collegeName_unique
             
     # Delete college information
     def delete_College(collegeCode):

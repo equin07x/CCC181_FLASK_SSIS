@@ -23,7 +23,7 @@ def colleges():
     return render_template('/colleges/colleges.html', College=college)
 
 #For editing a college information
-@colleges_bp.route('/edit_college', methods=["GET","POST"])
+@colleges_bp.route('/edit_college', methods=["POST"])
 def edit_college():
     if request.method == "POST":
         print('successfully edited the select item')
@@ -39,6 +39,9 @@ def edit_college():
 
         elif len(collegeNameEdit) < 1:
             flash("You have to input a valid college!", category="error")
+        
+        elif collegeCode_Checking and collegeName_Checking:
+            flash("College already exists!", category="error")
             
         else:
             college_M.edit_College(collegeCodeEdit, collegeNameEdit, college_id)

@@ -31,7 +31,7 @@ def courses():
     start_Page = (page - 1) * per_Page
     end_Page = start_Page + per_Page
     
-    courses_on_Page = courses[start_Page:end_Page]
+    courses_on_Page = course_data[start_Page:end_Page]
 
     total_Pages = (total_courses + per_Page - 1) // per_Page
     print(f"The amout of total pages are: {total_Pages}")
@@ -39,7 +39,7 @@ def courses():
     page_Number = list(range(1, total_Pages + 1))
     print(page_Number)
     
-    return render_template('/courses/courses.html', Courses=course_data, Colleges=college_data,
+    return render_template('/courses/courses.html', Courses=courses_on_Page, Colleges=college_data,
                            page = page, number_of_Pages = page_Number, total_Pages = total_Pages)
 
 #For editing/updating the course information
@@ -53,12 +53,21 @@ def edit_course():
         collegeCodeEdit =  request.form['collegeCodeEdit']
         
         unique_courseCode = course_M.check_courseCode(courseCodeEdit)
+        unique_courseName = course_M.check_courseName(courseNameEdit)
+        unique_collegeCode = course_M.check_collegeCode(collegeCodeEdit)
         
         if len(courseCodeEdit) < 1:
             flash("You need to input valid course code!", category='error')
             
         elif len(courseNameEdit) < 1:
             flash("You need to input valid course name!", category='error')
+            
+        elif unique_courseName and unique_courseCode and unique_collegeCode:
+            flash("Course already exists!", category='error')
+            
+        elif not unique_courseName and unique_courseCode and unique_collegeCode:
+            flash("Course already exists!", category='error')
+            
         else:
             course_M.edit_Course(courseCodeEdit, courseNameEdit, collegeCodeEdit, course_id)
             flash("you have successfully edited the course information!", category='success')

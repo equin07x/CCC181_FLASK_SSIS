@@ -32,7 +32,7 @@ class course_M:
         db.close()
         return college
     # Courses Checking
-      # check college for edit
+      # check course code for edit
     def check_courseCode(courseCode):
         db = db_connection()
         cursor = db.cursor(pymysql.cursors.DictCursor)
@@ -42,13 +42,23 @@ class course_M:
         db.close()
         cursor.close()
         return course_Unique
-    # check college for edit
-    def check_courseName():
+    # check course name for edit
+    def check_courseName(courseName):
         db = db_connection()
         cursor = db.cursor(pymysql.cursors.DictCursor)
-        SqlQuery = '''SELECT course_table.courseName FROM course_table'''
-        cursor.execute(SqlQuery)
-        course_Unique = cursor.fetchall()
+        SqlQuery = '''SELECT course_table.courseName FROM course_table WHERE courseCode = %s'''
+        cursor.execute(SqlQuery, courseName,)
+        course_Unique = cursor.fetchone()
+        db.close()
+        cursor.close()
+        return course_Unique
+    # check college for edit
+    def check_collegeCode(collegeCode):
+        db = db_connection()
+        cursor = db.cursor(pymysql.cursors.DictCursor)
+        SqlQuery = '''SELECT course_table.collegeCode FROM course_table WHERE collegeCode = %s'''
+        cursor.execute(SqlQuery, collegeCode,)
+        course_Unique = cursor.fetchone()
         db.close()
         cursor.close()
         return course_Unique
