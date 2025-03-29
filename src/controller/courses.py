@@ -65,7 +65,7 @@ def edit_course():
         elif unique_courseName and unique_courseCode and unique_collegeCode:
             flash("Course already exists!", category='error')
             
-        elif not unique_courseName and unique_courseCode and unique_collegeCode:
+        elif not unique_courseName and unique_courseCode and not unique_collegeCode:
             flash("Course already exists!", category='error')
             
         else:

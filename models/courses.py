@@ -62,6 +62,16 @@ class course_M:
         db.close()
         cursor.close()
         return course_Unique
+    # take all college names
+    def check_collegeCode(collegeCode):
+        db = db_connection()
+        cursor = db.cursor(pymysql.cursors.DictCursor)
+        SqlQuery = '''SELECT college_table.collegeName FROM college_table WHERE collegeCode = %s'''
+        cursor.execute(SqlQuery, collegeCode,)
+        course_Unique = cursor.fetchone()
+        db.close()
+        cursor.close()
+        return course_Unique
     # Edit a course information from the database
     def edit_Course(courseCodeEdit, courseNameEdit, collegeCodeEdit, course_id):
         db = db_connection()
