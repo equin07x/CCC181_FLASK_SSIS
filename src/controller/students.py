@@ -27,6 +27,7 @@ def students():
     total = 0
     total_students = total + number
     
+    print(student)
 
     page = request.args.get('page', 1, type=int)
     print(page)
