@@ -1,6 +1,6 @@
 Readme file for CCC181 Flask Backend Framework 🚀
 
-To run, first create the .venv python environment by using the command ⚡\n
+To run, first create the .venv python environment by using the command ⚡
     > python -m venv .venv
     > source .venv/bin/activate
 
