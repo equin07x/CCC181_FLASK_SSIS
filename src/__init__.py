@@ -23,12 +23,7 @@ def create_app():
     def commit():
         db.commit()
         
-    cursor.execute('CREATE DATABASE IF NOT EXISTS flask_ssis')
-    cursor.execute('SHOW DATABASES')
-     
-    if cursor.execute('CREATE DATABASE IF NOT EXISTS flask_ssis'):
-        print("Database Connected!")
-        
+       
     #This is for home when selecting which table to view
     @app.route('/')
     @app.route('/home')

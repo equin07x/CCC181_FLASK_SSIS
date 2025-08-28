@@ -12,4 +12,5 @@ def db_connection():
         database=database,
         user=user,
         password=password)
+
       return db

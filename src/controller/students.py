@@ -23,11 +23,10 @@ def students():
     students = student_M.display_Students()
     number = 0
     for student in students:
+        print(student)
         number = number + 1
     total = 0
     total_students = total + number
-    
-    print(student)
 
     page = request.args.get('page', 1, type=int)
     print(page)
