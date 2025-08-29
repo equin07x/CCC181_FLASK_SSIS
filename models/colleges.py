@@ -102,7 +102,7 @@ class college_M:
         
         #THIS IS FOR SEARCHING COLLEGE CODE WITH EXCLUSIVITY
          elif college_key_Code != "By College Code" and college_key_Name == "By College Name":
-            print("This is route 2")
+            print("State 2 of Searching Colleges")
             db = db_connection()
             cursor = db.cursor()
             cursor.execute('''SELECT * FROM college_table WHERE collegeCode LIKE %s AND collegeName LIKE %s''', 

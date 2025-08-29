@@ -4,6 +4,8 @@ from config import SECRET_KEY
 from src.database import db_connection
 from models.students import student_M
 
+
+import re
 import cloudinary
 from cloudinary import CloudinaryImage
 from cloudinary.uploader import upload
@@ -21,9 +23,10 @@ students_bp = Blueprint("Sbp", __name__,  template_folder='/templates')
 def students():
     #displays all of the students
     students = student_M.display_Students()
+   
     number = 0
+    #sorted_students = dict(reversed(students.items()))
     for student in students:
-        print(student)
         number = number + 1
     total = 0
     total_students = total + number
@@ -35,6 +38,8 @@ def students():
     end_Page = start_Page + per_Page
     
     students_on_Page = students[start_Page:end_Page]
+    
+    #students_dict = dict(students_on_Page)
 
     total_Pages = (total_students + per_Page - 1) // per_Page
     print(f"The amout of total pages are: {total_Pages}")
@@ -62,9 +67,27 @@ def student_search():
     student_key_Level = request.args.get('student_key_Level', '')
     student_key_Gender = request.args.get('student_key_Gender', '')
     page = request.args.get('page', 1, type=int)
-      
+
+    pattern = r" "
+    if re.search(pattern, student_key):
+        split_string = student_key.split()
+        
+        student_key_1 = split_string[0]
+        student_key_2 = split_string[1]
+
+        print(student_key_1)
+        print(student_key_2)
+    else:
+        student_key_1 = student_key
+        print(student_key_1)
+
     try:
-        search_data = student_M.search_Student(student_key, course_key_Code, student_key_Level, student_key_Gender)
+        if student_key_1 == student_key:
+            search_data = student_M.search_Student(student_key_1, course_key_Code, student_key_Level, student_key_Gender)
+            print("Has only single string")
+        elif student_key_2:
+            search_data = student_M.search_student_2(student_key_1, student_key_2, course_key_Code, student_key_Level, student_key_Gender)
+            print("Has double string")
         number = 0
         for student in search_data:
             number = number + 1
@@ -89,8 +112,8 @@ def student_search():
 
         prev_url = url_for('Sbp.student_search', course_key_Code=course_key_Code, student_key_Level=student_key_Level,
                           student_key_Gender=student_key_Gender, student_key=student_key, page=page-1) if page > 1 else None
-    except:
-            len(student_key) < 1
+    except Exception as e:
+            print(e)
             flash("You need to input a valid search", category='error')
             return (redirect(url_for('Sbp.students')))
         

@@ -11,6 +11,7 @@ def db_connection():
         host=hostname,
         database=database,
         user=user,
-        password=password)
+        password=password,
+        cursorclass=pymysql.cursors.DictCursor)
 
       return db

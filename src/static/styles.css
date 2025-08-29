@@ -1,25 +1,16 @@
 .main_header{
+    color: white;
+    font-size: 54px;
     text-align: center;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 
 }
 
-.tables, .options{
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    text-align: center;
+body{
+    background-color: rgba(26, 25, 26, 1);
+    /* background-image: linear-gradient(rgba(20, 19, 20, 1), rgba(37, 34, 37, 1)); */
 }
 
-.tables{
-    border: 3px solid black;
-    padding: 2px;
-    margin: 30px 40px;
-}
-
-th, td{
-    border: 2px solid black;
-    padding: 2px;
-    margin: 80px;
-}
 
 .selection{
     text-align: center;
@@ -31,11 +22,28 @@ th, td{
 /* This is for the homescreen card selection*/
 .cards{
     display: inline-block;
-    background-color: rgb(202, 197, 197);
+    background-color: rgba(187, 187, 187, 1);
     padding: 30px;
     margin: 30px;
     min-height: 250px;
     min-width: 150px;
+    border-bottom: 3px solid rgba(24, 209, 255, 0.747);
+    border-radius: 12px;
+    transition: background-color 1s;
+    overflow: hidden;
+}
+
+.cards .students{
+    background-image: url("/static/students.jpg");
+}
+
+.student_image{
+
+    display: inline-block;
+    padding: 30px;
+    margin: 30px;
+    height: 80px;
+    width: 30px;
     border-bottom: 3px solid rgba(24, 209, 255, 0.747);
     border-radius: 12px;
     transition: background-color 1s;

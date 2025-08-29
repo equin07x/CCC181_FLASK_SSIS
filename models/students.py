@@ -16,16 +16,21 @@ class student_M:
     # Display all students
     def display_Students():
         db = db_connection()
-        cursor = db.cursor()
-        SqlQuery = '''
-                    SELECT students.students_id, students.idNumber, students.firstName, students.lastName, students.courseCode,
-                    students.course_id, students.yearLevel, students.gender, students.image_id, college_table.collegeName FROM students 
-                    JOIN course_table ON students.courseCode = course_table.courseCode
-                    JOIN college_table ON course_table.collegeCode = college_table.collegeCode'''
+        cursor = db.cursor(pymysql.cursors.DictCursor)
+        SqlQuery = ''' SELECT students.students_id, students.idNumber, students.firstName,  
+        students.lastName, students.courseCode, students.course_id,
+        students.yearLevel, students.gender, students.image_id FROM students'''
+        
+        
+              #  '''SELECT students.students_id, students.idNumber, students.firstName, students.lastName, students.courseCode,
+              #      students.course_id, students.yearLevel, students.gender, students.image_id, college_table.collegeName FROM students 
+              #      JOIN course_table ON students.courseCode = course_table.courseCode
+              #      JOIN college_table ON course_table.collegeCode = college_table.collegeCode'''
         cursor.execute(SqlQuery)
         students = cursor.fetchall()
         db.close()
         cursor.close()
+        
         return students
     #idNumber Checking
     def check_idNumber_Dict(idNumber):
@@ -112,15 +117,35 @@ class student_M:
         db.close()
         cursor.close()
         return student_M.display_Students()
+
     #  Search a student from the database
-    def search_Student(student_key, course_key_Code, student_key_Level, student_key_Gender):
-         
+    def search_student_2(student_key_1, student_key_2, course_key_Code, student_key_Level, student_key_Gender):
+        
+        if course_key_Code == "By Course Code" and student_key_Level == "By Year Level" and student_key_Gender == "By Gender":
+                db = db_connection()
+                cursor = db.cursor()
+                print("This is the double string of the student search results.")
+                SqlQuery = '''
+                        SELECT students.students_id ,students.image_id, students.idNumber, students.firstName, students.lastName, 
+                        students.courseCode, students.yearLevel, students.gender FROM students WHERE students.idNumber LIKE %s 
+                        OR students.firstName LIKE %s OR students.lastName LIKE %s'''
+                SqlValues = (student_key_1, student_key_1, student_key_2)
+                cursor.execute(SqlQuery, SqlValues)
+                search_data = cursor.fetchall()
+                db.close()
+                cursor.close()
+                return search_data
+
+
+
+    def search_Student(student_key_1, course_key_Code, student_key_Level, student_key_Gender):
+   
         if course_key_Code == "By Course Code" and student_key_Level == "By Year Level" and student_key_Gender == "By Gender":
                 db = db_connection()
                 cursor = db.cursor()
                 print("This is state 1 of the student search results.")
                 SqlQuery = '''
-                        SELECT students.students_id ,students.image_id, students.idNumber, students.firstName, students.lastName, 
+                        SELECT students.students_id, students.image_id, students.idNumber, students.firstName, students.lastName, 
                         students.courseCode, college_table.collegeName, students.yearLevel ,students.gender FROM students 
                         JOIN course_table ON students.courseCode = course_table.courseCode
                         JOIN college_table ON course_table.collegeCode = college_table.collegeCode 
@@ -130,35 +155,14 @@ class student_M:
                                 OR students.courseCode LIKE %s
                                 OR students.yearLevel LIKE %s
                                 OR students.gender LIKE %s'''
-                SqlValues = (student_key, student_key, student_key, 
-                                    student_key, student_key, student_key)
+                SqlValues = (student_key_1, student_key_1, student_key_1, 
+                                    student_key_1, student_key_1, student_key_1)
                 cursor.execute(SqlQuery, SqlValues)
                 search_data = cursor.fetchall()
                 db.close()
                 cursor.close()
-                return search_data      
-        
-        elif course_key_Code != "By Course Code" and student_key_Level == "By Year Level" and student_key_Gender == "By Gender":
-            print("This is state 2 of the student search results.")
-            db = db_connection()
-            cursor = db.cursor()
-            SqlQuery = '''SELECT students.students_id ,students.image_id, students.idNumber, students.firstName, students.lastName, 
-                        students.courseCode, college_table.collegeName, students.yearLevel ,students.gender FROM students 
-                        JOIN course_table ON students.courseCode = course_table.courseCode
-                        JOIN college_table ON course_table.collegeCode = college_table.collegeCode 
-                        WHERE
-                            students.courseCode LIKE %s
-                            AND students.firstName LIKE %s
-                            OR students.courseCode LIKE %s AND students.lastName LIKE %s
-                            OR students.courseCode LIKE %s AND students.idNumber LIKE %s'''
-            SqlValues = (course_key_Code, student_key, course_key_Code, 
-                                    student_key, course_key_Code, student_key)
-            cursor.execute(SqlQuery, SqlValues)
-            search_data = cursor.fetchall()
-            db.close()
-            cursor.close()
-            return search_data   
-        
+                return search_data
+
         elif course_key_Code != "By Course Code" and student_key_Level != "By Year Level" and student_key_Gender == "By Gender":
             print("This is state 3 of the student search results.")
             db = db_connection()

@@ -111,9 +111,9 @@
             <tbody>
                 {% for row in Courses %}
                 <tr>
-                    <td>{{ row.2 }}</td>
-                    <td>{{ row.3 }}</td>
-                    <td>{{ row.4 }}</td>
+                    <td>{{ row['courseCode'] }}</td>
+                    <td>{{ row['courseName'] }}</td>
+                    <td>{{ row['collegeCode'] }}</td>
                     <td>
                             <!-- EDIT FUNCTION-->
         <a href="" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editModal{{ row.0 }}">
