@@ -60,14 +60,15 @@
     {% endwith%}
 
     <!-- SEARCH FUNCTION -->
+    {% block Search_function %}
     <div class="container">
-        <form action="{{ url_for('Clbp.college_search') }}" method="POST">
+        <form action="{{ url_for('Clbp.colleges') }}" method="POST">
             <label>Search Filters:</label>
             <div class="input-group mb-3">
                 <select class="form-select btn-outline-secondary" aria-label="Default select example" id="college_key_Code"  name="college_key_Code">
                     <option selected>By College Code</option>
                     {% for row in College %}
-                    <option value="{{ row['collegCode'] }}">{{ row['collegeCode'] }}</option>
+                    <option value="{{ row['collegeCode'] }}">{{ row['collegeCode'] }}</option>
                     {% endfor %}
                 </select>
                 <select class="form-select btn-outline-secondary" aria-label="Default select example" id="college_key_Name"  name="college_key_Name">
@@ -83,13 +84,15 @@
                 <button type="submit" class="btn btn-outline-secondary" id="search-button">
                     Search
                 </button>
-                    </div>
+            </div>
             </div>
         </div>
      </form>
     </div>
+    {% endblock %}
     <!-- SEARCH FUNCTION ENDS HERE -->
 
+    {% block colleges_table %}
     <!-- DISPLAY THE DATABASE INTO A TABLE -->
     <div class="container-sm">
         <table class="table table-hover">
@@ -163,11 +166,11 @@
               </div>
         </td>
         </tr>
-        <!-- EDIT FUNCTION DOES NOT WORK!! -->
-        {% endfor %}
+    {% endfor %}
             </tbody>
         </table>
     </div>
+    {% endblock %}
 
 
     <div class="container">

@@ -48,10 +48,10 @@
             <tbody>
                 {% for row in search_results %}
                 <tr>
-                  {% if row.1 == "" or row.1 == None %}
+                  {% if row['image_id'] == "" or row['image_id'] == None %}
                   <td><img src="./static/default_photo.jpg" style="height: 50px; width: 50px;" /></td>
                   {% else %}
-                  <td><img src="{{ row.1 }}" style="height: 50px; width: 50px;" /></td>
+                  <td><img src="{{ row[image_id] }}" style="height: 50px; width: 50px;" /></td>
                   {% endif %}
                     <td>{{ row.2 }}</td>
                     <td>{{ row.3 }}</td>

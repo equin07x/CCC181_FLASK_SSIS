@@ -76,62 +76,42 @@ class college_M:
         SqlValues = (collegeCode)
         cursor.execute( SqlQuery, SqlValues)
         db.commit()
-        
+       
         # setting college data into N/A on courses table
         SqlQuery = "UPDATE course_table SET collegeCode = 'N/A' WHERE collegeCode = %s"
         SqlValues = (collegeCode)
         cursor.execute( SqlQuery, SqlValues)
-        
         db.commit()
         cursor.close()
         db.close()
         return college_M.display_Colleges()
+
     # search college information from the database
     def search_College(college_key, college_key_Code, college_key_Name):
-         
-         if college_key_Code == "By College Code" and college_key_Name == "By College Name":
-            print("This is route 1")
-            db = db_connection()
-            cursor = db.cursor()
-            cursor.execute('''SELECT * FROM college_table WHERE collegeCode LIKE %s OR collegeName LIKE %s''', 
-                        (college_key, college_key))
-            search_data = cursor.fetchall()
-            cursor.close()
-            db.close()
-            return search_data
         
-        #THIS IS FOR SEARCHING COLLEGE CODE WITH EXCLUSIVITY
-         elif college_key_Code != "By College Code" and college_key_Name == "By College Name":
-            print("State 2 of Searching Colleges")
-            db = db_connection()
-            cursor = db.cursor()
-            cursor.execute('''SELECT * FROM college_table WHERE collegeCode LIKE %s AND collegeName LIKE %s''', 
-                        (college_key_Code, college_key))
-            search_data = cursor.fetchall()
-            cursor.close()
-            db.close()
-            return search_data
+        db = db_connection()
+        cursor = db.cursor(pymysql.cursors.DictCursor)
         
-        #THIS IS FOR SEARCHING COLLEGE NAME FIELDS WITH EXCLUSIVITY
-         elif college_key_Code == "By College Code" and college_key_Name != "By College Name":
-            print("This is route 3")
-            db = db_connection()
-            cursor = db.cursor()
-            cursor.execute('''SELECT * FROM college_table WHERE collegeName LIKE %s AND collegeCode LIKE %s''', 
-                        (college_key_Name, college_key))
-            search_data = cursor.fetchall()
-            cursor.close()
-            db.close()
-            return search_data
+        if college_key:
+            sqlQuery = '''SELECT * FROM college_table WHERE collegeCode LIKE %s OR collegeName LIKE %s'''
+            sqlValues = (college_key, college_key)
+
+        if college_key_Code:
+            sqlQuery = '''SELECT * FROM college_table WHERE collegeName LIKE %s OR collegeCode LIKE %s'''
+            sqlValues = (college_key, college_key_Code)
         
-        #THIS IS FOR SEARCH COLLEGE CODE AND COLLEGE NAME FIELDS WITH EXCLUSIVITY
-         elif college_key_Code != "By College Code" and college_key_Name != "By College Name":
-            print("This is route 4")
-            db = db_connection()
-            cursor = db.cursor()
-            cursor.execute('''SELECT * FROM college_table WHERE collegeName LIKE %s AND collegeCode LIKE %s''', 
-                        (college_key_Name, college_key_Code))
-            search_data = cursor.fetchall()
-            cursor.close()
-            db.close()
-            return search_data
+        if college_key_Name:
+            sqlQuery = '''SELECT * FROM college_table WHERE collegeCode LIKE %s OR collegeName LIKE %s'''
+            sqlValues = (college_key, college_key_Name)
+
+        if college_key_Code and college_key_Name:
+            sqlQuery = '''SELECT * FROM college_table WHERE collegeCode LIKE %s OR collegeName LIKE %s OR collegeCode LIKE %s OR collegeName LIKE %s'''
+            sqlValues = (college_key, college_key, college_key_Code, college_key_Name)
+
+        cursor.execute(sqlQuery, sqlValues)
+        search_data = cursor.fetchall()
+        print(search_data)
+        cursor.close()
+        db.close()
+        return search_data
+       
