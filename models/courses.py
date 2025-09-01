@@ -14,7 +14,7 @@ class course_M:
     # Display the courses from the database
     def display_Courses():
         db = db_connection()
-        cursor = db.cursor()
+        cursor = db.cursor(pymysql.cursors.DictCursor)
         SqlQuery = '''SELECT * FROM course_table'''
         cursor.execute(SqlQuery)
         courses = cursor.fetchall()

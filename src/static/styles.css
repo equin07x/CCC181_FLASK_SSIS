@@ -7,7 +7,7 @@
 }
 
 body{
-    background-color: rgba(26, 25, 26, 1);
+    background-color: rgb(33, 37, 41);
     /* background-image: linear-gradient(rgba(20, 19, 20, 1), rgba(37, 34, 37, 1)); */
 }
 
@@ -22,12 +22,12 @@ body{
 /* This is for the homescreen card selection*/
 .cards{
     display: inline-block;
-    background-color: rgba(187, 187, 187, 1);
+    background-color: rgba(68, 68, 68, 1);
     padding: 30px;
     margin: 30px;
     min-height: 250px;
     min-width: 150px;
-    border-bottom: 3px solid rgba(24, 209, 255, 0.747);
+    border-bottom: 3px solid rgba(184, 184, 184, 0.75);
     border-radius: 12px;
     transition: background-color 1s;
     overflow: hidden;
@@ -51,7 +51,7 @@ body{
 }
 
 .cards:hover{
-    background-color: rgb(25, 102, 218);
+    background-color: rgba(199, 199, 199, 1);
 }
 /* card styling ends here */
 
@@ -61,5 +61,5 @@ body{
 }
 
 a:active, a:hover, a:link, a:visited{
-    text-decoration: none;
+    color: white;
 }

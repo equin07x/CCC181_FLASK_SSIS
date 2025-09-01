@@ -19,7 +19,7 @@
         </div>
          
           <div class="col-6 col-md-2">
-            <button type="submit" class="btn btn-warning btn-outline-light btn-lg" 
+            <button type="submit" class="btn btn-warning btn-outline-dark btn-lg" 
             data-bs-toggle="modal" 
             data-bs-target="#addModal">
                 Add Student
@@ -130,7 +130,7 @@
                         </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-success btn-outline-light">Update</button>
+                            <button type="submit" class="btn btn-success btn-outline-dark">Update</button>
                             </div>
                     </form>
             </td>
@@ -169,8 +169,8 @@
         {% block pagination %}
     <!-- PAGINATION -->
     <div class="container-fluid">
-        {% set current_page = "btn btn-primary btn-outline-light" %}
-        {% set default_page = "btn btn-light btn-outline-primary" %}
+        {% set current_page = "btn btn-secondary btn-outline-light" %}
+        {% set default_page = "btn btn-dark btn-outline-secondary" %}
                     <nav aria-label="Page navigation">
                         <ul class="pagination">
                         {% if page == 1 %}

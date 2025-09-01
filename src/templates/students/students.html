@@ -9,7 +9,7 @@
     <script src="/static/bootstrap.js"></script>
 
 </head>
-<body>
+<body data-bs-theme="dark">
     <br/>
     {% block headings %}
 <div class="container-sm">
@@ -26,7 +26,7 @@
         </div>
          
           <div class="col-6 col-md-2">
-            <button type="submit" class="btn btn-warning btn-outline-light btn-lg" 
+            <button type="submit" class="btn btn-warning btn-outline-dark btn-lg" 
             data-bs-toggle="modal" 
             data-bs-target="#addModal">
                 Add Student
@@ -126,7 +126,7 @@
                     
         <td>  
                 <!-- EDIT FUNCTION TRIGGER BUTTON -->
-            <a href="" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editModal{{ row.0 }}">
+            <a href="" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#editModal{{ row.0 }}">
                 Edit
             </a>
                 <div class="modal fade" id="editModal{{ row.0 }}" tabindex="-1" aria-labelledby="editModal" aria-hidden="true">
@@ -193,7 +193,7 @@
                             </div>
                                 <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-success btn-outline-light">Update</button>
+                                <button type="submit" class="btn btn-success btn-outline-dark">Update</button>
                                 </div>
                         </form>
                 </td>
@@ -233,8 +233,8 @@
     {% block pagination %}
 <!-- PAGINATION -->
     <div class="container-fluid">
-    {% set current_page = "btn btn-primary btn-outline-light" %}
-    {% set default_page = "btn btn-light btn-outline-primary" %}
+    {% set current_page = "btn btn-secondary btn-outline-dark" %}
+    {% set default_page = "btn btn-dark btn-outline-secondary" %}
                 <nav aria-label="Page navigation">
                     <ul class="pagination">
                     {% if page == 1 %}
@@ -318,7 +318,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-warning btn-outline-light">Add</button>
+                    <button type="submit" class="btn btn-warning btn-outline-dark">Add</button>
                   </div>
             </form>
         </div>
@@ -327,6 +327,9 @@
   </div>
     </div>
     </div>
+
+    <br>
+    <br>
 
 </body>
     </html>

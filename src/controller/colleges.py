@@ -32,16 +32,12 @@ def colleges():
 
             if college_key_Code == "By College Code":
                 college_key_Code = None
-                print(f"college_key_Code has no input")
-            else:
-                print(f"college_key_Code has a value of {college_key_Code}")
-                
+                print(f"college_key_Name has no input")
+
             if college_key_Name == "By College Name":
                 college_key_Name = None
                 print(f"college_key_Name has no input")
-            else:
-                 print(f"college_key_Name has a value of {college_key_Name}")
-
+            
             if len(college_key) < 1:
                 flash("You need to input a valid search", category='error')
                 return (redirect(url_for('Clbp.colleges')))
@@ -98,7 +94,7 @@ def delete_college(collegeCode):
     try:
         college_M.delete_College(collegeCode)
         print('The college has been successfully deleted!')
-        flash("You have deleted college information. It will take effect on the courses under the deleted. ", category='secondary')
+        flash(f"You have deleted college information. It will take effect on the courses under the deleted {collegeCode}.", category='secondary')
         return redirect(url_for('Clbp.colleges'))
     except Exception as e:
         flash(f"Invalid deletion {e}", category='secondary')
