@@ -111,76 +111,35 @@ class course_M:
         db.commit()
         db.close()
         return course_M.display_Courses()
+
+
     # searching for a course from the database
     def search_Course(course_key, course_key_Name, course_key_Code, college_key_Code):
         
-        if course_key_Code == "By Course Code" and course_key_Name == "By Course Name" and college_key_Code == "By College Code":
-            print("This is state 1 for searching courses")
-            db = db_connection()
-            cursor = db.cursor()
-            cursor.execute('''SELECT * FROM course_table WHERE courseCode LIKE %s OR courseName LIKE %s OR collegeCode LIKE %s''', 
-                        (course_key, course_key, course_key))
-            search_data = cursor.fetchall()
-            cursor.close()
-            db.close()
-            return search_data
+        if course_key:
+            sqlQuery = '''SELECT * FROM course_table WHERE courseCode LIKE %s OR courseName LIKE %s OR collegeCode LIKE %s'''
+            sqlValues = (course_key, course_key, course_key)
         
-        #THIS IS FOR SEARCHING COURSES CODE WITH EXCLUSIVITY
-        elif course_key_Code != "By Course Code" and course_key_Name == "By Course Name" and college_key_Code == "By College Code":
-            print("This is state 2 for searching courses")
-            db = db_connection()
-            cursor = db.cursor()
-            cursor.execute('''SELECT * FROM course_table WHERE courseName LIKE %s OR collegeCode LIKE %s AND courseCode LIKE %s ''', 
-                        (course_key, course_key, course_key_Code))
-            search_data = cursor.fetchall()
-            cursor.close()
-            db.close()
-            return search_data
-        
-        #THIS IS FOR SEARCHING COURSES NAME WITH EXCLUSIVITY
-        elif course_key_Code == "By Course Code" and course_key_Name != "By Course Name" and college_key_Code == "By College Code":
-            print("This is state 3 for searching courses")
-            db = db_connection()
-            cursor = db.cursor()
-            cursor.execute('''SELECT * FROM course_table WHERE courseCode LIKE %s  OR collegeCode LIKE %s AND courseName LIKE %s ''', 
-                        (course_key, course_key, course_key_Name))
-            search_data = cursor.fetchall()
-            cursor.close()
-            db.close()
-            return search_data
-        
-        
-        #THIS IS FOR SEARCHING COLLEGE CODE FIELDS WITH EXCLUSIVITY
-        elif course_key_Code == "By Course Code" and course_key_Name == "By Course Name" and college_key_Code != "By College Code":
-            print("This is state 4 for searching courses")
-            db = db_connection()
-            cursor = db.cursor()
-            cursor.execute('''SELECT * FROM course_table WHERE courseCode LIKE %s  OR courseName LIKE %s AND collegeCode LIKE %s''', 
-                        (course_key, course_key, college_key_Code))
-            search_data = cursor.fetchall()
-            cursor.close()
-            db.close()
-            return search_data
-        
-        #THIS IS FOR SEARCHING FIELDS WITH EXCLUSIVITY
-        elif course_key_Code != "By Course Code" and course_key_Name != "By Course Name" and college_key_Code != "By College Code":
-            print("This is state 5 for searching courses")
-            db = db_connection()
-            cursor = db.cursor()
-            cursor.execute('''SELECT * FROM course_table WHERE courseCode LIKE %s  AND courseName LIKE %s AND collegeCode LIKE %s''', 
-                        (course_key_Code, course_key_Name, college_key_Code))
-            search_data = cursor.fetchall()
-            cursor.close()
-            db.close()
-            return search_data
+        if course_key_Code:
+            sqlQuery = '''SELECT * FROM course_table WHERE courseCode LIKE %s OR courseCode LIKE %s'''
+            sqlValues = (course_key, course_key_Code)
 
-        elif course_key_Code == "By Course Code" and course_key_Name != "By Course Name" and college_key_Code != "By College Code":
-            print("This is state 6 for searching courses")
-            db = db_connection()
-            cursor = db.cursor()
-            cursor.execute('''SELECT * FROM course_table WHERE courseCode LIKE %s OR courseName LIKE %s AND collegeCode LIKE %s''', 
-                        (course_key_Code, course_key_Name, college_key_Code))
-            search_data = cursor.fetchall()
-            cursor.close()
-            db.close()
-            return search_data
+        if course_key_Name:
+            sqlQuery = '''SELECT * FROM course_table WHERE courseCode LIKE %s OR courseName LIKE %s'''
+            sqlValues = (course_key, course_key_Name)
+        
+        if college_key_Code:
+            sqlQuery = '''SELECT * FROM course_table WHERE courseCode LIKE %s OR collegeCode LIKE %s'''
+            sqlValues = (course_key, college_key_Code)
+        
+        db = db_connection()
+        cursor = db.cursor(pymysql.cursors.DictCursor)
+        cursor.execute(sqlQuery, sqlValues)
+        search_data = cursor.fetchall()
+        cursor.close()
+        db.close()
+        return search_data
+
+
+ 
+       

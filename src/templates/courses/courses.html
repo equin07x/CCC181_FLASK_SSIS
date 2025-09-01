@@ -67,21 +67,21 @@
             id="course_key_Code"  name="course_key_Code">
                 <option selected>By Course Code</option>
                 {% for row in Courses %}
-                <option value="{{ row.2 }}">{{ row.2 }}</option>
+                <option value="{{ row['courseCode'] }}">{{ row['courseCode'] }}</option>
                 {% endfor %}
             </select>
             <select class="form-select btn-outline-secondary" aria-label="Default select example" 
             id="course_key_Name"  name="course_key_Name">
                 <option selected>By Course Name</option>
                 {% for row in Courses %}
-                <option value="{{ row.3 }}">{{ row.3 }}</option>
+                <option value="{{ row['courseName'] }}">{{ row['courseName'] }}</option>
                 {% endfor %}
             </select>
             <select class="form-select btn-outline-secondary" aria-label="Default select example" 
             id="college_key_Code"  name="college_key_Code">
                 <option selected>By College Code</option>
                 {% for row in Colleges %}
-                <option value="{{ row.1 }}">{{ row.1 }}</option>
+                <option value="{{ row['collegeCode'] }}">{{ row['collegeCode'] }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -91,7 +91,7 @@
             <button type="submit" class="btn btn-outline-secondary" id="search-button">
                 Search
             </button>
-                </div>
+           </div>
         </div>
     </div>
  </form>
@@ -117,37 +117,37 @@
                     <td>{{ row['collegeCode'] }}</td>
                     <td>
                             <!-- EDIT FUNCTION-->
-        <a href="" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#editModal{{ row.0 }}">
+        <a href="" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#editModal{{ row['course_id'] }}">
             Edit
         </a>
-            <div class="modal fade" id="editModal{{ row.0 }}" tabindex="-1" aria-labelledby="editModal" aria-hidden="true">
+            <div class="modal fade" id="editModal{{ row['course_id'] }}" tabindex="-1" aria-labelledby="editModal" aria-hidden="true">
                 <div class="modal-dialog  modal-dialog-centered">
                     <div class="modal-content">
                     <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="editModal{{ row.0 }}">Edit Course Information</h1>
+                    <h1 class="modal-title fs-5" id="editModal{{ row['course_id'] }}">Edit Course Information</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
                     <div class="modal-body">
                         <form action="{{ url_for('Cbp.edit_course') }}" method="POST">
                             <div class="form-group">
-                                <input type="hidden" name="course_id" value="{{ row.0 }}" class="form-control" id="course_id">
+                                <input type="hidden" name="course_id" value="{{ row['course_id'] }}" class="form-control" id="course_id">
                                 </div>
 
                                 <div class="form-group">
                                 <label for="courseCodeEdit" >Update Course Code </label>
-                                <input type="text"  name="courseCodeEdit" value="{{ row.2 }}" class="form-control" id="courseCodeEdit" placeholder="Enter New Course Code">
+                                <input type="text"  name="courseCodeEdit" value="{{ row['courseCode'] }}" class="form-control" id="courseCodeEdit" placeholder="Enter New Course Code">
                                 </div>
                                 <div class="form-group">
                                     <label for="courseNameEdit">Update Course Name </label>
-                                    <input type="text" name="courseNameEdit" value="{{ row.3 }}" class="form-control" id="courseNameEdit" placeholder="Enter New Course Name">
+                                    <input type="text" name="courseNameEdit" value="{{ row['courseName'] }}" class="form-control" id="courseNameEdit" placeholder="Enter New Course Name">
                                 </div>
                                 <label for="collegeCodeEdit">Update College Code </label> 
                                 <div class="form-group">
                                     <select class="form-select" aria-label="Default select example" id="collegeCode"  name="collegeCodeEdit">
-                                        <option selected>{{ row.4 }}</option>
+                                        <option selected>{{ row['collegeCode'] }}</option>
                                         {% for row in Colleges %}
-                                        <option value="{{ row.1 }}">{{ row.1 }}</option>
+                                        <option value="{{ row['collegeCode'] }}">{{ row['collegeCode'] }}</option>
                                         {% endfor %}
                                     </select>
                                     </div>
