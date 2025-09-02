@@ -20,7 +20,9 @@ def courses():
 
     if request.method == 'GET':
         course_data = course_M.display_Courses()
-       
+
+        last_index_course = course_data.reverse()
+        print(last_index_course)     
         college_data = course_M.display_Colleges()
         number = 0
         for courses in course_data:
@@ -129,6 +131,7 @@ def course_search():
         if len(course_key) < 1:
             flash("You need to input a valid search", category='error')
             return (redirect(url_for('Cbp.courses')))
+        
         elif len(course_key) > 1:
         
                 search_data = course_M.search_Course(course_key, course_key_Name, course_key_Code, college_key_Code)
