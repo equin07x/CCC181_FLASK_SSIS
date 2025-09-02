@@ -88,6 +88,10 @@ def add_course():
             
         unique_courseCode = course_M.check_courseCode(courseCode)
 
+        # Implement add function for proper string formatting.
+        capt_courseCode = courseCode.upper()
+        capt_courseName = courseName.title().replace('Of', 'of').replace("In", "in")
+
         if len(courseCode) < 1:
             flash("You need to input valid course code!", category='error')
         elif len(courseName) < 1:
@@ -95,7 +99,7 @@ def add_course():
         elif unique_courseCode:
             flash("Course already exists!", category='error')
         else:
-            course_M.add_Course(courseCode, courseName, collegeCode)
+            course_M.add_Course(capt_courseCode, capt_courseName, collegeCode)
             flash("Successfully added the course information!", category="success")
     return redirect(url_for('Cbp.courses'))
 
