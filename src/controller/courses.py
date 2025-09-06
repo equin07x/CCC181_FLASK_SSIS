@@ -47,7 +47,7 @@ def courses():
         return render_template('/courses/courses.html', Courses=courses_on_Page, Colleges=college_data,
                            page = page, number_of_Pages = page_Number, total_Pages = total_Pages)
 
-      #For editing/updating the course information
+#For editing/updating the course information
 @courses_bp.route('/edit_course', methods = ["POST"])
 def edit_course():
     if request.method == "POST":
@@ -74,7 +74,10 @@ def edit_course():
             flash("Course already exists!", category='error')
             
         else:
-            course_M.edit_Course(courseCodeEdit, courseNameEdit, collegeCodeEdit, course_id)
+            # Implement add function for proper string formatting.
+            capt_courseCodeEdit = courseCodeEdit.upper()
+            capt_courseNameEdit = courseNameEdit.title().replace('Of', 'of').replace("In", "in")
+            course_M.edit_Course(capt_courseCodeEdit, capt_courseNameEdit, collegeCodeEdit, course_id)
             flash("you have successfully edited the course information!", category='success')
     return redirect(url_for('Cbp.courses'))
 
@@ -114,7 +117,7 @@ def delete_course(courseCode):
 @courses_bp.route('/course_search', methods=['GET'])
 def course_search():
     try:
-        course_selection = course_M.display_Colleges()
+        course_selection = course_M.display_Courses()
         college_selection = course_M.display_Colleges()
          #GENERAL SEARCH
         course_key = request.args.get('course_key', '')
@@ -167,6 +170,8 @@ def course_search():
                 prev_url = url_for('Cbp.course_search', course_key_Code=course_key_Code, course_key_Name=course_key_Name,
                             college_key_Code=college_key_Code, course_key=course_key, page=page-1) if page > 1 else None
                 
+
+                #Edit the render page for searching courses.
                 return render_template('/courses/course_results.html', Courses = courses_on_Page, course_select = course_selection, college_select = college_selection, 
                 page = page, number_of_Pages = page_Number, total_Pages = total_Pages,
                             next_page = next_url, prev_page = prev_url)
