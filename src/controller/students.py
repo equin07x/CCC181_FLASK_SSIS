@@ -126,83 +126,91 @@ def student_search():
 @students_bp.route('/edit_student', methods=["POST"])
 def edit_students():
     if request.method == "POST":
-        print('successfully edited the select item')
-        student_id = request.form['student_id']
-        firstNameEdit = request.form['firstNameEdit']
-        lastNameEdit =  request.form['lastNameEdit']
-        courseCodeEdit = request.form['courseCodeEdit']
-        yearLevelEdit = request.form['yearLevelEdit']
-        genderEdit = request.form['genderEdit']
-        
-        #taking in the uplaoded image from the front-end.
-        image = request.files['imageEdit']
-        file_size = len(image.read())
-        image.seek(0)
-        
-        if len(firstNameEdit) < 2:
-            flash("You need to input valid first name!", category='error')
-        elif len(lastNameEdit) < 2:
-            flash("You need to input valid last name!", category='error')
-        elif file_size > 5 * 1024 * 1024:
-            flash("The image uploaded exceeds the maximum file size!", category='error')
-        
-        elif not image:
-            print("image has not been changed")
-            student_M.edit_Student(firstNameEdit, lastNameEdit, 
-                            courseCodeEdit, yearLevelEdit, genderEdit, student_id)
-            flash("you have successfully edited the student information!", category='success')
-        else:
-            uploaded_file = upload(image)
-            image_id = CloudinaryImage(uploaded_file['public_id']).build_url(width = 50, height = 50, crop = "fill")
-            print(image_id)
-            student_M.edit_Student_p(firstNameEdit, lastNameEdit, 
-                            courseCodeEdit, yearLevelEdit, genderEdit, image_id, student_id)
-            flash("you have successfully edited the student information!", category='success')
-    return redirect(url_for('Sbp.students'))
+        try:
+            print('successfully edited the select item')
+            student_id = request.form['student_id']
+            firstNameEdit = request.form['firstNameEdit']
+            lastNameEdit =  request.form['lastNameEdit']
+            courseCodeEdit = request.form['courseCodeEdit']
+            yearLevelEdit = request.form['yearLevelEdit']
+            genderEdit = request.form['genderEdit']
+            
+            #taking in the uplaoded image from the front-end.
+            image = request.files['imageEdit']
+            file_size = len(image.read())
+            image.seek(0)
+            
+            if len(firstNameEdit) < 2:
+                flash("You need to input valid first name!", category='error')
+            elif len(lastNameEdit) < 2:
+                flash("You need to input valid last name!", category='error')
+            elif file_size > 5 * 1024 * 1024:
+                flash("The image uploaded exceeds the maximum file size!", category='error')
+            
+            elif not image:
+                print("image has not been changed")
+                student_M.edit_Student(firstNameEdit, lastNameEdit, 
+                                courseCodeEdit, yearLevelEdit, genderEdit, student_id)
+                flash("you have successfully edited the student information!", category='success')
+            else:
+                uploaded_file = upload(image)
+                image_id = CloudinaryImage(uploaded_file['public_id']).build_url(width = 50, height = 50, crop = "fill")
+                print(image_id)
+                student_M.edit_Student_p(firstNameEdit, lastNameEdit, 
+                                courseCodeEdit, yearLevelEdit, genderEdit, image_id, student_id)
+                flash("you have successfully edited the student information!", category='success')
+            return redirect(url_for('Sbp.students'))
+
+        except Exception as e:
+            flash(f"Error occured! {e}", category="warning")
 
 #For adding a new student information
 @students_bp.route('/add_students', methods=["POST"])
 def add_student():
-    if request.method == "POST": 
-        idNumber = request.form['idNumber']
-        firstName = request.form['firstName']
-        lastName =  request.form['lastName']
-        courseCode = request.form['courseCode']
-        yearLevel = request.form['yearLevel']
-        gender = request.form['gender']
-        
-        student_idNumber = student_M.check_idNumber_Dict(idNumber)
-        #taking in the uplaoded image from the front-end.
-        image = request.files['image_upd']
-        file_size = len(image.read())
-        image.seek(0)
-             
-        if len(idNumber) < 1:
-            flash("You need to input valid ID Number!", category='error')
-        elif len(firstName) < 1:
-            flash("You need to input valid first name!", category='error')
-        elif len(lastName) < 1:
-            flash("You need to input valid last name!", category='error')
+    if request.method == "POST":
+        try: 
+            idNumber = request.form['idNumber']
+            firstName = request.form['firstName']
+            lastName =  request.form['lastName']
+            courseCode = request.form['courseCode']
+            yearLevel = request.form['yearLevel']
+            gender = request.form['gender']
             
-        elif student_idNumber:
-            flash("ID Number Already Exists!", category='error')
-            
-        elif file_size > 5 * 1024 * 1024:
-            flash("The image uploaded exceeds the maximum file size!", category='error')
-            
-        elif not image:
-            image_id = ""
-            student_M.add_Students_p(idNumber, firstName, lastName, courseCode, yearLevel, gender, image_id)
-            flash("Successfully added the student information!", category='success')
-            
-        else:
-            uploaded_file = upload(image)
-            image_id = CloudinaryImage(uploaded_file['public_id']).build_url(width = 50, height = 50, crop = "fill")
-            print(image_id)
-            student_M.add_Students_p(idNumber, firstName, lastName, courseCode, yearLevel, gender, image_id)
-            flash("Successfully added the student information!", category='success')
-            print("You have successfully added a student")
-    return redirect(url_for('Sbp.students'))
+            student_idNumber = student_M.check_idNumber_Dict(idNumber)
+            #taking in the uplaoded image from the front-end.
+            image = request.files['image_upd']
+            file_size = len(image.read())
+            image.seek(0)
+                 
+            if len(idNumber) < 1:
+                flash("You need to input valid ID Number!", category='error')
+            elif len(firstName) < 1:
+                flash("You need to input valid first name!", category='error')
+            elif len(lastName) < 1:
+                flash("You need to input valid last name!", category='error')
+                
+            elif student_idNumber:
+                flash("ID Number Already Exists!", category='error')
+                
+            elif file_size > 5 * 1024 * 1024:
+                flash("The image uploaded exceeds the maximum file size!", category='error')
+                
+            elif not image:
+                image_id = ""
+                student_M.add_Students_p(idNumber, firstName, lastName, courseCode, yearLevel, gender, image_id)
+                flash("Successfully added the student information!", category='success')
+                
+            else:
+                uploaded_file = upload(image)
+                image_id = CloudinaryImage(uploaded_file['public_id']).build_url(width = 50, height = 50, crop = "fill")
+                print(image_id)
+                student_M.add_Students_p(idNumber, firstName, lastName, courseCode, yearLevel, gender, image_id)
+                flash("Successfully added the student information!", category='success')
+                print("You have successfully added a student")
+            return redirect(url_for('Sbp.students'))
+
+        except Exception as e:
+            flash(f"Error occured {e}", category="warning")
 
 #For deleting a selected student
 @students_bp.route('/delete_student/<string:students_id>', methods=["GET"])

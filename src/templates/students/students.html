@@ -61,6 +61,7 @@
     {% endwith%}
     
     <!--SEARCH FUNCTION FOR STUDENTS TABLE-->
+    {% block search_function %}
     <div class="container">
         <form action="{{ url_for('Sbp.student_search') }}" method="GET">
             <label>Search Filters:</label>
@@ -92,7 +93,10 @@
                 </button>
             </div>
      </form>
+     {% endblock %}
     <!--SEARCH FUNCTION ENDS HERE-->
+   
+   
     {% block students_table %}
     <!-- DISPLAYING THE STUDENTS TABLE-->
     <div class="container-sm">
@@ -126,39 +130,39 @@
                     
         <td>  
                 <!-- EDIT FUNCTION TRIGGER BUTTON -->
-            <a href="" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#editModal{{ row.0 }}">
+            <a href="" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#editModal{{ row['students_id'] }}">
                 Edit
             </a>
-                <div class="modal fade" id="editModal{{ row.0 }}" tabindex="-1" aria-labelledby="editModal" aria-hidden="true">
+                <div class="modal fade" id="editModal{{ row['students_id'] }}" tabindex="-1" aria-labelledby="editModal" aria-hidden="true">
                     <div class="modal-dialog  modal-dialog-centered">
                         <div class="modal-content">
                         <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="editModal{{ row.0 }}">Edit Student Information</h1>
+                        <h1 class="modal-title fs-5" id="editModal{{ row['students_id'] }}">Edit Student Information</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
                 <div class="modal-body">
                     <form action="{{ url_for('Sbp.edit_students') }}" method="POST" enctype="multipart/form-data">
                         <div class="form-group">
-                            <input type="hidden" name="student_id" value="{{ row.0 }}" class="form-control" id="student_id">
+                            <input type="hidden" name="student_id" value="{{ row['idNumber'] }}" class="form-control" id="student_id">
                             </div>
                             <div class="form-group">
                             <label for="idNumberEdit">Update ID Number </label>
-                            <input type="text" name="idNumberEdit" value="{{ row.1 }}" class="form-control" id="idNumberEdit" placeholder="Enter New ID Nubmer" oninput="formatInput(event)" disabled>
+                            <input type="text" name="idNumberEdit" value="{{ row['idNumber'] }}" class="form-control" id="idNumberEdit" placeholder="Enter New ID Nubmer" oninput="formatInput(event)" disabled>
                             </div>
                             <div class="form-group">
                             <label for="firstNameEdit">Update First Name </label>
-                            <input type="text" name="firstNameEdit" value="{{ row.2 }}" class="form-control" id="firstNameEdit" placeholder="Enter New First Name">
+                            <input type="text" name="firstNameEdit" value="{{ row['firstName'] }}" class="form-control" id="firstNameEdit" placeholder="Enter New First Name">
                             </div>
                             <div class="form-group">
                                 <label for="lastNameEdit">Update Last Name </label>
-                                <input type="text" name="lastNameEdit" value="{{ row.3 }}" class="form-control" id="lastNameEdit" placeholder="Enter New Last Name">
+                                <input type="text" name="lastNameEdit" value="{{ row['lastName'] }}" class="form-control" id="lastNameEdit" placeholder="Enter New Last Name">
                             </div>  
                             <label for="courseCodeEdit">Update College Code </label> 
                                 <div class="form-group">
                                     <select class="form-select" aria-label="Default select example" id="courseCodeEdit"  name="courseCodeEdit">
-                                        <option selected>{{ row.4}} </option>
+                                        <option selected>{{ row['courseCode']}} </option>
                                         {% for row in Courses %}
-                                        <option value="{{ row.2 }}">{{ row.2 }}</option>
+                                        <option value="{{ row['courseCode'] }}">{{ row['courseCode'] }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -166,7 +170,7 @@
                             <label for="yearLevelEdit">Update Year Level </label> 
                             <div class="form-group">
                                 <select class="form-select" aria-label="Default select example" id="yearLevelEdit"  name="yearLevelEdit">
-                                    <option selected>{{ row.6 }}</option>
+                                    <option selected>{{ row['yearLevel'] }}</option>
                                     <option value="1st-Year">1st-Year</option>
                                     <option value="2nd-Year">2nd-Year</option>
                                     <option value="3rd-Year">3rd-Year</option>
@@ -175,10 +179,10 @@
                             </div>
 
                                 
-                                <label for="genderEdit">Update Year Level </label> 
+                                <label for="genderEdit">Update Gender </label> 
                                 <div class="form-group">
                                     <select class="form-select" aria-label="Default select example" id="genderEdit"  name="genderEdit">
-                                        <option selected>{{ row.7 }}</option>
+                                        <option selected>{{ row['gender'] }}</option>
                                         <option value="Female">Female</option>
                                         <option value="Male">Male</option>
                                     </select>
@@ -200,22 +204,22 @@
             
                 <!--DELETE FUNCTION-->
             <td>
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ row.0 }}">
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ row['students_id'] }}">
                     Delete
                 </button>
                 
-                <div class="modal fade" id="deleteModal{{ row.0 }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal fade" id="deleteModal{{ row['students_id'] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                        <h5 class="modal-title" id="deleteModal{{ row.0 }}">Deletion</h5>
+                        <h5 class="modal-title" id="deleteModal{{ row['students_id'] }}">Deletion</h5>
                         </div>
                         <div class="modal-body">
                         Are you sure you want to delete this student information?
                         </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <a href="/delete_student/{{ row.0 }}" class="btn btn-danger" data-title="Delete Student?">    
+                        <a href="/delete_student/{{ row['students_id'] }}" class="btn btn-danger" data-title="Delete Student?">    
                             Confirm
                             </a>
                         </div>
@@ -230,6 +234,7 @@
     </div>
     {% endblock %}
     
+
     {% block pagination %}
 <!-- PAGINATION -->
     <div class="container-fluid">
