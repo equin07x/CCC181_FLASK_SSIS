@@ -23,7 +23,12 @@ students_bp = Blueprint("Sbp", __name__,  template_folder='/templates')
 def students():
     #displays all of the students
     students = student_M.display_Students()
-   
+    last_index = students.reverse()
+    # course_college = student_M.display_course_college()
+
+    #if students['courseCode'] == 'N/A':
+    #   pass
+
     number = 0
     #sorted_students = dict(reversed(students.items()))
     for student in students:
@@ -162,7 +167,7 @@ def edit_students():
             return redirect(url_for('Sbp.students'))
 
         except Exception as e:
-            flash(f"Error occured! {e}", category="warning")
+            flash(f"Error occured! {e}", category="secondary")
 
 #For adding a new student information
 @students_bp.route('/add_students', methods=["POST"])
@@ -210,15 +215,19 @@ def add_student():
             return redirect(url_for('Sbp.students'))
 
         except Exception as e:
-            flash(f"Error occured {e}", category="warning")
+            flash(f"Error occured {e}", category="secondary")
 
 #For deleting a selected student
 @students_bp.route('/delete_student/<string:students_id>', methods=["GET"])
 def delete_student(students_id):
-    print('The student has been successfully deleted!')
-    flash("you have deleted a student information", category='secondary')
-    student_M.delete_Student(students_id)
-    return redirect(url_for('Sbp.students'))
+    try:
+        print('The student has been successfully deleted!')
+        flash("you have deleted a student information", category='secondary')
+        student_M.delete_Student(students_id)
+        return redirect(url_for('Sbp.students'))
+    
+    except Exception as e:
+        flash(f"Error occured {e}", category="secondary")
 
 #<-------------------------------------------------->#
 #THE CODES RELATED FOR HANDLING STUDENTS ENDS IN HERE.#

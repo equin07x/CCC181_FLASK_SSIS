@@ -22,7 +22,6 @@ def courses():
         course_data = course_M.display_Courses()
 
         last_index_course = course_data.reverse()
-        print(last_index_course)     
         college_data = course_M.display_Colleges()
         number = 0
         for courses in course_data:

@@ -69,7 +69,7 @@
             <select class="form-select btn-outline-secondary" aria-label="Default select example" id="course_key_Code"  name="course_key_Code">
                 <option selected>By Course Code</option>
                 {% for row in Courses %}
-                <option value="{{ row.2 }}">{{ row.2 }}</option>
+                <option value="{{ row['courseCode'] }}">{{ row['courseCode'] }}</option>
                 {% endfor %}
             </select>
             <select class="form-select btn-outline-secondary" aria-label="Default select example" id="student_key_Level"  name="student_key_Level">
@@ -124,7 +124,11 @@
                     <td>{{ row['idNumber'] }}</td>
                     <td>{{ row['firstName'] }}</td>
                     <td>{{ row['lastName'] }}</td>
+
+                 <!--{% for row in courses_colleges %}-->   
                     <td>{{ row['courseCode'] }}</td>
+                 <!--{% endfor %}-->
+                 
                     <td>{{ row['yearLevel'] }}</td>
                     <td>{{ row['gender'] }}</td>
                     
@@ -294,7 +298,7 @@
                 <select class="form-select" aria-label="Default select example" id="courseCode"  name="courseCode">
                     <option selected>Select a Course</option>
                     {% for row in Courses %}
-                    <option value="{{ row.2 }}">{{ row.2 }}</option>
+                    <option value="{{ row['courseCode'] }}">{{ row['courseCode'] }}</option>
                     {% endfor %}
                 </select>
                 </div>
@@ -307,7 +311,7 @@
                         <option value="4th-Year">4th-Year</option>
                     </select>
                 </div> 
-                <label for="gender">Gender </label> 
+                <label for="gender">Gender</label> 
                 <div class="form-group">
                     <select class="form-select" aria-label="Default select example" id="gender"  name="gender">
                         <option selected>Male</option>
@@ -339,7 +343,7 @@
 </body>
     </html>
 
-    <script>
+    <!-- <script>
         function formatInput(event) {
             let input = event.target.value;
 
@@ -357,4 +361,4 @@
             // Set the formatted value back to the input field
             event.target.value = input;
         }
-    </script>
+    </script> -->

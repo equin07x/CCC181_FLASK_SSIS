@@ -30,8 +30,8 @@ class student_M:
         students = cursor.fetchall()
         db.close()
         cursor.close()
-        
         return students
+
     #idNumber Checking
     def check_idNumber_Dict(idNumber):
         db = db_connection()
@@ -42,6 +42,7 @@ class student_M:
         db.close()
         cursor.close()
         return idNumber_unique
+
     # Display all courses
     def display_Courses():
         db = db_connection()
@@ -52,6 +53,19 @@ class student_M:
         db.close()
         cursor.close()
         return courses
+
+    # Display courses alongside colleges
+    def display_course_college():
+        db = db_connection()
+        cursor = db.cursor()
+        SqlQuery = '''SELECT course_table.courseCode, college_table.collegeName 
+        FROM course_table RIGHT JOIN college_table ON college_table.collegeCode = course_table.collegeCode'''
+        cursor.execute(SqlQuery)
+        courses_colleges = cursor.fetchall()
+        db.close()
+        cursor.close()
+        return courses_colleges
+
     # Add student into the database
     def add_Students(idNumber, firstName, lastName, courseCode, yearLevel, gender):
         db = db_connection()
