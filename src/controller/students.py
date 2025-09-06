@@ -186,7 +186,13 @@ def add_student():
             image = request.files['image_upd']
             file_size = len(image.read())
             image.seek(0)
-                 
+
+
+            capt_firstName = firstName.upper()
+            capt_lastName = lastName.upper()
+
+            pattern = r"^\d{4}-\d{4}$"
+
             if len(idNumber) < 1:
                 flash("You need to input valid ID Number!", category='error')
             elif len(firstName) < 1:
@@ -199,17 +205,20 @@ def add_student():
                 
             elif file_size > 5 * 1024 * 1024:
                 flash("The image uploaded exceeds the maximum file size!", category='error')
+            
+            elif not re.findall(pattern, idNumber):
+                flash(f"{idNumber} is not a valid ID Number.", category="error")
                 
             elif not image:
                 image_id = ""
-                student_M.add_Students_p(idNumber, firstName, lastName, courseCode, yearLevel, gender, image_id)
+                student_M.add_Students_p(idNumber, capt_firstName, capt_lastName, courseCode, yearLevel, gender, image_id)
                 flash("Successfully added the student information!", category='success')
                 
             else:
                 uploaded_file = upload(image)
                 image_id = CloudinaryImage(uploaded_file['public_id']).build_url(width = 50, height = 50, crop = "fill")
                 print(image_id)
-                student_M.add_Students_p(idNumber, firstName, lastName, courseCode, yearLevel, gender, image_id)
+                student_M.add_Students_p(idNumber, capt_firstName, capt_lastName, courseCode, yearLevel, gender, image_id)
                 flash("Successfully added the student information!", category='success')
                 print("You have successfully added a student")
             return redirect(url_for('Sbp.students'))
