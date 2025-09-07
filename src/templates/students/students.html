@@ -19,12 +19,24 @@
     <br>
     <div class="container-fluid">
         <div class="row gx-0">   
-        <div class="col">
+        <div class="col col-1">
             <a type="button" class="btn btn-light" href="home">
                 Back
             </a>
         </div>
-         
+
+        <div class="col col-1">
+            <a type="button" class="btn btn-secondary" href="courses">
+                Courses
+            </a>
+        </div>
+
+        <div class="col col-8">
+            <a type="button" class="btn btn-secondary" href="colleges">
+                Colleges
+            </a>
+        </div>
+
           <div class="col-6 col-md-2">
             <button type="submit" class="btn btn-warning btn-outline-dark btn-lg" 
             data-bs-toggle="modal" 
@@ -145,7 +157,7 @@
                 <div class="modal-body">
                     <form action="{{ url_for('Sbp.edit_students') }}" method="POST" enctype="multipart/form-data">
                         <div class="form-group">
-                            <input type="hidden" name="student_id" value="{{ row['idNumber'] }}" class="form-control" id="student_id">
+                            <input type="hidden" name="student_id" value="{{ row['students_id'] }}" class="form-control" id="student_id">
                             </div>
                             <div class="form-group">
                             <label for="idNumberEdit">Update ID Number </label>
