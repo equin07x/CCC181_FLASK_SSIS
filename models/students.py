@@ -132,56 +132,141 @@ class student_M:
         cursor.close()
         return student_M.display_Students()
 
-    #  Search a student from the database
-    def search_student_2(student_key_1, student_key_2, course_key_Code, student_key_Level, student_key_Gender):
+
+    def search_Student(student_key, course_key_Code, student_key_Level, student_key_Gender):
         
-        if course_key_Code == "By Course Code" and student_key_Level == "By Year Level" and student_key_Gender == "By Gender":
-                db = db_connection()
-                cursor = db.cursor()
-                print("This is the double string of the student search results.")
-                SqlQuery = '''
-                        SELECT students.students_id ,students.image_id, students.idNumber, students.firstName, students.lastName, 
-                        students.courseCode, students.yearLevel, students.gender FROM students WHERE students.idNumber LIKE %s 
-                        OR students.firstName LIKE %s OR students.lastName LIKE %s'''
-                SqlValues = (student_key_1, student_key_1, student_key_2)
-                cursor.execute(SqlQuery, SqlValues)
-                search_data = cursor.fetchall()
-                db.close()
-                cursor.close()
-                return search_data
+        student_keys = student_key.title().strip().split()
+        
+        if len(student_keys) == 1:
+            print(f"Search Item: {student_keys[0]}")
+            SqlQuery = '''
+                    SELECT * FROM students WHERE
+                    (firstName LIKE %s OR lastName LIKE %s OR idNumber LIKE %s)'''
+            SqlValues = (student_keys[0], student_keys[0], student_keys[0])
 
-
-
-    def search_Student(student_key_1, course_key_Code, student_key_Level, student_key_Gender):
-   
-        if student_key_1:
-                print(f"Search item: {student_key_1}")
+        if len(student_keys) == 2:
+            print(f"Search Item: {student_keys[0]} {student_keys[1]}")
+            SqlQuery = '''
+                    SELECT * FROM students WHERE
+                    (firstName LIKE %s OR lastName LIKE %s OR idNumber LIKE %s)'''
+            SqlValues = (student_keys[0], student_keys[1], student_keys[0])
+        
+        # Course Code constraint
+        if course_key_Code and len(student_keys) == 1:
+                print(f"Search Filter: {course_key_Code}\nSearch Input: {student_keys[0]}")
                 SqlQuery = '''
-                        SELECT students.students_id, students.image_id, students.idNumber, students.firstName, students.lastName, 
-                        students.courseCode, college_table.collegeName, students.yearLevel ,students.gender FROM students 
-                        JOIN course_table ON students.courseCode = course_table.courseCode
-                        JOIN college_table ON course_table.collegeCode = college_table.collegeCode 
-                        WHERE  students.idNumber LIKE %s 
-                                OR students.firstName LIKE %s
-                                OR students.lastName LIKE %s
-                                OR students.courseCode LIKE %s
-                                OR students.yearLevel LIKE %s
-                                OR students.gender LIKE %s'''
-                SqlValues = (student_key_1, student_key_1, student_key_1, 
-                                    student_key_1, student_key_1, student_key_1)
+                        SELECT * FROM students WHERE 
+                        (firstName LIKE %s AND courseCode LIKE %s) OR
+                        (lastName LIKE %s AND courseCOde LIKE %s)'''
+                SqlValues = (student_keys[0], course_key_Code, student_keys[0], course_key_Code)
                 
-        if course_key_Code:
-                print(f"Search Filter: {course_key_Code}")
+        if course_key_Code and len(student_keys) == 2:
+                print(f"Search Filter: {course_key_Code}\nSearch Input: {student_keys[0]} {student_keys[1]}")
                 SqlQuery = '''
-                        SELECT * FROM students WHERE firstName LIKE %s OR courseCode LIKE %s'''
-                SqlValues = (student_key_1, course_key_Code)
+                        SELECT * FROM students WHERE 
+                        (firstName LIKE %s AND lastName LIKE %s AND courseCode LIKE %s)'''
+                SqlValues = (student_keys[0], student_keys[1], course_key_Code)
+        
+        # Year Level constraint
+        if student_key_Level and len(student_keys) == 1:
+                print(f"Search Filter: {student_key_Level}\nSearch Input: {student_keys[0]}")
+                SqlQuery = '''
+                        SELECT * FROM students WHERE 
+                        (firstName LIKE %s AND yearLevel LIKE %s) OR
+                        (lastName LIKE %s AND yearLevel LIKE %s)'''
+                SqlValues = (student_keys[0], student_key_Level, student_keys[0], student_key_Level)
                 
+        if student_key_Level and len(student_keys) == 2:
+                print(f"Search Filter: {student_key_Level}\nSearch Input: {student_keys[0]} {student_keys[1]}")
+                SqlQuery = '''
+                        SELECT * FROM students WHERE 
+                        (firstName LIKE %s AND lastName LIKE %s AND yearLevel LIKE %s)'''
+                SqlValues = (student_keys[0], student_keys[1], student_key_Level)        
                 
-#        elif course_key_Code and student_key_2:
-#                print(f"Search Filter: {course_key_Code}")
-#                SqlQuery = '''
-#                        SELECT * FROM students WHERE firstName LIKE %s OR lastName LIKE %s OR courseCode LIKE %s'''
-#                SqlValues = (student_key_1, student_key_2, course_key_Code)
+        
+        # Gender constraint
+        if student_key_Gender and len(student_keys) == 1:
+                print(f"Search Filter: {student_key_Gender}\nSearch Input: {student_keys[0]}")
+                SqlQuery = '''
+                        SELECT * FROM students WHERE 
+                        (firstName LIKE %s AND gender LIKE %s) OR
+                        (lastName LIKE %s AND gender LIKE %s)'''
+                SqlValues = (student_keys[0], student_key_gender, student_keys[0], student_key_gender)
+                
+        if student_key_Gender and len(student_keys) == 2:
+                print(f"Search Filter: {student_key_Gender}\nSearch Input: {student_keys[0]} {student_keys[1]}")
+                SqlQuery = '''
+                        SELECT * FROM students WHERE 
+                        (firstName LIKE %s AND lastName LIKE %s AND gender LIKE %s)'''
+                SqlValues = (student_keys[0], student_keys[1], student_key_Gender)
+
+        # Course Code and Year Level constraint
+        if course_key_Code and student_key_Level and len(student_keys) == 1:
+                print(f"Search Filter: {course_key_Code} + {student_key_Level}\nSearch Input: {student_keys[0]}")
+                SqlQuery = '''
+                        SELECT * FROM students WHERE 
+                        (firstName LIKE %s AND courseCode LIKE %s AND yearLevel LIKE %s) OR
+                        (lastName LIKE %s AND courseCOde LIKE %s  AND yearLevel LIKE %s)'''
+                SqlValues = (student_keys[0], course_key_Code, student_key_Level,
+                            student_keys[0], course_key_Code, student_key_Level)
+                
+        if course_key_Code and student_key_Level and len(student_keys) == 2:
+                print(f"Search Filter: {course_key_Code} + {student_key_Level}\nSearch Input: {student_keys[0]} {student_keys[1]}")
+                SqlQuery = '''
+                        SELECT * FROM students WHERE 
+                        (firstName LIKE %s AND lastName LIKE %s AND courseCode LIKE %s OR yearLevel LIKE %s)'''
+                SqlValues = (student_keys[0], student_keys[1], course_key_Code, student_key_Level)
+        
+        # Course Code and Gender constraint
+        if course_key_Code and student_key_Gender and len(student_keys) == 1:
+                print(f"Search Filter: {course_key_Code} + {student_key_Gender}\nSearch Input: {student_keys[0]}")
+                SqlQuery = '''
+                        SELECT * FROM students WHERE 
+                        (firstName LIKE %s AND courseCode LIKE %s AND gender LIKE %s) OR
+                        (lastName LIKE %s AND courseCOde LIKE %s  AND gender LIKE %s)'''
+                SqlValues = (student_keys[0], course_key_Code, student_key_Gender,
+                            student_keys[0], course_key_Code, student_key_Gender)
+                
+        if course_key_Code and student_key_Gender and len(student_keys) == 2:
+                print(f"Search Filter: {course_key_Code} + {student_key_Gender}\nSearch Input: {student_keys[0]} {student_keys[1]}")
+                SqlQuery = '''
+                        SELECT * FROM students WHERE 
+                        (firstName LIKE %s AND lastName LIKE %s AND courseCode LIKE %s AND gender LIKE %s)'''
+                SqlValues = (student_keys[0], student_keys[1], course_key_Code, student_key_Gender)
+        
+       # Year Level and Gender constraint
+        if student_key_Level and student_key_Gender and len(student_keys) == 1:
+                print(f"Search Filter: {student_key_Level} + {student_key_Gender}\nSearch Input: {student_keys[0]}")
+                SqlQuery = '''
+                        SELECT * FROM students WHERE 
+                        (firstName LIKE %s AND yearLevel LIKE %s AND gender LIKE %s) OR
+                        (lastName LIKE %s AND yearLevel LIKE %s  AND gender LIKE %s)'''
+                SqlValues = (student_keys[0], student_key_Level, student_key_Gender,
+                            student_keys[0], student_key_Level, student_key_Gender)
+                
+        if student_key_Level and student_key_Gender and len(student_keys) == 2:
+                print(f"Search Filter: {student_key_Level} + {student_key_Gender}\nSearch Input: {student_keys[0]} {student_keys[1]}")
+                SqlQuery = '''
+                        SELECT * FROM students WHERE 
+                        (firstName LIKE %s AND lastName LIKE %s AND yearLevel LIKE %s AND gender LIKE %s)'''
+                SqlValues = (student_keys[0], student_keys[1], student_key_Level, student_key_Gender)
+        
+        # Course Code, Year Level, and Gender constaint
+        if course_key_Code and student_key_Level and student_key_Gender and len(student_keys) == 1:
+                print(f"Search Filter: {course_key_Code} + {student_key_Level} + {student_key_Gender}\nSearch Input: {student_keys[0]}")
+                SqlQuery = '''
+                        SELECT * FROM students WHERE 
+                        (firstName LIKE %s AND courseCode LIKE %s AND yearLevel LIKE %s AND gender LIKE %s) OR
+                        (lastName LIKE %s AND courseCode LIKE %s AND yearLevel LIKE %s  AND gender LIKE %s)'''
+                SqlValues = (student_keys[0], course_key_Code, student_key_Level, student_key_Gender,
+                            student_keys[0], course_key_Code, student_key_Level, student_key_Gender)
+                
+        if course_key_Code and student_key_Level and student_key_Gender and len(student_keys) == 2:
+                print(f"Search Filter: {course_key_Code} + {student_key_Level} + {student_key_Gender}\nSearch Input: {student_keys[0]} {student_keys[1]}")
+                SqlQuery = '''
+                        SELECT * FROM students WHERE 
+                        (firstName LIKE %s AND lastName LIKE %s AND courseCode LIKE %s AND yearLevel LIKE %s AND gender LIKE %s)'''
+                SqlValues = (student_keys[0], student_keys[1], course_key_Code, student_key_Level, student_key_Gender)
         
         db = db_connection()
         cursor = db.cursor()

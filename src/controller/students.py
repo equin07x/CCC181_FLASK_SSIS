@@ -81,14 +81,9 @@ def student_search():
 
     if student_key_Gender == 'By Gender':
         student_key_Gender = None
-
-    pattern = r" "
-    
+        
     try:
         if student_key:
-            split_string = student_key.split()
-            student_key_1 = split_string[0]
-            student_key_2 = split_string[1]
             search_data = student_M.search_Student(student_key, 
             course_key_Code, student_key_Level, student_key_Gender)
             
@@ -118,7 +113,7 @@ def student_search():
                           student_key_Gender=student_key_Gender, student_key=student_key, page=page-1) if page > 1 else None
     except Exception as e:
             print(e)
-            flash("You need to input a valid search", category='error')
+            flash(f"Error occured {e}", category='error')
             return (redirect(url_for('Sbp.students')))
         
     return render_template('/students/student_results.html', search_results = students_on_Page, Courses = courses, page = page, 
