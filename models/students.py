@@ -154,10 +154,8 @@ class student_M:
 
     def search_Student(student_key_1, course_key_Code, student_key_Level, student_key_Gender):
    
-        if course_key_Code == "By Course Code" and student_key_Level == "By Year Level" and student_key_Gender == "By Gender":
-                db = db_connection()
-                cursor = db.cursor()
-                print("This is state 1 of the student search results.")
+        if student_key_1:
+                print(f"Search item: {student_key_1}")
                 SqlQuery = '''
                         SELECT students.students_id, students.image_id, students.idNumber, students.firstName, students.lastName, 
                         students.courseCode, college_table.collegeName, students.yearLevel ,students.gender FROM students 
@@ -171,10 +169,24 @@ class student_M:
                                 OR students.gender LIKE %s'''
                 SqlValues = (student_key_1, student_key_1, student_key_1, 
                                     student_key_1, student_key_1, student_key_1)
-                cursor.execute(SqlQuery, SqlValues)
-                search_data = cursor.fetchall()
-                db.close()
-                cursor.close()
-                return search_data
-
+                
+        if course_key_Code:
+                print(f"Search Filter: {course_key_Code}")
+                SqlQuery = '''
+                        SELECT * FROM students WHERE firstName LIKE %s OR courseCode LIKE %s'''
+                SqlValues = (student_key_1, course_key_Code)
+                
+                
+#        elif course_key_Code and student_key_2:
+#                print(f"Search Filter: {course_key_Code}")
+#                SqlQuery = '''
+#                        SELECT * FROM students WHERE firstName LIKE %s OR lastName LIKE %s OR courseCode LIKE %s'''
+#                SqlValues = (student_key_1, student_key_2, course_key_Code)
         
+        db = db_connection()
+        cursor = db.cursor()
+        cursor.execute(SqlQuery, SqlValues)
+        search_data = cursor.fetchall()
+        db.close()
+        cursor.close()
+        return search_data

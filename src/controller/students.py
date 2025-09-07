@@ -72,27 +72,26 @@ def student_search():
     student_key_Level = request.args.get('student_key_Level', '')
     student_key_Gender = request.args.get('student_key_Gender', '')
     page = request.args.get('page', 1, type=int)
+    
+    if course_key_Code == 'By Course Code':
+        course_key_Code = None
+    
+    if student_key_Level == 'By Year Level':
+        student_key_Level = None
+
+    if student_key_Gender == 'By Gender':
+        student_key_Gender = None
 
     pattern = r" "
-    if re.search(pattern, student_key):
-        split_string = student_key.split()
-        
-        student_key_1 = split_string[0]
-        student_key_2 = split_string[1]
-
-        print(student_key_1)
-        print(student_key_2)
-    else:
-        student_key_1 = student_key
-        print(student_key_1)
-
+    
     try:
-        if student_key_1 == student_key:
-            search_data = student_M.search_Student(student_key_1, course_key_Code, student_key_Level, student_key_Gender)
-            print("Has only single string")
-        elif student_key_2:
-            search_data = student_M.search_student_2(student_key_1, student_key_2, course_key_Code, student_key_Level, student_key_Gender)
-            print("Has double string")
+        if student_key:
+            split_string = student_key.split()
+            student_key_1 = split_string[0]
+            student_key_2 = split_string[1]
+            search_data = student_M.search_Student(student_key, 
+            course_key_Code, student_key_Level, student_key_Gender)
+            
         number = 0
         for student in search_data:
             number = number + 1
@@ -188,8 +187,8 @@ def add_student():
             image.seek(0)
 
 
-            capt_firstName = firstName.upper()
-            capt_lastName = lastName.upper()
+            capt_firstName = firstName.title()
+            capt_lastName = lastName.title()
 
             pattern = r"^\d{4}-\d{4}$"
 
@@ -199,6 +198,9 @@ def add_student():
                 flash("You need to input valid first name!", category='error')
             elif len(lastName) < 1:
                 flash("You need to input valid last name!", category='error')
+
+            elif courseCode == 'Select a Course':
+                flash("Please enter a valid course.", category='error')
                 
             elif student_idNumber:
                 flash("ID Number Already Exists!", category='error')
