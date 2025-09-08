@@ -9,10 +9,9 @@ import re
 import cloudinary
 from cloudinary import CloudinaryImage
 from cloudinary.uploader import upload
-#IMPLEMENT CLOUDINARY UPLOAD HERE.
+
 
 students_bp = Blueprint("Sbp", __name__,  template_folder='/templates')
-
 
 #<-------------------------------------------------->#
 #THE CODES RELATED FOR HANDLING STUDENTS STARTS IN HERE.#
@@ -163,6 +162,10 @@ def edit_students():
         except Exception as e:
             flash(f"Error occured! {e}", category="secondary")
 
+    return redirect(url_for('Sbp.students'))
+
+
+
 #For adding a new student information
 @students_bp.route('/add_students', methods=["POST"])
 def add_student():
@@ -218,10 +221,13 @@ def add_student():
                 student_M.add_Students_p(idNumber, capt_firstName, capt_lastName, courseCode, yearLevel, gender, image_id)
                 flash("Successfully added the student information!", category='success')
                 print("You have successfully added a student")
+                
             return redirect(url_for('Sbp.students'))
-
         except Exception as e:
             flash(f"Error occured {e}", category="secondary")
+
+    return redirect(url_for('Sbp.students'))
+
 
 #For deleting a selected student
 @students_bp.route('/delete_student/<string:students_id>', methods=["GET"])

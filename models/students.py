@@ -17,15 +17,24 @@ class student_M:
     def display_Students():
         db = db_connection()
         cursor = db.cursor(pymysql.cursors.DictCursor)
-        SqlQuery = ''' SELECT students.students_id, students.idNumber, students.firstName,  
-        students.lastName, students.courseCode, students.course_id,
-        students.yearLevel, students.gender, students.image_id FROM students'''
-        
-        
-              #  '''SELECT students.students_id, students.idNumber, students.firstName, students.lastName, students.courseCode,
-              #      students.course_id, students.yearLevel, students.gender, students.image_id, college_table.collegeName FROM students 
-              #      JOIN course_table ON students.courseCode = course_table.courseCode
-              #      JOIN college_table ON course_table.collegeCode = college_table.collegeCode'''
+        SqlQuery = ''' 
+                    SELECT 
+                        students.students_id, 
+                        students.idNumber, 
+                        students.firstName, 
+                        students.lastName, 
+                        students.courseCode,
+                        students.course_id, 
+                        students.yearLevel, 
+                        students.gender, 
+                        students.image_id, 
+                        COALESCE(college_table.collegeName, 'N/A') AS collegeName
+                    FROM students 
+                    LEFT JOIN course_table 
+                        ON students.courseCode = course_table.courseCode
+                    LEFT JOIN college_table 
+                        ON course_table.collegeCode = college_table.collegeCode
+                    '''
         cursor.execute(SqlQuery)
         students = cursor.fetchall()
         db.close()
@@ -140,14 +149,53 @@ class student_M:
         if len(student_keys) == 1:
             print(f"Search Item: {student_keys[0]}")
             SqlQuery = '''
-                    SELECT * FROM students WHERE
-                    (firstName LIKE %s OR lastName LIKE %s OR idNumber LIKE %s)'''
-            SqlValues = (student_keys[0], student_keys[0], student_keys[0])
+                    SELECT 
+                        students.students_id, 
+                        students.idNumber, 
+                        students.firstName, 
+                        students.lastName, 
+                        students.courseCode,
+                        students.course_id, 
+                        students.yearLevel, 
+                        students.gender, 
+                        students.image_id, 
+                        COALESCE(college_table.collegeName, 'N/A') AS collegeName
+                    FROM students 
+                    LEFT JOIN course_table 
+                        ON students.courseCode = course_table.courseCode
+                    LEFT JOIN college_table 
+                        ON course_table.collegeCode = college_table.collegeCode
+                    WHERE
+                        (students.firstName LIKE %s 
+                         OR students.lastName LIKE %s 
+                         OR students.idNumber LIKE %s 
+                         OR students.courseCode LIKE %s 
+                         OR students.gender LIKE %s 
+                         OR students.yearLevel LIKE %s);
+
+                    '''
+            SqlValues = (student_keys[0], student_keys[0], student_keys[0], student_keys[0], student_keys[0],  student_keys[0])
 
         if len(student_keys) == 2:
             print(f"Search Item: {student_keys[0]} {student_keys[1]}")
             SqlQuery = '''
-                    SELECT * FROM students WHERE
+                    SELECT 
+                        students.students_id, 
+                        students.idNumber, 
+                        students.firstName, 
+                        students.lastName, 
+                        students.courseCode,
+                        students.course_id, 
+                        students.yearLevel, 
+                        students.gender, 
+                        students.image_id, 
+                        COALESCE(college_table.collegeName, 'N/A') AS collegeName
+                    FROM students 
+                    LEFT JOIN course_table 
+                        ON students.courseCode = course_table.courseCode
+                    LEFT JOIN college_table 
+                        ON course_table.collegeCode = college_table.collegeCode
+                    WHERE
                     (firstName LIKE %s OR lastName LIKE %s OR idNumber LIKE %s)'''
             SqlValues = (student_keys[0], student_keys[1], student_keys[0])
         
@@ -155,23 +203,71 @@ class student_M:
         if course_key_Code and len(student_keys) == 1:
                 print(f"Search Filter: {course_key_Code}\nSearch Input: {student_keys[0]}")
                 SqlQuery = '''
-                        SELECT * FROM students WHERE 
-                        (firstName LIKE %s AND courseCode LIKE %s) OR
-                        (lastName LIKE %s AND courseCOde LIKE %s)'''
+                        SELECT 
+                        students.students_id, 
+                        students.idNumber, 
+                        students.firstName, 
+                        students.lastName, 
+                        students.courseCode,
+                        students.course_id, 
+                        students.yearLevel, 
+                        students.gender, 
+                        students.image_id, 
+                        COALESCE(college_table.collegeName, 'N/A') AS collegeName
+                    FROM students 
+                    LEFT JOIN course_table 
+                        ON students.courseCode = course_table.courseCode
+                    LEFT JOIN college_table 
+                        ON course_table.collegeCode = college_table.collegeCode
+                    WHERE
+                        (students.firstName LIKE %s AND students.courseCode LIKE %s) OR
+                        (students.lastName LIKE %s AND students.courseCode LIKE %s)'''
                 SqlValues = (student_keys[0], course_key_Code, student_keys[0], course_key_Code)
                 
         if course_key_Code and len(student_keys) == 2:
                 print(f"Search Filter: {course_key_Code}\nSearch Input: {student_keys[0]} {student_keys[1]}")
                 SqlQuery = '''
-                        SELECT * FROM students WHERE 
-                        (firstName LIKE %s AND lastName LIKE %s AND courseCode LIKE %s)'''
+                        SELECT 
+                        students.students_id, 
+                        students.idNumber, 
+                        students.firstName, 
+                        students.lastName, 
+                        students.courseCode,
+                        students.course_id, 
+                        students.yearLevel, 
+                        students.gender, 
+                        students.image_id, 
+                        COALESCE(college_table.collegeName, 'N/A') AS collegeName
+                    FROM students 
+                    LEFT JOIN course_table 
+                        ON students.courseCode = course_table.courseCode
+                    LEFT JOIN college_table 
+                        ON course_table.collegeCode = college_table.collegeCode
+                    WHERE
+                        (students.firstName LIKE %s AND students.lastName LIKE %s AND students.courseCode LIKE %s)'''
                 SqlValues = (student_keys[0], student_keys[1], course_key_Code)
         
         # Year Level constraint
         if student_key_Level and len(student_keys) == 1:
                 print(f"Search Filter: {student_key_Level}\nSearch Input: {student_keys[0]}")
                 SqlQuery = '''
-                        SELECT * FROM students WHERE 
+                        SELECT 
+                        students.students_id, 
+                        students.idNumber, 
+                        students.firstName, 
+                        students.lastName, 
+                        students.courseCode,
+                        students.course_id, 
+                        students.yearLevel, 
+                        students.gender, 
+                        students.image_id, 
+                        COALESCE(college_table.collegeName, 'N/A') AS collegeName
+                    FROM students 
+                    LEFT JOIN course_table 
+                        ON students.courseCode = course_table.courseCode
+                    LEFT JOIN college_table 
+                        ON course_table.collegeCode = college_table.collegeCode
+                    WHERE 
                         (firstName LIKE %s AND yearLevel LIKE %s) OR
                         (lastName LIKE %s AND yearLevel LIKE %s)'''
                 SqlValues = (student_keys[0], student_key_Level, student_keys[0], student_key_Level)
@@ -179,7 +275,23 @@ class student_M:
         if student_key_Level and len(student_keys) == 2:
                 print(f"Search Filter: {student_key_Level}\nSearch Input: {student_keys[0]} {student_keys[1]}")
                 SqlQuery = '''
-                        SELECT * FROM students WHERE 
+                        SELECT 
+                        students.students_id, 
+                        students.idNumber, 
+                        students.firstName, 
+                        students.lastName, 
+                        students.courseCode,
+                        students.course_id, 
+                        students.yearLevel, 
+                        students.gender, 
+                        students.image_id, 
+                        COALESCE(college_table.collegeName, 'N/A') AS collegeName
+                    FROM students 
+                    LEFT JOIN course_table 
+                        ON students.courseCode = course_table.courseCode
+                    LEFT JOIN college_table 
+                        ON course_table.collegeCode = college_table.collegeCode
+                    WHERE 
                         (firstName LIKE %s AND lastName LIKE %s AND yearLevel LIKE %s)'''
                 SqlValues = (student_keys[0], student_keys[1], student_key_Level)        
                 
@@ -188,7 +300,23 @@ class student_M:
         if student_key_Gender and len(student_keys) == 1:
                 print(f"Search Filter: {student_key_Gender}\nSearch Input: {student_keys[0]}")
                 SqlQuery = '''
-                        SELECT * FROM students WHERE 
+                        SELECT 
+                        students.students_id, 
+                        students.idNumber, 
+                        students.firstName, 
+                        students.lastName, 
+                        students.courseCode,
+                        students.course_id, 
+                        students.yearLevel, 
+                        students.gender, 
+                        students.image_id, 
+                        COALESCE(college_table.collegeName, 'N/A') AS collegeName
+                    FROM students 
+                    LEFT JOIN course_table 
+                        ON students.courseCode = course_table.courseCode
+                    LEFT JOIN college_table 
+                        ON course_table.collegeCode = college_table.collegeCode
+                    WHERE  
                         (firstName LIKE %s AND gender LIKE %s) OR
                         (lastName LIKE %s AND gender LIKE %s)'''
                 SqlValues = (student_keys[0], student_key_gender, student_keys[0], student_key_gender)
@@ -196,7 +324,23 @@ class student_M:
         if student_key_Gender and len(student_keys) == 2:
                 print(f"Search Filter: {student_key_Gender}\nSearch Input: {student_keys[0]} {student_keys[1]}")
                 SqlQuery = '''
-                        SELECT * FROM students WHERE 
+                        SELECT 
+                        students.students_id, 
+                        students.idNumber, 
+                        students.firstName, 
+                        students.lastName, 
+                        students.courseCode,
+                        students.course_id, 
+                        students.yearLevel, 
+                        students.gender, 
+                        students.image_id, 
+                        COALESCE(college_table.collegeName, 'N/A') AS collegeName
+                    FROM students 
+                    LEFT JOIN course_table 
+                        ON students.courseCode = course_table.courseCode
+                    LEFT JOIN college_table 
+                        ON course_table.collegeCode = college_table.collegeCode
+                    WHERE  
                         (firstName LIKE %s AND lastName LIKE %s AND gender LIKE %s)'''
                 SqlValues = (student_keys[0], student_keys[1], student_key_Gender)
 
@@ -204,7 +348,23 @@ class student_M:
         if course_key_Code and student_key_Level and len(student_keys) == 1:
                 print(f"Search Filter: {course_key_Code} + {student_key_Level}\nSearch Input: {student_keys[0]}")
                 SqlQuery = '''
-                        SELECT * FROM students WHERE 
+                        SELECT 
+                        students.students_id, 
+                        students.idNumber, 
+                        students.firstName, 
+                        students.lastName, 
+                        students.courseCode,
+                        students.course_id, 
+                        students.yearLevel, 
+                        students.gender, 
+                        students.image_id, 
+                        COALESCE(college_table.collegeName, 'N/A') AS collegeName
+                    FROM students 
+                    LEFT JOIN course_table 
+                        ON students.courseCode = course_table.courseCode
+                    LEFT JOIN college_table 
+                        ON course_table.collegeCode = college_table.collegeCode
+                    WHERE   
                         (firstName LIKE %s AND courseCode LIKE %s AND yearLevel LIKE %s) OR
                         (lastName LIKE %s AND courseCOde LIKE %s  AND yearLevel LIKE %s)'''
                 SqlValues = (student_keys[0], course_key_Code, student_key_Level,
@@ -213,7 +373,23 @@ class student_M:
         if course_key_Code and student_key_Level and len(student_keys) == 2:
                 print(f"Search Filter: {course_key_Code} + {student_key_Level}\nSearch Input: {student_keys[0]} {student_keys[1]}")
                 SqlQuery = '''
-                        SELECT * FROM students WHERE 
+                        SELECT 
+                        students.students_id, 
+                        students.idNumber, 
+                        students.firstName, 
+                        students.lastName, 
+                        students.courseCode,
+                        students.course_id, 
+                        students.yearLevel, 
+                        students.gender, 
+                        students.image_id, 
+                        COALESCE(college_table.collegeName, 'N/A') AS collegeName
+                    FROM students 
+                    LEFT JOIN course_table 
+                        ON students.courseCode = course_table.courseCode
+                    LEFT JOIN college_table 
+                        ON course_table.collegeCode = college_table.collegeCode
+                    WHERE    
                         (firstName LIKE %s AND lastName LIKE %s AND courseCode LIKE %s OR yearLevel LIKE %s)'''
                 SqlValues = (student_keys[0], student_keys[1], course_key_Code, student_key_Level)
         
@@ -221,7 +397,23 @@ class student_M:
         if course_key_Code and student_key_Gender and len(student_keys) == 1:
                 print(f"Search Filter: {course_key_Code} + {student_key_Gender}\nSearch Input: {student_keys[0]}")
                 SqlQuery = '''
-                        SELECT * FROM students WHERE 
+                        SELECT 
+                        students.students_id, 
+                        students.idNumber, 
+                        students.firstName, 
+                        students.lastName, 
+                        students.courseCode,
+                        students.course_id, 
+                        students.yearLevel, 
+                        students.gender, 
+                        students.image_id, 
+                        COALESCE(college_table.collegeName, 'N/A') AS collegeName
+                    FROM students 
+                    LEFT JOIN course_table 
+                        ON students.courseCode = course_table.courseCode
+                    LEFT JOIN college_table 
+                        ON course_table.collegeCode = college_table.collegeCode
+                    WHERE    
                         (firstName LIKE %s AND courseCode LIKE %s AND gender LIKE %s) OR
                         (lastName LIKE %s AND courseCOde LIKE %s  AND gender LIKE %s)'''
                 SqlValues = (student_keys[0], course_key_Code, student_key_Gender,
@@ -230,7 +422,23 @@ class student_M:
         if course_key_Code and student_key_Gender and len(student_keys) == 2:
                 print(f"Search Filter: {course_key_Code} + {student_key_Gender}\nSearch Input: {student_keys[0]} {student_keys[1]}")
                 SqlQuery = '''
-                        SELECT * FROM students WHERE 
+                        SELECT 
+                        students.students_id, 
+                        students.idNumber, 
+                        students.firstName, 
+                        students.lastName, 
+                        students.courseCode,
+                        students.course_id, 
+                        students.yearLevel, 
+                        students.gender, 
+                        students.image_id, 
+                        COALESCE(college_table.collegeName, 'N/A') AS collegeName
+                    FROM students 
+                    LEFT JOIN course_table 
+                        ON students.courseCode = course_table.courseCode
+                    LEFT JOIN college_table 
+                        ON course_table.collegeCode = college_table.collegeCode
+                    WHERE    
                         (firstName LIKE %s AND lastName LIKE %s AND courseCode LIKE %s AND gender LIKE %s)'''
                 SqlValues = (student_keys[0], student_keys[1], course_key_Code, student_key_Gender)
         
@@ -238,7 +446,23 @@ class student_M:
         if student_key_Level and student_key_Gender and len(student_keys) == 1:
                 print(f"Search Filter: {student_key_Level} + {student_key_Gender}\nSearch Input: {student_keys[0]}")
                 SqlQuery = '''
-                        SELECT * FROM students WHERE 
+                        SELECT 
+                        students.students_id, 
+                        students.idNumber, 
+                        students.firstName, 
+                        students.lastName, 
+                        students.courseCode,
+                        students.course_id, 
+                        students.yearLevel, 
+                        students.gender, 
+                        students.image_id, 
+                        COALESCE(college_table.collegeName, 'N/A') AS collegeName
+                    FROM students 
+                    LEFT JOIN course_table 
+                        ON students.courseCode = course_table.courseCode
+                    LEFT JOIN college_table 
+                        ON course_table.collegeCode = college_table.collegeCode
+                    WHERE 
                         (firstName LIKE %s AND yearLevel LIKE %s AND gender LIKE %s) OR
                         (lastName LIKE %s AND yearLevel LIKE %s  AND gender LIKE %s)'''
                 SqlValues = (student_keys[0], student_key_Level, student_key_Gender,
@@ -247,7 +471,23 @@ class student_M:
         if student_key_Level and student_key_Gender and len(student_keys) == 2:
                 print(f"Search Filter: {student_key_Level} + {student_key_Gender}\nSearch Input: {student_keys[0]} {student_keys[1]}")
                 SqlQuery = '''
-                        SELECT * FROM students WHERE 
+                        SELECT 
+                        students.students_id, 
+                        students.idNumber, 
+                        students.firstName, 
+                        students.lastName, 
+                        students.courseCode,
+                        students.course_id, 
+                        students.yearLevel, 
+                        students.gender, 
+                        students.image_id, 
+                        COALESCE(college_table.collegeName, 'N/A') AS collegeName
+                    FROM students 
+                    LEFT JOIN course_table 
+                        ON students.courseCode = course_table.courseCode
+                    LEFT JOIN college_table 
+                        ON course_table.collegeCode = college_table.collegeCode
+                    WHERE 
                         (firstName LIKE %s AND lastName LIKE %s AND yearLevel LIKE %s AND gender LIKE %s)'''
                 SqlValues = (student_keys[0], student_keys[1], student_key_Level, student_key_Gender)
         
@@ -255,7 +495,23 @@ class student_M:
         if course_key_Code and student_key_Level and student_key_Gender and len(student_keys) == 1:
                 print(f"Search Filter: {course_key_Code} + {student_key_Level} + {student_key_Gender}\nSearch Input: {student_keys[0]}")
                 SqlQuery = '''
-                        SELECT * FROM students WHERE 
+                        SELECT 
+                        students.students_id, 
+                        students.idNumber, 
+                        students.firstName, 
+                        students.lastName, 
+                        students.courseCode,
+                        students.course_id, 
+                        students.yearLevel, 
+                        students.gender, 
+                        students.image_id, 
+                        COALESCE(college_table.collegeName, 'N/A') AS collegeName
+                    FROM students 
+                    LEFT JOIN course_table 
+                        ON students.courseCode = course_table.courseCode
+                    LEFT JOIN college_table 
+                        ON course_table.collegeCode = college_table.collegeCode
+                    WHERE 
                         (firstName LIKE %s AND courseCode LIKE %s AND yearLevel LIKE %s AND gender LIKE %s) OR
                         (lastName LIKE %s AND courseCode LIKE %s AND yearLevel LIKE %s  AND gender LIKE %s)'''
                 SqlValues = (student_keys[0], course_key_Code, student_key_Level, student_key_Gender,
@@ -264,7 +520,23 @@ class student_M:
         if course_key_Code and student_key_Level and student_key_Gender and len(student_keys) == 2:
                 print(f"Search Filter: {course_key_Code} + {student_key_Level} + {student_key_Gender}\nSearch Input: {student_keys[0]} {student_keys[1]}")
                 SqlQuery = '''
-                        SELECT * FROM students WHERE 
+                        SELECT 
+                        students.students_id, 
+                        students.idNumber, 
+                        students.firstName, 
+                        students.lastName, 
+                        students.courseCode,
+                        students.course_id, 
+                        students.yearLevel, 
+                        students.gender, 
+                        students.image_id, 
+                        COALESCE(college_table.collegeName, 'N/A') AS collegeName
+                    FROM students 
+                    LEFT JOIN course_table 
+                        ON students.courseCode = course_table.courseCode
+                    LEFT JOIN college_table 
+                        ON course_table.collegeCode = college_table.collegeCode
+                    WHERE 
                         (firstName LIKE %s AND lastName LIKE %s AND courseCode LIKE %s AND yearLevel LIKE %s AND gender LIKE %s)'''
                 SqlValues = (student_keys[0], student_keys[1], course_key_Code, student_key_Level, student_key_Gender)
         

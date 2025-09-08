@@ -8,5 +8,6 @@ DB_NAME = os.getenv('DB_NAME')
 DB_USERNAME = os.getenv('DB_USERNAME')
 DB_PASSWORD = os.getenv('DB_PASSWORD')
 DB_HOST = os.getenv("DB_HOST")
+CLOUDINARY = os.getenv("CLOUDINARY_URL")
 
 print(DB_HOST)
