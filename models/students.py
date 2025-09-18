@@ -268,8 +268,8 @@ class student_M:
                     LEFT JOIN college_table 
                         ON course_table.collegeCode = college_table.collegeCode
                     WHERE 
-                        (firstName LIKE %s AND yearLevel LIKE %s) OR
-                        (lastName LIKE %s AND yearLevel LIKE %s)'''
+                        (students.firstName LIKE %s AND students.yearLevel LIKE %s) OR
+                        (students.lastName LIKE %s AND students.yearLevel LIKE %s)'''
                 SqlValues = (student_keys[0], student_key_Level, student_keys[0], student_key_Level)
                 
         if student_key_Level and len(student_keys) == 2:
@@ -292,7 +292,7 @@ class student_M:
                     LEFT JOIN college_table 
                         ON course_table.collegeCode = college_table.collegeCode
                     WHERE 
-                        (firstName LIKE %s AND lastName LIKE %s AND yearLevel LIKE %s)'''
+                        (students.firstName LIKE %s AND students.lastName LIKE %s AND students.yearLevel LIKE %s)'''
                 SqlValues = (student_keys[0], student_keys[1], student_key_Level)        
                 
         
@@ -317,9 +317,9 @@ class student_M:
                     LEFT JOIN college_table 
                         ON course_table.collegeCode = college_table.collegeCode
                     WHERE  
-                        (firstName LIKE %s AND gender LIKE %s) OR
-                        (lastName LIKE %s AND gender LIKE %s)'''
-                SqlValues = (student_keys[0], student_key_gender, student_keys[0], student_key_gender)
+                        (students.firstName LIKE %s AND students.gender LIKE %s) OR
+                        (students.lastName LIKE %s AND students.gender LIKE %s)'''
+                SqlValues = (student_keys[0], student_key_Gender, student_keys[0], student_key_Gender)
                 
         if student_key_Gender and len(student_keys) == 2:
                 print(f"Search Filter: {student_key_Gender}\nSearch Input: {student_keys[0]} {student_keys[1]}")
@@ -341,7 +341,7 @@ class student_M:
                     LEFT JOIN college_table 
                         ON course_table.collegeCode = college_table.collegeCode
                     WHERE  
-                        (firstName LIKE %s AND lastName LIKE %s AND gender LIKE %s)'''
+                        (students.firstName LIKE %s AND students.lastName LIKE %s AND students.gender LIKE %s)'''
                 SqlValues = (student_keys[0], student_keys[1], student_key_Gender)
 
         # Course Code and Year Level constraint
@@ -365,8 +365,8 @@ class student_M:
                     LEFT JOIN college_table 
                         ON course_table.collegeCode = college_table.collegeCode
                     WHERE   
-                        (firstName LIKE %s AND courseCode LIKE %s AND yearLevel LIKE %s) OR
-                        (lastName LIKE %s AND courseCOde LIKE %s  AND yearLevel LIKE %s)'''
+                        (students.firstName LIKE %s AND students.courseCode LIKE %s AND students.yearLevel LIKE %s) OR
+                        (students.lastName LIKE %s AND students.courseCOde LIKE %s  AND students.yearLevel LIKE %s)'''
                 SqlValues = (student_keys[0], course_key_Code, student_key_Level,
                             student_keys[0], course_key_Code, student_key_Level)
                 
@@ -390,7 +390,7 @@ class student_M:
                     LEFT JOIN college_table 
                         ON course_table.collegeCode = college_table.collegeCode
                     WHERE    
-                        (firstName LIKE %s AND lastName LIKE %s AND courseCode LIKE %s OR yearLevel LIKE %s)'''
+                        (students.firstName LIKE %s AND students.lastName LIKE %s AND students.courseCode LIKE %s OR students.yearLevel LIKE %s)'''
                 SqlValues = (student_keys[0], student_keys[1], course_key_Code, student_key_Level)
         
         # Course Code and Gender constraint
@@ -414,8 +414,8 @@ class student_M:
                     LEFT JOIN college_table 
                         ON course_table.collegeCode = college_table.collegeCode
                     WHERE    
-                        (firstName LIKE %s AND courseCode LIKE %s AND gender LIKE %s) OR
-                        (lastName LIKE %s AND courseCOde LIKE %s  AND gender LIKE %s)'''
+                        (students.firstName LIKE %s AND students.courseCode LIKE %s AND students.gender LIKE %s) OR
+                        (students.lastName LIKE %s AND students.courseCode LIKE %s  AND students.gender LIKE %s)'''
                 SqlValues = (student_keys[0], course_key_Code, student_key_Gender,
                             student_keys[0], course_key_Code, student_key_Gender)
                 
@@ -439,7 +439,7 @@ class student_M:
                     LEFT JOIN college_table 
                         ON course_table.collegeCode = college_table.collegeCode
                     WHERE    
-                        (firstName LIKE %s AND lastName LIKE %s AND courseCode LIKE %s AND gender LIKE %s)'''
+                        (students.firstName LIKE %s AND students.lastName LIKE %s AND students.courseCode LIKE %s AND students.gender LIKE %s)'''
                 SqlValues = (student_keys[0], student_keys[1], course_key_Code, student_key_Gender)
         
        # Year Level and Gender constraint
@@ -463,8 +463,8 @@ class student_M:
                     LEFT JOIN college_table 
                         ON course_table.collegeCode = college_table.collegeCode
                     WHERE 
-                        (firstName LIKE %s AND yearLevel LIKE %s AND gender LIKE %s) OR
-                        (lastName LIKE %s AND yearLevel LIKE %s  AND gender LIKE %s)'''
+                        (students.firstName LIKE %s AND students.yearLevel LIKE %s AND students.gender LIKE %s) OR
+                        (students.lastName LIKE %s AND students.yearLevel LIKE %s  AND students.gender LIKE %s)'''
                 SqlValues = (student_keys[0], student_key_Level, student_key_Gender,
                             student_keys[0], student_key_Level, student_key_Gender)
                 
@@ -488,7 +488,7 @@ class student_M:
                     LEFT JOIN college_table 
                         ON course_table.collegeCode = college_table.collegeCode
                     WHERE 
-                        (firstName LIKE %s AND lastName LIKE %s AND yearLevel LIKE %s AND gender LIKE %s)'''
+                        (students.firstName LIKE %s AND students.lastName LIKE %s AND students.yearLevel LIKE %s AND students.gender LIKE %s)'''
                 SqlValues = (student_keys[0], student_keys[1], student_key_Level, student_key_Gender)
         
         # Course Code, Year Level, and Gender constaint
@@ -512,8 +512,8 @@ class student_M:
                     LEFT JOIN college_table 
                         ON course_table.collegeCode = college_table.collegeCode
                     WHERE 
-                        (firstName LIKE %s AND courseCode LIKE %s AND yearLevel LIKE %s AND gender LIKE %s) OR
-                        (lastName LIKE %s AND courseCode LIKE %s AND yearLevel LIKE %s  AND gender LIKE %s)'''
+                        (students.firstName LIKE %s AND students.courseCode LIKE %s AND students.yearLevel LIKE %s AND students.gender LIKE %s) OR
+                        (students.lastName LIKE %s AND students.courseCode LIKE %s AND students.yearLevel LIKE %s  AND students.gender LIKE %s)'''
                 SqlValues = (student_keys[0], course_key_Code, student_key_Level, student_key_Gender,
                             student_keys[0], course_key_Code, student_key_Level, student_key_Gender)
                 
@@ -537,7 +537,7 @@ class student_M:
                     LEFT JOIN college_table 
                         ON course_table.collegeCode = college_table.collegeCode
                     WHERE 
-                        (firstName LIKE %s AND lastName LIKE %s AND courseCode LIKE %s AND yearLevel LIKE %s AND gender LIKE %s)'''
+                        (students.firstName LIKE %s AND students.lastName LIKE %s AND students.courseCode LIKE %s AND students.yearLevel LIKE %s AND students.gender LIKE %s)'''
                 SqlValues = (student_keys[0], student_keys[1], course_key_Code, student_key_Level, student_key_Gender)
         
         db = db_connection()
