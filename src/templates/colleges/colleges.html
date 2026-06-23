@@ -6,28 +6,22 @@
     <title>Flask SSIS</title>
     <link rel="stylesheet" href="/static/bootstrap.css"/>
   </head>
-<body class="" data-bs-theme="dark">
-  {% block headings %}
+<body data-bs-theme="dark">
+{% block headings %}
 <!-- bootstrap container -->
     <div class="container-sm">
         <br/>
         <h1 class="headings">
             Colleges
         </h1>
-
-  
-
     <br/>
     <!-- REDIRECT TO HOMEPAGE -->
-
     <div class="row gx-0">
       <div class="col-1">
             <a type="button" class="btn btn-light" href="home">
                 Back
             </a>
         </div>
-
-
         <div class="col col-1">
             <a type="button" class="btn btn-secondary" href="students">
                 Students
@@ -39,22 +33,19 @@
                 Courses
             </a>
         </div>
-
-    
           <div class="col-6 col-md-2">
-            <button type="submit" class="btn btn-warning btn-outline-dark btn-lg" 
-            data-bs-toggle="modal" 
+            <button type="submit" class="btn btn-warning btn-outline-dark btn-lg"
+            data-bs-toggle="modal"
             data-bs-target="#addModal">
                 Add College
             </button>
             </div>
           </div>
-        </div>
-        {% endblock %}
+{% endblock %}
     <!-- REDIRECT TO HOMEPAGE -->
     <br>
     {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
+        {% if messages %}
         {% for category, message in messages %}
         {% if category == "error" %}
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -73,7 +64,7 @@
           </div>
         {% endif %}
         {% endfor %}
-    {% endif %}
+        {% endif %}
     {% endwith%}
 
     <!-- SEARCH FUNCTION -->
@@ -96,7 +87,7 @@
                 </select>
             </div>
             <div class="input-group mb-3">
-                <input type="text" name="college_key" class="form-control" placeholder="Look for a college" 
+                <input type="text" name="college_key" class="form-control" placeholder="Look for a college"
                 aria-label="Look for a college" aria-describedby="search-button">
                 <button type="submit" class="btn btn-outline-secondary" id="search-button">
                     Search
@@ -207,13 +198,13 @@
                         <div class="form-group">
                         <label for="collegeName">College Name</label>
                         <input type="text" name="collegeName" class="form-control" id="collegeName" placeholder="e.g. College of Computer Studies">
-                        </div>  
+                        </div>
                     </div>
-                        
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-warning btn-outline-dark">Add</button>
-                          </div>    
+                          </div>
                     </form>
                 </div>
               </div>
@@ -225,8 +216,7 @@
         <script src="static/bootstrap.js"></script>
         <script src="static/bootstrap.bundle.min.js"></script>
     </div>
-    
+
 
 </body>
     </html>
-

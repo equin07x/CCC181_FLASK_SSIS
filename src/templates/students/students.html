@@ -11,14 +11,14 @@
 </head>
 <body data-bs-theme="dark">
     <br/>
-    {% block headings %}
-<div class="container-sm">
+   {% block headings %}
+    <div class="container-sm">
     <h1>
         Students
     </h1>
     <br>
     <div class="container-fluid">
-        <div class="row gx-0">   
+        <div class="row gx-0">
         <div class="col col-1">
             <a type="button" class="btn btn-light" href="home">
                 Back
@@ -38,16 +38,16 @@
         </div>
 
           <div class="col-6 col-md-2">
-            <button type="submit" class="btn btn-warning btn-outline-dark btn-lg" 
-            data-bs-toggle="modal" 
+            <button type="submit" class="btn btn-warning btn-outline-dark btn-lg"
+            data-bs-toggle="modal"
             data-bs-target="#addModal">
                 Add Student
             </button>
             </div>
           </div>
         </div>
-        {% endblock %}
-        
+    {% endblock %}
+
     <br>
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
@@ -71,7 +71,7 @@
         {% endfor %}
     {% endif %}
     {% endwith%}
-    
+
     <!--SEARCH FUNCTION FOR STUDENTS TABLE-->
     {% block search_function %}
     <div class="container">
@@ -98,7 +98,7 @@
             </select>
             </div>
             <div class="input-group mb-3">
-                <input type="text" name="student_key" id="student_key" class="form-control" placeholder="Look for a student" 
+                <input type="text" name="student_key" id="student_key" class="form-control" placeholder="Look for a student"
                 aria-label="Look for a student" aria-describedby="search-button">
                 <button type="submit" class="btn btn-outline-secondary" id="search-button">
                     Search
@@ -107,8 +107,8 @@
      </form>
      {% endblock %}
     <!--SEARCH FUNCTION ENDS HERE-->
-   
-   
+
+
     {% block students_table %}
     <!-- DISPLAYING THE STUDENTS TABLE-->
     <div class="container-sm">
@@ -136,13 +136,13 @@
                     <td>{{ row['idNumber'] }}</td>
                     <td>{{ row['firstName'] }}</td>
                     <td>{{ row['lastName'] }}</td>
-   
+
                     <td>{{ row['courseCode'] }} ({{ row['collegeName'] }})</td>
-                
+
                     <td>{{ row['yearLevel'] }}</td>
                     <td>{{ row['gender'] }}</td>
-                    
-        <td>  
+
+        <td>
                 <!-- EDIT FUNCTION TRIGGER BUTTON -->
             <a href="" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#editModal{{ row['students_id'] }}">
                 Edit
@@ -170,8 +170,8 @@
                             <div class="form-group">
                                 <label for="lastNameEdit">Update Last Name </label>
                                 <input type="text" name="lastNameEdit" value="{{ row['lastName'] }}" class="form-control" id="lastNameEdit" placeholder="Enter New Last Name">
-                            </div>  
-                            <label for="courseCodeEdit">Update College Code </label> 
+                            </div>
+                            <label for="courseCodeEdit">Update College Code </label>
                                 <div class="form-group">
                                     <select class="form-select" aria-label="Default select example" id="courseCodeEdit"  name="courseCodeEdit">
                                         <option selected>{{ row['courseCode']}} </option>
@@ -180,8 +180,8 @@
                                         {% endfor %}
                                     </select>
                                 </div>
-                                  
-                            <label for="yearLevelEdit">Update Year Level </label> 
+
+                            <label for="yearLevelEdit">Update Year Level </label>
                             <div class="form-group">
                                 <select class="form-select" aria-label="Default select example" id="yearLevelEdit"  name="yearLevelEdit">
                                     <option selected>{{ row['yearLevel'] }}</option>
@@ -192,8 +192,8 @@
                                 </select>
                             </div>
 
-                                
-                                <label for="genderEdit">Update Gender </label> 
+
+                                <label for="genderEdit">Update Gender </label>
                                 <div class="form-group">
                                     <select class="form-select" aria-label="Default select example" id="genderEdit"  name="genderEdit">
                                         <option selected>{{ row['gender'] }}</option>
@@ -203,8 +203,8 @@
                                 </div>
 
                                 <!-- For uploading a photo -->
-                            <label id="image" class="form-label">Update Student Image</label>         
-                            <div class="form-group">      
+                            <label id="image" class="form-label">Update Student Image</label>
+                            <div class="form-group">
                                     <input class="form-control" type="file" id="imageEdit" name="imageEdit" accept=".jpg, .jpeg, .png">
                             </div>
 
@@ -215,13 +215,13 @@
                                 </div>
                         </form>
                 </td>
-            
+
                 <!--DELETE FUNCTION-->
             <td>
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ row['students_id'] }}">
                     Delete
                 </button>
-                
+
                 <div class="modal fade" id="deleteModal{{ row['students_id'] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -233,23 +233,23 @@
                         </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <a href="/delete_student/{{ row['students_id'] }}" class="btn btn-danger" data-title="Delete Student?">    
+                        <a href="/delete_student/{{ row['students_id'] }}" class="btn btn-danger" data-title="Delete Student?">
                             Confirm
                             </a>
                         </div>
                     </div>
                     </div>
                 </div>
-                
+
             </td>
                 </tr>
                 {% endfor %}
             </table>
-    </div>
+        </div>
     {% endblock %}
-    
 
-    {% block pagination %}
+
+   {% block pagination %}
 <!-- PAGINATION -->
     <div class="container-fluid">
     {% set current_page = "btn btn-secondary btn-outline-dark" %}
@@ -312,7 +312,7 @@
                     {% endfor %}
                 </select>
                 </div>
-                <label for="yearLevel">Year Level </label> 
+                <label for="yearLevel">Year Level </label>
                 <div class="form-group">
                     <select class="form-select" aria-label="Default select example" id="yearLevel"  name="yearLevel">
                         <option selected>1st-Year</option>
@@ -320,8 +320,8 @@
                         <option value="3rd-Year">3rd-Year</option>
                         <option value="4th-Year">4th-Year</option>
                     </select>
-                </div> 
-                <label for="gender">Gender</label> 
+                </div>
+                <label for="gender">Gender</label>
                 <div class="form-group">
                     <select class="form-select" aria-label="Default select example" id="gender"  name="gender">
                         <option selected>Male</option>
@@ -329,8 +329,8 @@
                     </select>
                 </div>
                 <!-- For uploading a photo -->
-                <label id="image" class="form-label">Upload Student Image</label>         
-                <div class="form-group">      
+                <label id="image" class="form-label">Upload Student Image</label>
+                <div class="form-group">
                         <input class="form-control" type="file" id="image_upd" name="image_upd" accept=".jpg, .jpeg, .png">
                 </div>
 
@@ -353,7 +353,7 @@
 </body>
     </html>
 
-    <!-- <script>
+    <script>
         function formatInput(event) {
             let input = event.target.value;
 
@@ -371,4 +371,4 @@
             // Set the formatted value back to the input field
             event.target.value = input;
         }
-    </script> -->
+    </script>
