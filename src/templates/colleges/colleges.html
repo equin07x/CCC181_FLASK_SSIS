@@ -70,16 +70,16 @@
     <!-- SEARCH FUNCTION -->
     {% block Search_function %}
     <div class="container">
-        <form action="{{ url_for('Clbp.colleges') }}" method="POST">
+        <form action="{{ url_for('Clbp.college_search') }}" method="GET">
             <label>Search Filters:</label>
             <div class="input-group mb-3">
-                <select class="form-select btn-outline-dark" aria-label="Default select example" id="college_key_Code"  name="college_key_Code">
+                <select class="form-select btn-outline-dark" onchange="this.form.submit()" aria-label="Default select example" id="college_key_Code"  name="college_key_Code">
                     <option selected>By College Code</option>
                     {% for row in College %}
                     <option value="{{ row['collegeCode'] }}">{{ row['collegeCode'] }}</option>
                     {% endfor %}
                 </select>
-                <select class="form-select btn-outline-secondary" aria-label="Default select example" id="college_key_Name"  name="college_key_Name">
+                <select class="form-select btn-outline-secondary" onchange="this.form.submit()" aria-label="Default select example" id="college_key_Name"  name="college_key_Name">
                     <option selected>By College Name</option>
                     {% for row in College %}
                     <option value="{{ row['collegeName'] }}">{{ row['collegeName'] }}</option>

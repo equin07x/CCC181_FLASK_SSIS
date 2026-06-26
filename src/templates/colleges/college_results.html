@@ -8,16 +8,16 @@
     </h1>
     <br/>
     <!--RETURN TO COLLEGES TABLE-->
-      <div class="row gx-0">   
+      <div class="row gx-0">
       <div class="col">
         <a type="button" class="btn btn-light" href="colleges">
           Back to colleges
       </a>
       </div>
-       
+
         <div class="col-6 col-md-2">
-          <button type="submit" class="btn btn-warning btn-outline-dark btn-lg" 
-          data-bs-toggle="modal" 
+          <button type="submit" class="btn btn-warning btn-outline-dark btn-lg"
+          data-bs-toggle="modal"
           data-bs-target="#addModal">
               Add College
           </button>
@@ -28,16 +28,16 @@
 
     {% block Search_function %}
     <div class="container">
-        <form action="{{ url_for('Clbp.colleges') }}" method="POST">
+        <form action="{{ url_for('Clbp.college_search') }}" method="GET">
             <label>Search Filters:</label>
             <div class="input-group mb-3">
-                <select class="form-select btn-outline-secondary" aria-label="Default select example" id="college_key_Code"  name="college_key_Code">
+                <select class="form-select btn-outline-secondary" onchange="this.form.submit()" aria-label="Default select example" id="college_key_Code"  name="college_key_Code">
                     <option selected>By College Code</option>
                     {% for row in search_filters %}
                     <option value="{{ row['collegeCode'] }}">{{ row['collegeCode'] }}</option>
                     {% endfor %}
                 </select>
-                <select class="form-select btn-outline-secondary" aria-label="Default select example" id="college_key_Name"  name="college_key_Name">
+                <select class="form-select btn-outline-secondary" onchange="this.form.submit()" aria-label="Default select example" id="college_key_Name"  name="college_key_Name">
                     <option selected>By College Name</option>
                     {% for row in search_filters %}
                     <option value="{{ row['collegeName'] }}">{{ row['collegeName'] }}</option>
@@ -45,7 +45,7 @@
                 </select>
             </div>
             <div class="input-group mb-3">
-                <input type="text" name="college_key" class="form-control" placeholder="Look for a college" 
+                <input type="text" name="college_key" class="form-control" placeholder="Look for a college"
                 aria-label="Look for a college" aria-describedby="search-button">
                 <button type="submit" class="btn btn-outline-secondary" id="search-button">
                     Search
@@ -71,8 +71,8 @@
                   <tbody>
               {% for row in College %}
               <tr>
-                  <td>{{row['collegeCode']}}</td>
-                  <td>{{row['collegeName']}}</td>
+                  <td>{{ row['collegeCode'] }}</td>
+                  <td>{{ row['collegeName'] }}</td>
               <td>
               <!-- EDIT FUNCTION TRIGGER BUTTON -->
               <a href="" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editModal{{ row['college_id'] }}">
@@ -85,7 +85,7 @@
                           <h1 class="modal-title fs-5" id="editModal{{ row['college_id'] }}">Edit College Information</h1>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
-      
+
                           <div class="modal-body">
                               <form action="{{ url_for('Clbp.edit_college') }}" method="POST">
                                   <div class="form-group">
@@ -136,5 +136,3 @@
               </table>
           </div>
       {% endblock %}
-
-  
