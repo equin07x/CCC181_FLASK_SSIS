@@ -62,6 +62,7 @@ def students():
     return render_template('/students/students.html', Students=students_on_Page, Courses=courses,
                            page = page, number_of_Pages = page_Number, total_Pages = total_Pages, image = image)
 
+
 #For searching student information along with its selected fields
 @students_bp.route('/student_search', methods=["GET"])
 def student_search():
@@ -88,6 +89,28 @@ def student_search():
         if student_key:
             search_data = student_M.search_Student(student_key,
             course_key_Code, student_key_Level, student_key_Gender)
+
+        elif course_key_Code and student_key_Level == None and student_key_Gender == None:
+            search_data = student_M.filter_search(course_key_Code, None, None)
+            print(f"Year level value: {student_key_Level}")
+
+        elif student_key_Gender and course_key_Code == None and student_key_Level == None:
+            search_data = student_M.filter_search(None, student_key_Gender, None)
+
+        elif student_key_Level and student_key_Gender == None and course_key_Code == None:
+            search_data = student_M.filter_search(None, None, student_key_Level)
+
+        if course_key_Code and student_key_Level:
+            search_data = student_M.search_combine(course_key_Code, student_key_Level, None)
+
+        if course_key_Code and student_key_Gender:
+            search_data = student_M.search_combine(course_key_Code, None, student_key_Gender)
+
+        if student_key_Level and student_key_Gender:
+            search_data = student_M.search_combine(None, student_key_Level, student_key_Gender)
+
+        if course_key_Code and student_key_Level and student_key_Gender:
+            search_data = student_M.search_combine(course_key_Code, student_key_Level, student_key_Gender)
 
         number = 0
         for student in search_data:
@@ -121,7 +144,8 @@ def student_search():
     return render_template('/students/student_results.html', search_results = students_on_Page, Courses = courses, page = page,
                            number_of_Pages = page_Number, total_Pages = total_Pages, next_page = next_url, prev_page = prev_url,
                            course_key_Code=course_key_Code, student_key_Level=student_key_Level,
-                            student_key_Gender=student_key_Gender, student_key=student_key)
+                            student_key_Gender=student_key_Gender, student_key=student_key, selected_course=course_key_Code,
+                            selected_yearLevel=student_key_Level, selected_gender=student_key_Gender)
 
 #For editing/updating the student information
 @students_bp.route('/edit_student', methods=["POST"])
@@ -153,7 +177,12 @@ def edit_students():
                 student_M.edit_Student(firstNameEdit.title(), lastNameEdit.title(),
                                 courseCodeEdit, yearLevelEdit, genderEdit, student_id)
                 flash("you have successfully edited the student information!", category='success')
+
+            elif image.content_type not in ["image/jpg", "image/jpeg", "image/png"]:
+                flash("Image must be uploaded in correct format!", category='error')
+
             else:
+
                 uploaded_file = upload(image)
                 image_id = CloudinaryImage(uploaded_file['public_id']).build_url(width = 50, height = 50, crop = "fill")
                 print(image_id)

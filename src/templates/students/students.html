@@ -78,20 +78,20 @@
         <form action="{{ url_for('Sbp.student_search') }}" method="GET">
             <label>Search Filters:</label>
             <div class="input-group mb-3">
-            <select class="form-select btn-outline-secondary" aria-label="Default select example" id="course_key_Code"  name="course_key_Code">
+            <select class="form-select btn-outline-secondary" onchange="this.form.submit()" aria-label="Default select example" id="course_key_Code"  name="course_key_Code">
                 <option selected>By Course Code</option>
                 {% for row in Courses %}
                 <option value="{{ row['courseCode'] }}">{{ row['courseCode'] }}</option>
                 {% endfor %}
             </select>
-            <select class="form-select btn-outline-secondary" aria-label="Default select example" id="student_key_Level"  name="student_key_Level">
+            <select class="form-select btn-outline-secondary" onchange="this.form.submit()" aria-label="Default select example" id="student_key_Level"  name="student_key_Level">
                 <option selected>By Year Level</option>
                 <option value="1st-Year">1st-Year</option>
                 <option value="2nd-Year">2nd-Year</option>
                 <option value="3rd-Year">3rd-Year</option>
                 <option value="4th-Year">4th-Year</option>
             </select>
-            <select class="form-select btn-outline-secondary" aria-label="Default select example" id="student_key_Gender"  name="student_key_Gender">
+            <select class="form-select btn-outline-secondary" onchange="this.form.submit()" aria-label="Default select example" id="student_key_Gender"  name="student_key_Gender">
                 <option selected>By Gender</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
