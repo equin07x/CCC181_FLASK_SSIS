@@ -16,7 +16,7 @@
     </h1>
     <br/>
     <div class="container-fluid">
-        <div class="row gx-0">   
+        <div class="row gx-0">
         <div class="col-1">
             <a type="button" class="btn btn-light" href="home">
                 Back
@@ -37,8 +37,8 @@
         </div>
 
           <div class="col-6 col-md-2">
-            <button type="submit" class="btn btn-warning btn-outline-dark btn-lg" 
-            data-bs-toggle="modal" 
+            <button type="submit" class="btn btn-warning btn-outline-dark btn-lg"
+            data-bs-toggle="modal"
             data-bs-target="#addModal">
                 Add Course
             </button>
@@ -70,7 +70,7 @@
             {% endfor %}
         {% endif %}
         {% endwith%}
-        
+
    <!-- SEARCH FUNCTION -->
 
    {% block search_function %}
@@ -78,22 +78,22 @@
     <form action="{{ url_for('Cbp.course_search') }}" method="GET">
         <label>Search Filters:</label>
         <div class="input-group mb-3">
-            <select class="form-select btn-outline-secondary" aria-label="Default select example" 
-            id="course_key_Code"  name="course_key_Code">
+            <select class="form-select btn-outline-secondary" aria-label="Default select example"
+            id="course_key_Code"  name="course_key_Code" onchange="this.form.submit()">
                 <option selected>By Course Code</option>
                 {% for row in Courses %}
                 <option value="{{ row['courseCode'] }}">{{ row['courseCode'] }}</option>
                 {% endfor %}
             </select>
-            <select class="form-select btn-outline-secondary" aria-label="Default select example" 
-            id="course_key_Name"  name="course_key_Name">
+            <select class="form-select btn-outline-secondary" aria-label="Default select example"
+            id="course_key_Name"  name="course_key_Name" onchange="this.form.submit()">
                 <option selected>By Course Name</option>
                 {% for row in Courses %}
                 <option value="{{ row['courseName'] }}">{{ row['courseName'] }}</option>
                 {% endfor %}
             </select>
-            <select class="form-select btn-outline-secondary" aria-label="Default select example" 
-            id="college_key_Code"  name="college_key_Code">
+            <select class="form-select btn-outline-secondary" aria-label="Default select example"
+            id="college_key_Code"  name="college_key_Code" onchange="this.form.submit()">
                 <option selected>By College Code</option>
                 {% for row in Colleges %}
                 <option value="{{ row['collegeCode'] }}">{{ row['collegeCode'] }}</option>
@@ -158,7 +158,7 @@
                                     <label for="courseNameEdit">Update Course Name </label>
                                     <input type="text" name="courseNameEdit" value="{{ row['courseName'] }}" class="form-control" id="courseNameEdit" placeholder="Enter New Course Name">
                                 </div>
-                                <label for="collegeCodeEdit">Update College Code </label> 
+                                <label for="collegeCodeEdit">Update College Code </label>
                                 <div class="form-group">
                                     <select class="form-select" aria-label="Default select example" id="collegeCode"  name="collegeCodeEdit">
                                         <option selected>{{ row['collegeCode'] }}</option>
@@ -174,13 +174,13 @@
                                 </div>
                             </form>
                     </td>
-                     
+
                         <!--DELETE FUNCTION-->
                     <td>
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ row['courseCode'] }}">
                             Delete
                           </button>
-                        
+
                           <div class="modal fade" id="deleteModal{{ row['courseCode'] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                               <div class="modal-content">
@@ -204,7 +204,7 @@
                 {% endfor %}
         </table>
         {% endblock %}
-        
+
 <!-- PAGINATION -->
  {% block pagination %}
  <div class="container-fluid" data-bs-theme="dark">
@@ -217,7 +217,7 @@
                      {% else %}
                      <li class="page-item"><a class="{{ default_page }}" href="{{ url_for('Cbp.courses', page = page - 1) }}">Previous</a></li>
                      {% endif %}
- 
+
                      {% for page_number in number_of_Pages %}
                      {% if page == page_number%}
                      <li class="page-item"><a class="{{ current_page }}" href="{{ url_for('Cbp.courses', page = page_number) }}">{{ page_number }}</a></li>
@@ -225,7 +225,7 @@
                      <li class="page-item"><a class="{{ default_page }}" href="{{ url_for('Cbp.courses', page = page_number) }}">{{ page_number }}</a></li>
                      {% endif %}
                      {% endfor%}
- 
+
                      {% if page == total_Pages %}
                      <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a></li>
                      {% else %}
@@ -275,7 +275,7 @@
             </div>
           </div>
     </div>
-    
+
     <script src="static/jquery-3.6.0.js"></script>
     <script src="static/bootstrap.js"></script>
     <script src="static/bootstrap.bundle.min.js"></script>

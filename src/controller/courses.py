@@ -28,21 +28,21 @@ def courses():
             number = number + 1
         total = 0
         total_courses = total + number
-    
+
         page = request.args.get('page', 1, type=int)
         print(page)
         per_Page = 10
         start_Page = (page - 1) * per_Page
         end_Page = start_Page + per_Page
-        
+
         courses_on_Page = course_data[start_Page:end_Page]
-    
+
         total_Pages = (total_courses + per_Page - 1) // per_Page
         print(f"The amout of total pages are: {total_Pages}")
-        
+
         page_Number = list(range(1, total_Pages + 1))
         print(page_Number)
-        
+
         return render_template('/courses/courses.html', Courses=courses_on_Page, Colleges=college_data,
                            page = page, number_of_Pages = page_Number, total_Pages = total_Pages)
 
@@ -55,23 +55,23 @@ def edit_course():
         courseCodeEdit = request.form['courseCodeEdit']
         courseNameEdit = request.form['courseNameEdit']
         collegeCodeEdit =  request.form['collegeCodeEdit']
-        
+
         unique_courseCode = course_M.check_courseCode(courseCodeEdit)
         unique_courseName = course_M.check_courseName(courseNameEdit)
         unique_collegeCode = course_M.check_collegeCode(collegeCodeEdit)
-        
+
         if len(courseCodeEdit) < 1:
             flash("You need to input valid course code!", category='error')
-            
+
         elif len(courseNameEdit) < 1:
             flash("You need to input valid course name!", category='error')
-            
+
         elif unique_courseName and unique_courseCode and unique_collegeCode:
             flash("Course already exists!", category='error')
-            
+
         elif not unique_courseName and unique_courseCode and not unique_collegeCode:
             flash("Course already exists!", category='error')
-            
+
         else:
             # Implement add function for proper string formatting.
             capt_courseCodeEdit = courseCodeEdit.upper()
@@ -87,7 +87,7 @@ def add_course():
         courseCode = request.form['courseCode']
         courseName = request.form['courseName']
         collegeCode = request.form['collegeCode']
-            
+
         unique_courseCode = course_M.check_courseCode(courseCode)
 
         # Implement add function for proper string formatting.
@@ -115,73 +115,74 @@ def delete_course(courseCode):
 
 @courses_bp.route('/course_search', methods=['GET'])
 def course_search():
+    course_selection = course_M.display_Courses()
+    college_selection = course_M.display_Colleges()
+     #GENERAL SEARCH
+    course_key = request.args.get('course_key', '')
+    course_key_Code = request.args.get('course_key_Code', '')
+    course_key_Name = request.args.get('course_key_Name', '')
+    college_key_Code = request.args.get('college_key_Code', '')
+    page = request.args.get('page', 1, type=int)
+
+
+    if course_key_Code == 'By Course Code':
+        course_key_Code = None
+
+    if course_key_Name == 'By Course Name':
+        course_key_Name = None
+
+    if college_key_Code == 'By College Code':
+        college_key_Code = None
+
     try:
-        course_selection = course_M.display_Courses()
-        college_selection = course_M.display_Colleges()
-         #GENERAL SEARCH
-        course_key = request.args.get('course_key', '')
-        course_key_Code = request.args.get('course_key_Code', '')
-        course_key_Name = request.args.get('course_key_Name', '')
-        college_key_Code = request.args.get('college_key_Code', '')
-        page = request.args.get('page', 1, type=int)
-        
-        if course_key_Code == 'By Course Code':
-            course_key_Code = None
-                    
-        if course_key_Name == 'By Course Name':
-            course_key_Name = None
-        
-        if college_key_Code == 'By College Code':
-            college_key_Code = None
-            
-        if len(course_key) < 1:
-            flash("You need to input a valid search", category='error')
-            return (redirect(url_for('Cbp.courses')))
-        
-        elif len(course_key) > 1:
-        
-                search_data = course_M.search_Course(course_key, course_key_Name, course_key_Code, college_key_Code)
-                print(search_data)
-                number = 0
-                for courses in search_data:
-                    number = number + 1
-                total = 0
-                total_courses = total + number
-        
-                print(page)
-                per_Page = 10
-                start_Page = (page - 1) * per_Page
-                end_Page = start_Page + per_Page
-                
-                courses_on_Page = search_data[start_Page:end_Page]
-        
-                total_Pages = (total_courses + per_Page - 1) // per_Page
-                print(f"The amout of total pages are: {total_Pages}")
-                
-                page_Number = list(range(1, total_Pages + 1))
-                print(page_Number)
-                total_Pages = (total_courses + per_Page - 1) // per_Page
-                print(f"The amout of total pages are: {total_Pages}")
-                
-                next_url = url_for('Cbp.course_search', course_key_Code=course_key_Code, course_key_Name=course_key_Name,
-                            college_key_Code=college_key_Code, course_key=course_key, page=page+1) if page < total_Pages else None
-        
-                prev_url = url_for('Cbp.course_search', course_key_Code=course_key_Code, course_key_Name=course_key_Name,
-                            college_key_Code=college_key_Code, course_key=course_key, page=page-1) if page > 1 else None
-                
+        if course_key_Code and course_key_Name == None and college_key_Code == None:
+            search_data = course_M.search_filter(course_key_Code, None, None)
 
-                #Edit the render page for searching courses.
-                return render_template('/courses/course_results.html', Courses = courses_on_Page, course_select = course_selection, college_select = college_selection, 
-                page = page, number_of_Pages = page_Number, total_Pages = total_Pages,
-                            next_page = next_url, prev_page = prev_url)
-                            
-        else:
-            return (redirect(url_for('Cbp.courses')))
+        if course_key_Code == None and course_key_Name and college_key_Code == None:
+            search_data = course_M.search_filter(None, course_key_Name, None)
 
+        if course_key_Code == None and course_key_Name == None and college_key_Code:
+            search_data = course_M.search_filter(None, None, college_key_Code)
+
+        if len(course_key) > 1:
+            search_data = course_M.search_Course(course_key, course_key_Name, course_key_Code, college_key_Code)
+
+        number = 0
+        for courses in search_data:
+            number = number + 1
+            total = 0
+            total_courses = total + number
+
+        print(page)
+        per_Page = 10
+        start_Page = (page - 1) * per_Page
+        end_Page = start_Page + per_Page
+
+        courses_on_Page = search_data[start_Page:end_Page]
+
+        total_Pages = (total_courses + per_Page - 1) // per_Page
+        print(f"The amout of total pages are: {total_Pages}")
+
+        page_Number = list(range(1, total_Pages + 1))
+        print(page_Number)
+        total_Pages = (total_courses + per_Page - 1) // per_Page
+        print(f"The amout of total pages are: {total_Pages}")
+
+        next_url = url_for('Cbp.course_search', course_key_Code=course_key_Code, course_key_Name=course_key_Name,
+                    college_key_Code=college_key_Code, course_key=course_key, page=page+1) if page < total_Pages else None
+
+        prev_url = url_for('Cbp.course_search', course_key_Code=course_key_Code, course_key_Name=course_key_Name,
+                    college_key_Code=college_key_Code, course_key=course_key, page=page-1) if page > 1 else None
+
+        #Edit the render page for searching courses.
     except Exception as e:
         flash(f"Error occured! {e}", category='error')
-  
-    
+        return redirect(url_for('Cbp.courses'))
+
+    return render_template('/courses/course_results.html', Courses = courses_on_Page, course_select = course_selection, college_select = college_selection,
+                page = page, number_of_Pages = page_Number, total_Pages = total_Pages,  next_page = next_url, prev_page = prev_url)
+
+
 
 #<-------------------------------------------------->#
 #THE CODES RELATED FOR HANDLING COURSES ENDS IN HERE.#

@@ -113,48 +113,19 @@ class course_M:
         return course_M.display_Courses()
 
 
-    # searching for a course from the database
-    def search_Course(course_key, course_key_Name, course_key_Code, college_key_Code):
-        
-        if course_key:
-            sqlQuery = '''SELECT * FROM course_table WHERE courseCode LIKE %s OR courseName LIKE %s OR collegeCode LIKE %s'''
-            sqlValues = (course_key, course_key, course_key)
-        
+    def search_filter(course_key_Code, course_key_Name, college_key_Code):
+
         if course_key_Code:
-            sqlQuery = '''SELECT * FROM course_table WHERE courseCode LIKE %s OR courseCode LIKE %s'''
-            sqlValues = (course_key, course_key_Code)
+            sqlQuery = '''SELECT * FROM course_table WHERE courseCode LIKE %s'''
+            sqlValues = (course_key_Code)
 
         if course_key_Name:
-            sqlQuery = '''SELECT * FROM course_table WHERE courseCode LIKE %s OR courseName LIKE %s'''
-            sqlValues = (course_key, course_key_Name)
-        
-        if college_key_Code:
-            sqlQuery = '''SELECT * FROM course_table WHERE courseCode LIKE %s OR collegeCode LIKE %s'''
-            sqlValues = (course_key, college_key_Code)
+            sqlQuery = '''SELECT * FROM course_table WHERE courseName LIKE %s'''
+            sqlValues = (course_key_Name)
 
-        if course_key_Code and course_key_Name:
-            sqlQuery = '''SELECT * FROM course_table WHERE courseName LIKE %s OR courseCode LIKE %s OR collegeCode LIKE %s
-             OR courseCode LIKE %s OR courseName LIKE %s'''
-            sqlValues = (course_key, course_key, course_key, course_key_Code, course_key_Name)
-        
-        if course_key_Code and college_key_Code:
-            sqlQuery = '''SELECT * FROM course_table WHERE courseName LIKE %s OR courseCode LIKE %s OR collegeCode LIKE %s
-             OR courseCode LIKE %s OR collegeCode LIKE %s'''
-            sqlValues = (course_key, course_key, course_key, course_key_Code, college_key_Code)
-        
-        if course_key_Name and college_key_Code:
-            sqlQuery = '''SELECT * FROM course_table WHERE courseName LIKE %s OR courseCode LIKE %s OR collegeCode LIKE %s
-             OR courseName LIKE %s OR collegeCode LIKE %s'''
-            sqlValues = (course_key, course_key, course_key, course_key_Code, college_key_Code)
-        
-        if course_key_Code and college_key_Code and course_key_Name:
-            sqlQuery = '''SELECT * FROM course_table WHERE 
-                    courseCode LIKE %s OR courseName LIKE %s AND collegeCode LIKE %s OR
-                    courseName LIKE %s OR courseCode LIKE %s AND collegeCode LIKE %s OR
-                    collegeCode LIKE %s OR courseCode LIKE %s AND courseName LIKE %s'''
-            sqlValues = (course_key, course_key_Name, college_key_Code, 
-                        course_key, course_key_Code, college_key_Code, 
-                        course_key, course_key_Code, course_key_Name)
+        if college_key_Code:
+            sqlQuery = '''SELECT * FROM course_table WHERE collegeCode LIKE %s'''
+            sqlValues = (college_key_Code)
 
         db = db_connection()
         cursor = db.cursor(pymysql.cursors.DictCursor)
@@ -164,6 +135,53 @@ class course_M:
         db.close()
         return search_data
 
+    # searching for a course from the database
+    def search_Course(course_key, course_key_Name, course_key_Code, college_key_Code):
 
- 
-       
+        if course_key:
+            sqlQuery = '''SELECT * FROM course_table WHERE courseCode LIKE %s OR courseName LIKE %s OR collegeCode LIKE %s'''
+            sqlValues = (course_key, course_key, course_key)
+
+        if course_key_Code:
+            sqlQuery = '''SELECT * FROM course_table WHERE courseCode LIKE %s OR courseCode LIKE %s'''
+            sqlValues = (course_key, course_key_Code)
+
+        if course_key_Name:
+            sqlQuery = '''SELECT * FROM course_table WHERE courseCode LIKE %s OR courseName LIKE %s'''
+            sqlValues = (course_key, course_key_Name)
+
+        if college_key_Code:
+            sqlQuery = '''SELECT * FROM course_table WHERE courseCode LIKE %s OR collegeCode LIKE %s'''
+            sqlValues = (course_key, college_key_Code)
+
+        if course_key_Code and course_key_Name:
+            sqlQuery = '''SELECT * FROM course_table WHERE courseName LIKE %s OR courseCode LIKE %s OR collegeCode LIKE %s
+             OR courseCode LIKE %s OR courseName LIKE %s'''
+            sqlValues = (course_key, course_key, course_key, course_key_Code, course_key_Name)
+
+        if course_key_Code and college_key_Code:
+            sqlQuery = '''SELECT * FROM course_table WHERE courseName LIKE %s OR courseCode LIKE %s OR collegeCode LIKE %s
+             OR courseCode LIKE %s OR collegeCode LIKE %s'''
+            sqlValues = (course_key, course_key, course_key, course_key_Code, college_key_Code)
+
+        if course_key_Name and college_key_Code:
+            sqlQuery = '''SELECT * FROM course_table WHERE courseName LIKE %s OR courseCode LIKE %s OR collegeCode LIKE %s
+             OR courseName LIKE %s OR collegeCode LIKE %s'''
+            sqlValues = (course_key, course_key, course_key, course_key_Code, college_key_Code)
+
+        if course_key_Code and college_key_Code and course_key_Name:
+            sqlQuery = '''SELECT * FROM course_table WHERE
+                    courseCode LIKE %s OR courseName LIKE %s AND collegeCode LIKE %s OR
+                    courseName LIKE %s OR courseCode LIKE %s AND collegeCode LIKE %s OR
+                    collegeCode LIKE %s OR courseCode LIKE %s AND courseName LIKE %s'''
+            sqlValues = (course_key, course_key_Name, college_key_Code,
+                        course_key, course_key_Code, college_key_Code,
+                        course_key, course_key_Code, course_key_Name)
+
+        db = db_connection()
+        cursor = db.cursor(pymysql.cursors.DictCursor)
+        cursor.execute(sqlQuery, sqlValues)
+        search_data = cursor.fetchall()
+        cursor.close()
+        db.close()
+        return search_data
