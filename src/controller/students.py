@@ -87,30 +87,36 @@ def student_search():
 
     try:
         if student_key:
+            print("This code executes")
             search_data = student_M.search_Student(student_key,
             course_key_Code, student_key_Level, student_key_Gender)
 
-        elif course_key_Code and student_key_Level == None and student_key_Gender == None:
+        if course_key_Code and student_key_Level == None and student_key_Gender == None and len(student_key) == 0:
             search_data = student_M.filter_search(course_key_Code, None, None)
             print(f"Year level value: {student_key_Level}")
 
-        elif student_key_Gender and course_key_Code == None and student_key_Level == None:
+        if student_key_Gender and course_key_Code == None and student_key_Level == None and len(student_key) == 0:
             search_data = student_M.filter_search(None, student_key_Gender, None)
 
-        elif student_key_Level and student_key_Gender == None and course_key_Code == None:
+        if student_key_Level and student_key_Gender == None and course_key_Code == None and len(student_key) == 0:
             search_data = student_M.filter_search(None, None, student_key_Level)
 
-        if course_key_Code and student_key_Level:
+        if course_key_Code and student_key_Level and student_key_Gender == None and len(student_key) == 0:
             search_data = student_M.search_combine(course_key_Code, student_key_Level, None)
 
-        if course_key_Code and student_key_Gender:
+        if course_key_Code and student_key_Gender and student_key_Level == None and len(student_key) == 0:
             search_data = student_M.search_combine(course_key_Code, None, student_key_Gender)
 
-        if student_key_Level and student_key_Gender:
+        if student_key_Level and student_key_Gender and course_key_Code == None and len(student_key) == 0:
             search_data = student_M.search_combine(None, student_key_Level, student_key_Gender)
 
-        if course_key_Code and student_key_Level and student_key_Gender:
+        if course_key_Code and student_key_Level and student_key_Gender and len(student_key) == 0:
             search_data = student_M.search_combine(course_key_Code, student_key_Level, student_key_Gender)
+
+        if course_key_Code == None and student_key_Level == None and student_key_Gender == None and len(student_key) == 0:
+            flash(f"Please Enter Valid Search!", category='error')
+            return (redirect(url_for('Sbp.students')))
+
 
         number = 0
         for student in search_data:

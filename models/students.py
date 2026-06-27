@@ -401,8 +401,9 @@ class student_M:
                         ON course_table.collegeCode = college_table.collegeCode
                     WHERE
                         (students.firstName LIKE %s AND students.courseCode LIKE %s) OR
-                        (students.lastName LIKE %s AND students.courseCode LIKE %s)'''
-                SqlValues = (student_keys[0], course_key_Code, student_keys[0], course_key_Code)
+                        (students.lastName LIKE %s AND students.courseCode LIKE %s) OR
+                        (students.idNumber LIKE %s AND students.courseCode LIKE %s)'''
+                SqlValues = (student_keys[0], course_key_Code, student_keys[0], course_key_Code, student_keys[0], course_key_Code)
 
         if course_key_Code and len(student_keys) == 2:
                 print(f"Search Filter: {course_key_Code}\nSearch Input: {student_keys[0]} {student_keys[1]}")
@@ -449,8 +450,10 @@ class student_M:
                         ON course_table.collegeCode = college_table.collegeCode
                     WHERE
                         (students.firstName LIKE %s AND students.yearLevel LIKE %s) OR
-                        (students.lastName LIKE %s AND students.yearLevel LIKE %s)'''
-                SqlValues = (student_keys[0], student_key_Level, student_keys[0], student_key_Level)
+                        (students.lastName LIKE %s AND students.yearLevel LIKE %s) OR
+                        (students.idNumber LIKE %s AND students.yearLevel LIKE %s)'''
+
+                SqlValues = (student_keys[0], student_key_Level, student_keys[0], student_key_Level, student_keys[0], student_key_Level)
 
         if student_key_Level and len(student_keys) == 2:
                 print(f"Search Filter: {student_key_Level}\nSearch Input: {student_keys[0]} {student_keys[1]}")
@@ -498,8 +501,9 @@ class student_M:
                         ON course_table.collegeCode = college_table.collegeCode
                     WHERE
                         (students.firstName LIKE %s AND students.gender LIKE %s) OR
-                        (students.lastName LIKE %s AND students.gender LIKE %s)'''
-                SqlValues = (student_keys[0], student_key_Gender, student_keys[0], student_key_Gender)
+                        (students.lastName LIKE %s AND students.gender LIKE %s) OR
+                        (students.idNumber LIKE %s AND students.gender LIKE %s)'''
+                SqlValues = (student_keys[0], student_key_Gender, student_keys[0], student_key_Gender, student_keys[0], student_key_Gender)
 
         if student_key_Gender and len(student_keys) == 2:
                 print(f"Search Filter: {student_key_Gender}\nSearch Input: {student_keys[0]} {student_keys[1]}")
@@ -546,8 +550,11 @@ class student_M:
                         ON course_table.collegeCode = college_table.collegeCode
                     WHERE
                         (students.firstName LIKE %s AND students.courseCode LIKE %s AND students.yearLevel LIKE %s) OR
-                        (students.lastName LIKE %s AND students.courseCOde LIKE %s  AND students.yearLevel LIKE %s)'''
+                        (students.lastName LIKE %s AND students.courseCode LIKE %s  AND students.yearLevel LIKE %s) OR
+                        (students.idNumber LIKE %s AND students.courseCode LIKE %s  AND students.yearLevel LIKE %s)'''
+
                 SqlValues = (student_keys[0], course_key_Code, student_key_Level,
+                            student_keys[0], course_key_Code, student_key_Level,
                             student_keys[0], course_key_Code, student_key_Level)
 
         if course_key_Code and student_key_Level and len(student_keys) == 2:
@@ -595,8 +602,10 @@ class student_M:
                         ON course_table.collegeCode = college_table.collegeCode
                     WHERE
                         (students.firstName LIKE %s AND students.courseCode LIKE %s AND students.gender LIKE %s) OR
-                        (students.lastName LIKE %s AND students.courseCode LIKE %s  AND students.gender LIKE %s)'''
+                        (students.lastName LIKE %s AND students.courseCode LIKE %s  AND students.gender LIKE %s) OR
+                        (students.idNumber LIKE %s AND students.courseCode LIKE %s  AND students.gender LIKE %s)'''
                 SqlValues = (student_keys[0], course_key_Code, student_key_Gender,
+                            student_keys[0], course_key_Code, student_key_Level,
                             student_keys[0], course_key_Code, student_key_Gender)
 
         if course_key_Code and student_key_Gender and len(student_keys) == 2:
@@ -644,8 +653,10 @@ class student_M:
                         ON course_table.collegeCode = college_table.collegeCode
                     WHERE
                         (students.firstName LIKE %s AND students.yearLevel LIKE %s AND students.gender LIKE %s) OR
-                        (students.lastName LIKE %s AND students.yearLevel LIKE %s  AND students.gender LIKE %s)'''
+                        (students.lastName LIKE %s AND students.yearLevel LIKE %s AND students.gender LIKE %s) OR
+                        (students.idNumber LIKE %s AND students.yearLevel LIKE %s  AND students.gender LIKE %s)'''
                 SqlValues = (student_keys[0], student_key_Level, student_key_Gender,
+                            student_keys[0], student_key_Level, student_key_Gender,
                             student_keys[0], student_key_Level, student_key_Gender)
 
         if student_key_Level and student_key_Gender and len(student_keys) == 2:
@@ -693,8 +704,10 @@ class student_M:
                         ON course_table.collegeCode = college_table.collegeCode
                     WHERE
                         (students.firstName LIKE %s AND students.courseCode LIKE %s AND students.yearLevel LIKE %s AND students.gender LIKE %s) OR
-                        (students.lastName LIKE %s AND students.courseCode LIKE %s AND students.yearLevel LIKE %s  AND students.gender LIKE %s)'''
+                        (students.lastName LIKE %s AND students.courseCode LIKE %s AND students.yearLevel LIKE %s AND students.gender LIKE %s) OR
+                        (students.idNumber LIKE %s AND students.courseCode LIKE %s AND students.yearLevel LIKE %s  AND students.gender LIKE %s)'''
                 SqlValues = (student_keys[0], course_key_Code, student_key_Level, student_key_Gender,
+                            student_keys[0], course_key_Code, student_key_Level, student_key_Gender,
                             student_keys[0], course_key_Code, student_key_Level, student_key_Gender)
 
         if course_key_Code and student_key_Level and student_key_Gender and len(student_keys) == 2:
@@ -717,7 +730,8 @@ class student_M:
                     LEFT JOIN college_table
                         ON course_table.collegeCode = college_table.collegeCode
                     WHERE
-                        (students.firstName LIKE %s AND students.lastName LIKE %s AND students.courseCode LIKE %s AND students.yearLevel LIKE %s AND students.gender LIKE %s)'''
+                        (students.firstName LIKE %s AND students.lastName LIKE %s AND students.courseCode LIKE %s
+                        AND students.yearLevel LIKE %s AND students.gender LIKE %s)'''
                 SqlValues = (student_keys[0], student_keys[1], course_key_Code, student_key_Level, student_key_Gender)
 
         db = db_connection()
